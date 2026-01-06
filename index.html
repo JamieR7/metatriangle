@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SEHS Triangle Quiz - Confidence-Based Assessment</title>
+    <title>SEHS Triangle Quiz</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -14,12 +14,12 @@
             <p class="subtitle">Test your Sports, Exercise & Health Science knowledge!</p>
 
             <div class="difficulty-options">
-                <div class="difficulty-card" data-difficulty="rookie">
-                    <div class="difficulty-icon">🎓</div>
-                    <h2>Rookie</h2>
-                    <p class="difficulty-desc">Learning mode</p>
-                    <p class="difficulty-detail">50% chance of funny answers</p>
-                    <button class="btn btn-rookie">Start as Rookie</button>
+                <div class="difficulty-card" data-difficulty="pro">
+                    <div class="difficulty-icon">🏆</div>
+                    <h2>Pro</h2>
+                    <p class="difficulty-desc">Serious business only</p>
+                    <p class="difficulty-detail">No funny answers • Maximum challenge</p>
+                    <button class="btn btn-pro">Start as Pro</button>
                 </div>
 
                 <div class="difficulty-card" data-difficulty="varsity">
@@ -30,12 +30,12 @@
                     <button class="btn btn-varsity">Start as Varsity</button>
                 </div>
 
-                <div class="difficulty-card" data-difficulty="pro">
-                    <div class="difficulty-icon">🏆</div>
-                    <h2>Pro</h2>
-                    <p class="difficulty-desc">Serious business only</p>
-                    <p class="difficulty-detail">No funny answers • Maximum challenge</p>
-                    <button class="btn btn-pro">Start as Pro</button>
+                <div class="difficulty-card" data-difficulty="rookie">
+                    <div class="difficulty-icon">🎓</div>
+                    <h2>Rookie</h2>
+                    <p class="difficulty-desc">Learning mode</p>
+                    <p class="difficulty-detail">50% chance of funny answers</p>
+                    <button class="btn btn-rookie">Start as Rookie</button>
                 </div>
             </div>
         </div>
@@ -72,46 +72,46 @@
                 <p class="question-text" id="question-text">Loading question...</p>
             </div>
 
-            <!-- Answer Layout: Top Answer -->
-            <div class="answer-top">
-                <button class="answer-btn" id="btn-A" data-position="A">
-                    <div class="answer-label">A</div>
-                    <div class="answer-text">Option A</div>
-                </button>
-            </div>
+            <!-- Answer A (Top) -->
+            <button class="answer-btn" id="btn-A" data-position="A">
+                <div class="answer-label">A</div>
+                <div class="answer-text">Option A</div>
+            </button>
 
-            <!-- Triangle Confidence Indicator -->
-            <div class="triangle-container">
-                <svg class="triangle-svg" viewBox="0 0 600 400">
-                    <!-- Triangle outline -->
-                    <polygon points="300,50 100,350 500,350" class="triangle-outline"/>
+            <!-- Triangle (Visual Only) -->
+            <div class="triangle-visual">
+                <svg viewBox="0 0 600 400" class="triangle-svg">
+                    <polygon points="300,50 100,350 500,350" class="triangle-line"/>
 
-                    <!-- Confidence circles -->
-                    <circle cx="300" cy="100" r="25" class="confidence-circle" data-confidence="100" />
-                    <circle cx="250" cy="150" r="25" class="confidence-circle" data-confidence="80" />
-                    <circle cx="350" cy="150" r="25" class="confidence-circle" data-confidence="80" />
-                    <circle cx="200" cy="200" r="25" class="confidence-circle" data-confidence="60" />
-                    <circle cx="300" cy="200" r="25" class="confidence-circle" data-confidence="60" />
-                    <circle cx="400" cy="200" r="25" class="confidence-circle" data-confidence="60" />
-                    <circle cx="150" cy="250" r="25" class="confidence-circle" data-confidence="40" />
-                    <circle cx="250" cy="250" r="25" class="confidence-circle" data-confidence="40" />
-                    <circle cx="350" cy="250" r="25" class="confidence-circle" data-confidence="40" />
-                    <circle cx="450" cy="250" r="25" class="confidence-circle" data-confidence="40" />
-                    <circle cx="120" cy="310" r="25" class="confidence-circle" data-confidence="20" />
-                    <circle cx="200" cy="310" r="25" class="confidence-circle" data-confidence="20" />
-                    <circle cx="300" cy="310" r="25" class="confidence-circle" data-confidence="20" />
-                    <circle cx="400" cy="310" r="25" class="confidence-circle" data-confidence="20" />
-                    <circle cx="480" cy="310" r="25" class="confidence-circle" data-confidence="20" />
+                    <!-- Decorative circles -->
+                    <circle cx="300" cy="120" r="20" class="tri-circle"/>
+                    <circle cx="260" cy="170" r="20" class="tri-circle"/>
+                    <circle cx="340" cy="170" r="20" class="tri-circle"/>
+                    <circle cx="220" cy="220" r="20" class="tri-circle"/>
+                    <circle cx="300" cy="220" r="20" class="tri-circle"/>
+                    <circle cx="380" cy="220" r="20" class="tri-circle"/>
+                    <circle cx="180" cy="270" r="20" class="tri-circle"/>
+                    <circle cx="260" cy="270" r="20" class="tri-circle"/>
+                    <circle cx="340" cy="270" r="20" class="tri-circle"/>
+                    <circle cx="420" cy="270" r="20" class="tri-circle"/>
+                    <circle cx="140" cy="320" r="20" class="tri-circle"/>
+                    <circle cx="220" cy="320" r="20" class="tri-circle"/>
+                    <circle cx="300" cy="320" r="20" class="tri-circle"/>
+                    <circle cx="380" cy="320" r="20" class="tri-circle"/>
+                    <circle cx="460" cy="320" r="20" class="tri-circle"/>
 
-                    <!-- Labels -->
-                    <text x="300" y="30" class="triangle-label" text-anchor="middle">A</text>
-                    <text x="80" y="380" class="triangle-label" text-anchor="middle">B</text>
-                    <text x="520" y="380" class="triangle-label" text-anchor="middle">C</text>
+                    <!-- Corner labels -->
+                    <text x="300" y="35" class="corner-label">A</text>
+                    <text x="100" y="375" class="corner-label">B</text>
+                    <text x="500" y="375" class="corner-label">C</text>
+
+                    <!-- Center label D -->
+                    <text x="300" y="240" class="corner-label center-label">D</text>
                 </svg>
-                <p class="confidence-instruction">Click a circle to indicate your confidence level</p>
+                <p class="triangle-instruction">Click a circle on the triangle to indicate your confidence level</p>
             </div>
 
-            <!-- Bottom Answers -->
+            <!-- Answers B and C (Bottom) -->
             <div class="answers-bottom">
                 <button class="answer-btn" id="btn-B" data-position="B">
                     <div class="answer-label">B</div>
