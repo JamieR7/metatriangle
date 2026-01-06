@@ -78,44 +78,43 @@
                 <div class="answer-text">Type IIa fast-twitch</div>
             </button>
 
-            <!-- Triangle with 13 Confidence Circles -->
+            <!-- Triangle with 13 EVENLY SPACED Confidence Circles -->
             <div class="triangle-box">
                 <p class="triangle-instruction">Click a circle on the triangle to indicate your confidence level</p>
                 <svg viewBox="0 0 600 450" class="triangle-svg">
                     <!-- Triangle outline -->
                     <polygon points="300,80 120,380 480,380" class="triangle-outline"/>
 
-                    <!-- Corner circles (A, B, C) -->
-                    <circle cx="300" cy="80"  r="20" class="conf-circle" data-conf="5"/>
-                    <circle cx="120" cy="380" r="20" class="conf-circle" data-conf="1"/>
-                    <circle cx="480" cy="380" r="20" class="conf-circle" data-conf="1"/>
+                    <!-- 3 CORNER circles (A, B, C) -->
+                    <circle cx="300" cy="80"  r="22" class="conf-circle" data-conf="5"/>
+                    <circle cx="120" cy="380" r="22" class="conf-circle" data-conf="1"/>
+                    <circle cx="480" cy="380" r="22" class="conf-circle" data-conf="1"/>
 
-                    <!-- Side circles (3 per side, excluding corners) -->
-                    <!-- Left side (between A and B) -->
-                    <circle cx="255" cy="140" r="20" class="conf-circle" data-conf="4"/>
-                    <circle cx="225" cy="205" r="20" class="conf-circle" data-conf="3"/>
-                    <circle cx="175" cy="290" r="20" class="conf-circle" data-conf="2"/>
+                    <!-- LEFT SIDE (A→B): 3 evenly spaced circles -->
+                    <circle cx="255" cy="155" r="22" class="conf-circle" data-conf="4"/>
+                    <circle cx="210" cy="230" r="22" class="conf-circle" data-conf="3"/>
+                    <circle cx="165" cy="305" r="22" class="conf-circle" data-conf="2"/>
 
-                    <!-- Right side (between A and C) -->
-                    <circle cx="345" cy="140" r="20" class="conf-circle" data-conf="4"/>
-                    <circle cx="375" cy="205" r="20" class="conf-circle" data-conf="3"/>
-                    <circle cx="425" cy="290" r="20" class="conf-circle" data-conf="2"/>
+                    <!-- RIGHT SIDE (A→C): 3 evenly spaced circles -->
+                    <circle cx="345" cy="155" r="22" class="conf-circle" data-conf="4"/>
+                    <circle cx="390" cy="230" r="22" class="conf-circle" data-conf="3"/>
+                    <circle cx="435" cy="305" r="22" class="conf-circle" data-conf="2"/>
 
-                    <!-- Base (between B and C) -->
-                    <circle cx="200" cy="380" r="20" class="conf-circle" data-conf="1"/>
-                    <circle cx="300" cy="380" r="20" class="conf-circle" data-conf="1"/>
-                    <circle cx="400" cy="380" r="20" class="conf-circle" data-conf="1"/>
+                    <!-- BASE (B→C): 3 evenly spaced circles -->
+                    <circle cx="210" cy="380" r="22" class="conf-circle" data-conf="1"/>
+                    <circle cx="300" cy="380" r="22" class="conf-circle" data-conf="1"/>
+                    <circle cx="390" cy="380" r="22" class="conf-circle" data-conf="1"/>
 
-                    <!-- Center circle (D) -->
-                    <circle cx="300" cy="230" r="20" class="conf-circle" data-conf="3"/>
+                    <!-- CENTER circle (D) -->
+                    <circle cx="300" cy="280" r="22" class="conf-circle" data-conf="3"/>
 
                     <!-- Corner Labels -->
-                    <text x="300" y="55" class="corner-label" text-anchor="middle">A</text>
+                    <text x="300" y="60" class="corner-label" text-anchor="middle">A</text>
                     <text x="95"  y="410" class="corner-label" text-anchor="middle">B</text>
                     <text x="505" y="410" class="corner-label" text-anchor="middle">C</text>
 
                     <!-- Center D label -->
-                    <text x="300" y="260" class="center-d-label" text-anchor="middle">D</text>
+                    <text x="300" y="310" class="center-d-label" text-anchor="middle">D</text>
                 </svg>
             </div>
 
