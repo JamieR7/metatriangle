@@ -1,4 +1,4 @@
-// SEHS Triangle Quiz - Dynamic Gradient Scoring for Any Corner
+// SEHS Triangle Quiz - Clean Design with Positioned Answer Boxes
 
 // ==================== GLOBAL STATE ====================
 let gameState = {
@@ -10,7 +10,7 @@ let gameState = {
     wrongAnswers: 0,
     selectedQuestions: [],
     currentQuestion: null,
-    correctCorner: null,  // A, B, or C
+    correctPosition: null,  // 'top', 'bottom-left', or 'bottom-right'
     filters: {
         theme: 'all',
         level: 'all'
@@ -24,23 +24,15 @@ const DIFFICULTY_SETTINGS = {
     rookie: { funnyFrequency: 0.5, displayName: 'Rookie Trainee' }
 };
 
-// ==================== TRIANGLE POSITION MAPPING ====================
-// Maps each node to its corners and scoring
-const TRIANGLE_POSITIONS = {
-    'top': { corners: ['A'], score: { 'A': 3, 'B': -2, 'C': -2 } },
-    'top-left': { corners: ['A', 'B'], score: { 'A': 2, 'B': 2, 'C': -2 } },
-    'top-right': { corners: ['A', 'C'], score: { 'A': 2, 'B': -2, 'C': 2 } },
-    'mid-left': { corners: ['A', 'B'], score: { 'A': 1, 'B': 1, 'C': -2 } },
-    'mid-right': { corners: ['A', 'C'], score: { 'A': 1, 'B': -2, 'C': 1 } },
-    'center': { corners: ['D'], score: { 'A': 0, 'B': 0, 'C': 0 } },
-    'lower-left': { corners: ['B'], score: { 'A': -1, 'B': 2, 'C': -1 } },
-    'lower-right': { corners: ['C'], score: { 'A': -1, 'B': -1, 'C': 2 } },
-    'bottom-left': { corners: ['B'], score: { 'A': -2, 'B': 3, 'C': -2 } },
-    'bottom-left-mid': { corners: ['B', 'C'], score: { 'A': -2, 'B': 1, 'C': 1 } },
-    'bottom-center-left': { corners: ['B', 'C'], score: { 'A': -2, 'B': -1, 'C': -1 } },
-    'bottom-center-right': { corners: ['B', 'C'], score: { 'A': -2, 'B': -1, 'C': -1 } },
-    'bottom-right-mid': { corners: ['B', 'C'], score: { 'A': -2, 'B': 1, 'C': 1 } },
-    'bottom-right': { corners: ['C'], score: { 'A': -2, 'B': -2, 'C': 3 } }
+// ==================== SCORING SYSTEM ====================
+// Score based on position clicked and which corner is correct
+const POSITION_SCORES = {
+    // If TOP is correct
+    'top': { top: 3, 'top-left': 2, 'top-right': 2, 'mid-left': 1, 'mid-right': 1, 'center': 0, 'lower-left': -1, 'lower-right': -1, 'bottom-left': -2, 'bottom-left-mid': -2, 'bottom-center-left': -2, 'bottom-center-right': -2, 'bottom-right-mid': -2, 'bottom-right': -2 },
+    // If BOTTOM-LEFT is correct
+    'bottom-left': { top: -2, 'top-left': 2, 'top-right': -2, 'mid-left': 1, 'mid-right': -2, 'center': 0, 'lower-left': 2, 'lower-right': -1, 'bottom-left': 3, 'bottom-left-mid': 1, 'bottom-center-left': -1, 'bottom-center-right': -2, 'bottom-right-mid': 1, 'bottom-right': -2 },
+    // If BOTTOM-RIGHT is correct
+    'bottom-right': { top: -2, 'top-left': -2, 'top-right': 2, 'mid-left': -2, 'mid-right': 1, 'center': 0, 'lower-left': -1, 'lower-right': 2, 'bottom-left': -2, 'bottom-left-mid': 1, 'bottom-center-left': -2, 'bottom-center-right': -1, 'bottom-right-mid': 1, 'bottom-right': 3 }
 };
 
 // ==================== INITIALIZATION ====================
@@ -134,143 +126,68 @@ function loadQuestion() {
     document.getElementById('current-q').textContent = gameState.currentQuestionIndex + 1;
     document.getElementById('score').textContent = gameState.score;
 
-    // Randomly assign correct answer to A, B, or C
-    const corners = ['A', 'B', 'C'];
-    gameState.correctCorner = corners[Math.floor(Math.random() * corners.length)];
+    // Randomly assign correct answer to top, bottom-left, or bottom-right
+    const positions = ['top', 'bottom-left', 'bottom-right'];
+    gameState.correctPosition = positions[Math.floor(Math.random() * positions.length)];
 
     // Prepare and display options
     const options = prepareOptions(question);
-    displayOptions(options, gameState.correctCorner);
+    displayOptions(options);
 
-    // Update triangle labels dynamically
-    updateTriangleLabels(gameState.correctCorner);
-
-    resetNodes();
+    resetState();
 }
 
 function prepareOptions(question) {
     const options = [
-        { key: 'i', text: question.options.i, isCorrect: false },
-        { key: 'ii', text: question.options.ii, isCorrect: false },
-        { key: 'iii', text: question.options.iii, isCorrect: true }
+        { text: question.options.i, isCorrect: false },
+        { text: question.options.ii, isCorrect: false },
+        { text: question.options.iii, isCorrect: true }
     ];
 
     const funnyFrequency = DIFFICULTY_SETTINGS[gameState.difficulty].funnyFrequency;
     const includeFunny = Math.random() < funnyFrequency;
 
     if (includeFunny && question.options.iv) {
-        options.push({ key: 'iv', text: question.options.iv, isCorrect: false, isFunny: true });
-    } else {
-        options.push({ ...options[0] });
+        // Replace one wrong answer with funny one
+        options[Math.floor(Math.random() * 2)] = { text: question.options.iv, isCorrect: false, isFunny: true };
     }
 
     return shuffleArray(options);
 }
 
-function displayOptions(options, correctCorner) {
+function displayOptions(options) {
     const correctOption = options.find(opt => opt.isCorrect);
     const wrongOptions = options.filter(opt => !opt.isCorrect);
 
-    // Assign to corners based on which is correct
-    const assignments = {
-        'A': correctCorner === 'A' ? correctOption.text : wrongOptions[0].text,
-        'B': correctCorner === 'B' ? correctOption.text : wrongOptions[1 % wrongOptions.length].text,
-        'C': correctCorner === 'C' ? correctOption.text : wrongOptions[2 % wrongOptions.length].text,
-        'D': "I don't know"
-    };
+    // Assign to positions
+    const topBox = document.getElementById('answer-top');
+    const leftBox = document.getElementById('answer-bottom-left');
+    const rightBox = document.getElementById('answer-bottom-right');
 
-    document.getElementById('option-A').querySelector('.option-text').textContent = assignments['A'];
-    document.getElementById('option-B').querySelector('.option-text').textContent = assignments['B'];
-    document.getElementById('option-C').querySelector('.option-text').textContent = assignments['C'];
-    document.getElementById('option-D').querySelector('.option-text').textContent = assignments['D'];
-
-    // Reset classes
-    document.querySelectorAll('.option-box').forEach(box => {
-        box.className = 'option-box';
-    });
-    document.getElementById('option-D').classList.add('dont-know-box');
+    topBox.querySelector('.answer-content').textContent = 
+        gameState.correctPosition === 'top' ? correctOption.text : wrongOptions[0].text;
+    leftBox.querySelector('.answer-content').textContent = 
+        gameState.correctPosition === 'bottom-left' ? correctOption.text : wrongOptions[1 % wrongOptions.length].text;
+    rightBox.querySelector('.answer-content').textContent = 
+        gameState.correctPosition === 'bottom-right' ? correctOption.text : wrongOptions[2 % wrongOptions.length].text;
 }
 
-function updateTriangleLabels(correctCorner) {
-    // Define label mappings based on correct corner
-    const labelMaps = {
-        'A': {
-            'top': 'A',
-            'top-left': 'A>B',
-            'top-right': 'A>C',
-            'mid-left': 'A=B',
-            'mid-right': 'A=C',
-            'center': '?',
-            'lower-left': 'B>A',
-            'lower-right': 'C>A',
-            'bottom-left': 'B',
-            'bottom-left-mid': 'B>C',
-            'bottom-center-left': 'B=C',
-            'bottom-center-right': 'C>B',
-            'bottom-right-mid': 'C<B',
-            'bottom-right': 'C'
-        },
-        'B': {
-            'top': 'A',
-            'top-left': 'A>B',
-            'top-right': 'A>C',
-            'mid-left': 'B>A',
-            'mid-right': 'A=C',
-            'center': '?',
-            'lower-left': 'B>C',
-            'lower-right': 'C>A',
-            'bottom-left': 'B',
-            'bottom-left-mid': 'B=C',
-            'bottom-center-left': 'B<C',
-            'bottom-center-right': 'C>B',
-            'bottom-right-mid': 'C=B',
-            'bottom-right': 'C'
-        },
-        'C': {
-            'top': 'A',
-            'top-left': 'A>B',
-            'top-right': 'C>A',
-            'mid-left': 'A=B',
-            'mid-right': 'C=A',
-            'center': '?',
-            'lower-left': 'B>A',
-            'lower-right': 'C>B',
-            'bottom-left': 'B',
-            'bottom-left-mid': 'B>C',
-            'bottom-center-left': 'B=C',
-            'bottom-center-right': 'C>B',
-            'bottom-right-mid': 'C=B',
-            'bottom-right': 'C'
-        }
-    };
-
-    const labels = labelMaps[correctCorner];
-
-    // Update each label in the SVG
-    Object.keys(labels).forEach(position => {
-        const labelElement = document.querySelector(`text[data-position="${position}"]`);
-        if (labelElement) {
-            labelElement.textContent = labels[position];
-        }
-    });
-}
-
-function resetNodes() {
-    const nodes = document.querySelectorAll('.node');
-    nodes.forEach(node => {
-        node.classList.remove('correct', 'wrong', 'disabled', 'neutral', 'wiggle');
+function resetState() {
+    // Reset nodes
+    document.querySelectorAll('.node').forEach(node => {
+        node.classList.remove('correct', 'wrong', 'disabled', 'neutral');
         node.style.pointerEvents = 'auto';
+    });
+
+    // Reset answer boxes
+    document.querySelectorAll('.answer-box').forEach(box => {
+        box.classList.remove('correct', 'wrong');
     });
 }
 
 // ==================== NODE INTERACTION ====================
 function handleNodeClick(node) {
-    const position = node.getAttribute('data-position');
-
-    if (!TRIANGLE_POSITIONS[position]) {
-        console.error('Unknown position:', position);
-        return;
-    }
+    const clickedPosition = node.getAttribute('data-position');
 
     // Disable all nodes
     document.querySelectorAll('.node').forEach(n => {
@@ -278,12 +195,13 @@ function handleNodeClick(node) {
         n.style.pointerEvents = 'none';
     });
 
-    // Calculate points based on position and correct corner
-    const points = TRIANGLE_POSITIONS[position].score[gameState.correctCorner];
+    // Calculate points
+    const scoreMap = POSITION_SCORES[gameState.correctPosition];
+    const points = scoreMap[clickedPosition];
 
-    // Determine if exact correct (only the exact corner position at +3)
+    // Track stats
     const isExactCorrect = (points === 3);
-    const isDontKnow = (position === 'center');
+    const isDontKnow = (clickedPosition === 'center');
 
     if (isExactCorrect) {
         gameState.correctAnswers++;
@@ -291,7 +209,7 @@ function handleNodeClick(node) {
         gameState.wrongAnswers++;
     }
 
-    // Visual feedback
+    // Visual feedback on clicked node
     if (points > 0) {
         node.classList.add('correct');
         showFeedback(`+${points} point${points !== 1 ? 's' : ''}!`, 'correct');
@@ -299,18 +217,18 @@ function handleNodeClick(node) {
         node.classList.add('neutral');
         showFeedback('No points', 'neutral');
     } else {
-        node.classList.add('wrong', 'wiggle');
+        node.classList.add('wrong');
         showFeedback(`${points} points`, 'wrong');
         highlightCorrectNode();
     }
+
+    // Highlight answer boxes
+    highlightAnswerBoxes(clickedPosition);
 
     // Update score
     gameState.score += points;
     document.getElementById('score').textContent = gameState.score;
     gameState.questionsAnswered++;
-
-    // Highlight option boxes
-    highlightOptionBox(TRIANGLE_POSITIONS[position].corners[0], points);
 
     // Move to next question
     setTimeout(() => {
@@ -320,40 +238,56 @@ function handleNodeClick(node) {
 }
 
 function highlightCorrectNode() {
-    // Find and highlight the correct corner node
-    const correctPositions = {
-        'A': 'top',
-        'B': 'bottom-left',
-        'C': 'bottom-right'
-    };
-
-    const correctPos = correctPositions[gameState.correctCorner];
-    const correctNode = document.querySelector(`[data-position="${correctPos}"]`);
+    const correctNode = document.querySelector(`[data-position="${gameState.correctPosition}"]`);
     if (correctNode) {
         correctNode.classList.add('correct');
     }
 }
 
-function highlightOptionBox(clickedCorner, points) {
-    if (!clickedCorner) return;
+function highlightAnswerBoxes(clickedPosition) {
+    // Map node positions to answer box IDs
+    const boxMap = {
+        'top': 'answer-top',
+        'top-left': 'answer-top',
+        'top-right': 'answer-top',
+        'mid-left': null,
+        'mid-right': null,
+        'center': null,
+        'lower-left': 'answer-bottom-left',
+        'lower-right': 'answer-bottom-right',
+        'bottom-left': 'answer-bottom-left',
+        'bottom-left-mid': null,
+        'bottom-center-left': null,
+        'bottom-center-right': null,
+        'bottom-right-mid': null,
+        'bottom-right': 'answer-bottom-right'
+    };
 
-    const box = document.getElementById(`option-${clickedCorner}`);
-    if (box) {
+    const correctBoxMap = {
+        'top': 'answer-top',
+        'bottom-left': 'answer-bottom-left',
+        'bottom-right': 'answer-bottom-right'
+    };
+
+    // Highlight clicked box if it corresponds to a corner
+    const clickedBoxId = boxMap[clickedPosition];
+    if (clickedBoxId) {
+        const clickedBox = document.getElementById(clickedBoxId);
+        const scoreMap = POSITION_SCORES[gameState.correctPosition];
+        const points = scoreMap[clickedPosition];
+
         if (points > 0) {
-            box.classList.add('correct');
-        } else if (points === 0) {
-            box.classList.add('neutral');
-        } else {
-            box.classList.add('wrong');
+            clickedBox.classList.add('correct');
+        } else if (points < 0) {
+            clickedBox.classList.add('wrong');
         }
     }
 
-    // Also highlight correct box if wrong was selected
-    if (points < 0) {
-        const correctBox = document.getElementById(`option-${gameState.correctCorner}`);
-        if (correctBox) {
-            correctBox.classList.add('correct');
-        }
+    // Always highlight correct box
+    const correctBoxId = correctBoxMap[gameState.correctPosition];
+    const correctBox = document.getElementById(correctBoxId);
+    if (correctBox && !correctBox.classList.contains('correct')) {
+        correctBox.classList.add('correct');
     }
 }
 
@@ -414,5 +348,4 @@ function shuffleArray(array) {
     return shuffled;
 }
 
-console.log('App.js loaded with dynamic gradient scoring!');
-console.log('Works for A, B, or C being correct');
+console.log('App.js loaded - Clean design with positioned answer boxes!');
