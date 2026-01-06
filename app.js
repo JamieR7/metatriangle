@@ -1,5 +1,5 @@
-// SEHS Triangle Quiz - Main Application Logic
-// Confidence-based assessment with difficulty-dependent funny answers
+// SEHS Triangle Quiz - Rebuilt to match original interaction
+// Simple click on answer buttons, no confidence selection needed
 
 // ==================== GLOBAL STATE ====================
 let gameState = {
@@ -12,7 +12,6 @@ let gameState = {
     selectedQuestions: [],
     currentQuestion: null,
     correctPosition: null,
-    selectedConfidence: null,
     currentAssignment: null
 };
 
@@ -20,28 +19,16 @@ let gameState = {
 const DIFFICULTY_SETTINGS = {
     pro: { 
         funnyFrequency: 0, 
-        displayName: 'Pro',
-        description: 'No funny answers'
+        displayName: 'Pro'
     },
     varsity: { 
         funnyFrequency: 0.2, 
-        displayName: 'Varsity',
-        description: '20% funny answers'
+        displayName: 'Varsity'
     },
     rookie: { 
         funnyFrequency: 0.5, 
-        displayName: 'Rookie',
-        description: '50% funny answers'
+        displayName: 'Rookie'
     }
-};
-
-// Scoring based on confidence level
-const CONFIDENCE_SCORES = {
-    100: { correct: 10, wrong: -6 },
-    80: { correct: 8, wrong: -4 },
-    60: { correct: 6, wrong: -2 },
-    40: { correct: 4, wrong: -1 },
-    20: { correct: 2, wrong: 0 }
 };
 
 // ==================== INITIALIZATION ====================
@@ -50,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Questions available:', QUESTIONS_DB.length);
     showScreen('difficulty-screen');
 
-    // Add click listeners to difficulty cards
+    // Difficulty card click handlers
     document.querySelectorAll('.difficulty-card').forEach(card => {
         card.addEventListener('click', function() {
             const difficulty = this.dataset.difficulty;
@@ -58,26 +45,18 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Add click listeners to answer buttons
+    // Answer button click handlers
     const answerButtons = document.querySelectorAll('.answer-btn');
     answerButtons.forEach(btn => {
         btn.addEventListener('click', function() {
-            handleAnswerClick(this);
+            handleButtonClick(this);
         });
     });
 
-    // Add click listeners to confidence circles
-    const circles = document.querySelectorAll('.confidence-circle');
-    circles.forEach(circle => {
-        circle.addEventListener('click', function() {
-            handleConfidenceClick(this);
-        });
-    });
-
-    // Add click listener to quit button
+    // Quit button
     document.getElementById('quit-btn').addEventListener('click', quitQuiz);
 
-    // Add click listeners to results buttons
+    // Results buttons
     document.getElementById('restart-btn').addEventListener('click', restartQuiz);
     document.getElementById('change-difficulty-btn').addEventListener('click', changeDifficulty);
 });
@@ -120,7 +99,6 @@ function loadQuestion() {
 
     const question = gameState.selectedQuestions[gameState.currentQuestionIndex];
     gameState.currentQuestion = question;
-    gameState.selectedConfidence = null;
 
     // Update UI
     document.getElementById('question-topic').textContent = question.topic;
@@ -135,7 +113,7 @@ function loadQuestion() {
     gameState.currentAssignment = assignment;
 
     displayOptions(assignment);
-    resetUI();
+    resetButtons();
 }
 
 function prepareOptions(question) {
@@ -154,7 +132,7 @@ function prepareOptions(question) {
         // Include the funny answer (option iv)
         options.push({ key: 'iv', text: question.options.iv, isCorrect: false, isFunny: true });
     } else {
-        // Use one of the serious wrong answers twice (duplicate option i)
+        // Duplicate one of the serious wrong answers
         options.push({ ...options[0] });
     }
 
@@ -162,10 +140,10 @@ function prepareOptions(question) {
 }
 
 function randomlyAssignOptions(options) {
-    // Shuffle the 4 options
+    // Shuffle the options
     const shuffled = shuffleArray([...options]);
 
-    // Assign to positions A, B, C
+    // Assign to positions A, B, C (3 options displayed)
     const assignment = {
         A: shuffled[0],
         B: shuffled[1],
@@ -192,46 +170,17 @@ function displayOptions(assignment) {
     });
 }
 
-function resetUI() {
-    // Reset answer buttons
+function resetButtons() {
     document.querySelectorAll('.answer-btn').forEach(btn => {
         btn.classList.remove('correct', 'wrong', 'disabled');
         btn.disabled = false;
     });
 
-    // Reset confidence circles
-    document.querySelectorAll('.confidence-circle').forEach(circle => {
-        circle.classList.remove('selected');
-    });
-
-    // Hide feedback
     document.getElementById('feedback').classList.remove('show');
 }
 
-// ==================== CONFIDENCE SELECTION ====================
-function handleConfidenceClick(circle) {
-    if (gameState.selectedConfidence !== null) return; // Already selected
-
-    const confidence = parseInt(circle.dataset.confidence);
-    gameState.selectedConfidence = confidence;
-
-    // Visual feedback
-    document.querySelectorAll('.confidence-circle').forEach(c => {
-        c.classList.remove('selected');
-    });
-    circle.classList.add('selected');
-
-    console.log(`Confidence selected: ${confidence}%`);
-}
-
-// ==================== ANSWER SELECTION ====================
-function handleAnswerClick(button) {
-    // Check if confidence has been selected
-    if (gameState.selectedConfidence === null) {
-        alert('Please select your confidence level on the triangle first!');
-        return;
-    }
-
+// ==================== BUTTON INTERACTION ====================
+function handleButtonClick(button) {
     const position = button.dataset.position;
     const isCorrect = position === gameState.correctPosition;
 
@@ -241,25 +190,25 @@ function handleAnswerClick(button) {
         btn.classList.add('disabled');
     });
 
-    // Calculate score
     let points = 0;
-    const confidence = gameState.selectedConfidence;
 
     if (isCorrect) {
+        // Correct answer: +3 points
         button.classList.add('correct');
-        points = CONFIDENCE_SCORES[confidence].correct;
+        points = 3;
         gameState.correctAnswers++;
-        showFeedback(`Correct! +${points} points (${confidence}% confidence)`, 'correct');
+        showFeedback(`Correct! +${points} points`, 'correct');
     } else {
+        // Wrong answer: -2 points
         button.classList.add('wrong');
-        points = CONFIDENCE_SCORES[confidence].wrong;
+        points = -2;
         gameState.wrongAnswers++;
 
         // Highlight correct answer
         const correctBtn = document.getElementById(`btn-${gameState.correctPosition}`);
         correctBtn.classList.add('correct');
 
-        showFeedback(`Wrong! ${points} points (${confidence}% confidence)`, 'wrong');
+        showFeedback(`Wrong! ${points} points`, 'wrong');
     }
 
     gameState.score += points;
@@ -331,4 +280,4 @@ function shuffleArray(array) {
 }
 
 console.log('App.js loaded successfully!');
-console.log('Confidence-based scoring system initialized');
+console.log('Simple click interaction - just like the original!');
