@@ -1,5 +1,4 @@
-/* SEHS Triangle Quiz - Styles */
-/* Confidence-based assessment with triangle layout */
+/* SEHS Triangle Quiz - Rebuilt to match original */
 
 * {
     margin: 0;
@@ -118,9 +117,9 @@ body {
     text-transform: uppercase;
 }
 
-.btn-rookie {
-    background: var(--accent-yellow);
-    color: var(--primary-blue);
+.btn-pro {
+    background: var(--accent-red);
+    color: var(--white);
 }
 
 .btn-varsity {
@@ -128,9 +127,9 @@ body {
     color: var(--white);
 }
 
-.btn-pro {
-    background: var(--accent-red);
-    color: var(--white);
+.btn-rookie {
+    background: var(--accent-yellow);
+    color: var(--primary-blue);
 }
 
 .btn:hover {
@@ -143,7 +142,7 @@ body {
 }
 
 .quiz-container {
-    max-width: 1000px;
+    max-width: 900px;
     margin: 0 auto;
     position: relative;
 }
@@ -252,6 +251,7 @@ body {
     gap: 0.8rem;
     font-family: inherit;
     width: 100%;
+    margin-bottom: 1.5rem;
 }
 
 .answer-btn:hover:not(.disabled) {
@@ -282,86 +282,7 @@ body {
     text-align: center;
 }
 
-/* Layout Sections */
-.answer-top {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 2rem;
-}
-
-.answer-top .answer-btn {
-    max-width: 600px;
-}
-
-.answers-bottom {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    margin-top: 2rem;
-}
-
-/* Triangle Container */
-.triangle-container {
-    background: var(--white);
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border: 3px solid var(--primary-blue);
-    text-align: center;
-}
-
-.triangle-svg {
-    width: 100%;
-    max-width: 600px;
-    height: auto;
-    display: block;
-    margin: 0 auto;
-}
-
-.triangle-outline {
-    fill: none;
-    stroke: var(--accent-yellow);
-    stroke-width: 3;
-}
-
-.confidence-circle {
-    fill: var(--bg-light);
-    stroke: var(--accent-yellow);
-    stroke-width: 3;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.confidence-circle:hover {
-    fill: var(--accent-yellow);
-    transform: scale(1.1);
-}
-
-.confidence-circle.selected {
-    fill: var(--primary-blue);
-    stroke: var(--accent-yellow);
-    stroke-width: 4;
-}
-
-.triangle-label {
-    fill: var(--primary-blue);
-    font-size: 24px;
-    font-weight: 700;
-}
-
-.confidence-label {
-    fill: var(--neutral-gray);
-    font-size: 28px;
-}
-
-.confidence-instruction {
-    color: var(--text-light);
-    font-size: 0.95rem;
-    margin-top: 1rem;
-    font-style: italic;
-}
-
-/* Answer States */
+/* Answer Button States */
 .answer-btn.correct {
     background: rgba(40, 167, 69, 0.1);
     border-color: var(--success-green);
@@ -395,9 +316,65 @@ body {
 }
 
 @keyframes wiggle {
-    0%, 100% { transform: translateX(0); }
-    10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
-    20%, 40%, 60%, 80% { transform: translateX(10px); }
+    0%, 100% { transform: translateY(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateY(-5px); }
+    20%, 40%, 60%, 80% { transform: translateY(5px); }
+}
+
+/* Triangle Visual */
+.triangle-visual {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 3px solid var(--primary-blue);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.triangle-svg {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+}
+
+.triangle-line {
+    fill: none;
+    stroke: var(--accent-yellow);
+    stroke-width: 4;
+}
+
+.tri-circle {
+    fill: var(--bg-light);
+    stroke: var(--accent-yellow);
+    stroke-width: 2;
+}
+
+.corner-label {
+    fill: var(--primary-blue);
+    font-size: 28px;
+    font-weight: 700;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+}
+
+.center-label {
+    fill: var(--neutral-gray);
+    font-size: 32px;
+}
+
+.triangle-instruction {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    margin-top: 1rem;
+    font-style: italic;
+}
+
+/* Bottom Answers */
+.answers-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
 }
 
 /* Feedback */
@@ -413,7 +390,7 @@ body {
     font-size: 2rem;
     font-weight: 700;
     display: none;
-    z-index: 100;
+    z-index: 1000;
     border: 3px solid var(--accent-yellow);
 }
 
