@@ -188,32 +188,31 @@ body {
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
 }
 
-/* Radio Button Circles - VISIBLE and CLICKABLE */
-.triangle-wrapper input[type="radio"] {
+/* Clickable Circle Divs */
+.click-circle {
     position: absolute;
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     transform: translate(-50%, -50%);
     cursor: pointer;
-    appearance: none;
-    -webkit-appearance: none;
-    background: rgba(251, 186, 7, 0.3);
-    border: 2px solid #fbba07;
+    background: rgba(251, 186, 7, 0.2);
+    border: 2px solid rgba(251, 186, 7, 0.5);
     border-radius: 50%;
-    z-index: 2;
+    z-index: 5;
     transition: all 0.2s ease;
 }
 
-.triangle-wrapper input[type="radio"]:hover {
-    background: rgba(251, 186, 7, 0.6);
-    border-color: #fff;
-    transform: translate(-50%, -50%) scale(1.1);
+.click-circle:hover {
+    background: rgba(251, 186, 7, 0.5);
+    border-color: #fbba07;
+    transform: translate(-50%, -50%) scale(1.15);
+    box-shadow: 0 0 15px rgba(251, 186, 7, 0.6);
 }
 
-.triangle-wrapper input[type="radio"]:checked {
-    background: rgba(76, 175, 80, 0.8);
+.click-circle.clicked {
+    background: rgba(76, 175, 80, 0.7);
     border-color: #4CAF50;
-    box-shadow: 0 0 15px rgba(76, 175, 80, 0.8);
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.8);
 }
 
 .feedback {
@@ -322,8 +321,8 @@ body {
         min-width: 150px;
     }
 
-    .triangle-wrapper input[type="radio"] {
-        width: 40px;
-        height: 40px;
+    .click-circle {
+        width: 45px;
+        height: 45px;
     }
 }
