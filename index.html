@@ -3,151 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SEHS Triangle Quiz</title>
+    <title>IB SEHS Triangle Quiz</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Difficulty Screen -->
-    <div id="difficulty-screen" class="screen active">
-        <div class="container">
-            <h1>🏆 SEHS Triangle Quiz 🏆</h1>
-            <p class="subtitle">Test your Sports, Exercise & Health Science knowledge!</p>
+    <div class="container">
+        <!-- Difficulty Selection Screen -->
+        <div id="difficulty-screen" class="screen active">
+            <h1>IB SEHS Triangle Quiz</h1>
+            <p class="subtitle">Test your Sports, Exercise & Health Science knowledge</p>
+            <div class="difficulty-buttons">
+                <button class="diff-btn" data-level="elite">Elite</button>
+                <button class="diff-btn" data-level="varsity">Varsity</button>
+                <button class="diff-btn" data-level="rookie">Rookie</button>
+            </div>
+        </div>
 
-            <div class="difficulty-options">
-                <div class="difficulty-card">
-                    <div class="difficulty-icon">🥇</div>
-                    <h2>Elite Athlete</h2>
-                    <p class="difficulty-desc">Serious business only</p>
-                    <button class="btn btn-elite" onclick="startQuiz('elite')">Select</button>
-                </div>
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="screen">
+            <div class="game-header">
+                <div class="score-display">Score: <span id="score">0</span></div>
+                <div class="question-counter">Question <span id="current-q">1</span>/10</div>
+                <div class="difficulty-badge" id="difficulty-badge">Elite</div>
+            </div>
 
-                <div class="difficulty-card">
-                    <div class="difficulty-icon">🥈</div>
-                    <h2>Varsity Player</h2>
-                    <p class="difficulty-desc">Balanced challenge</p>
-                    <button class="btn btn-varsity" onclick="startQuiz('varsity')">Select</button>
-                </div>
+            <div class="question-area">
+                <h2 id="question-text">Question will appear here</h2>
+            </div>
 
-                <div class="difficulty-card">
-                    <div class="difficulty-icon">🥉</div>
-                    <h2>Rookie Trainee</h2>
-                    <p class="difficulty-desc">Learning mode</p>
-                    <button class="btn btn-rookie" onclick="startQuiz('rookie')">Select</button>
+            <div class="answers-area">
+                <div class="answer-box" id="answer-0">Answer 1</div>
+                <div class="answer-box" id="answer-1">Answer 2</div>
+                <div class="answer-box" id="answer-2">Answer 3</div>
+            </div>
+
+            <div class="triangle-container">
+                <p class="instruction">Click the triangle to indicate your confidence level</p>
+                <div class="triangle-wrapper">
+                    <img src="triangle.jpg" alt="Confidence Triangle" usemap="#triangle-map" id="triangle-image">
+                    <map name="triangle-map">
+                        <!-- Row 1 (Top) -->
+                        <area shape="circle" coords="592,192,35" data-zone="top" alt="Top">
+                        
+                        <!-- Row 2 -->
+                        <area shape="circle" coords="492,348,35" data-zone="top-left" alt="Top Left">
+                        <area shape="circle" coords="692,348,35" data-zone="top-right" alt="Top Right">
+                        
+                        <!-- Row 3 -->
+                        <area shape="circle" coords="392,512,35" data-zone="mid-left" alt="Mid Left">
+                        <area shape="circle" coords="592,512,35" data-zone="center" alt="Center">
+                        <area shape="circle" coords="792,512,35" data-zone="mid-right" alt="Mid Right">
+                        
+                        <!-- Row 4 -->
+                        <area shape="circle" coords="292,688,35" data-zone="lower-left" alt="Lower Left">
+                        <area shape="circle" coords="492,688,35" data-zone="lower-mid-left" alt="Lower Mid Left">
+                        <area shape="circle" coords="692,688,35" data-zone="lower-mid-right" alt="Lower Mid Right">
+                        <area shape="circle" coords="892,688,35" data-zone="lower-right" alt="Lower Right">
+                        
+                        <!-- Row 5 (Bottom) -->
+                        <area shape="circle" coords="142,884,35" data-zone="bottom-left" alt="Bottom Left">
+                        <area shape="circle" coords="342,884,35" data-zone="bottom-left-mid" alt="Bottom Left Mid">
+                        <area shape="circle" coords="542,884,35" data-zone="bottom-center" alt="Bottom Center">
+                        <area shape="circle" coords="742,884,35" data-zone="bottom-right-mid" alt="Bottom Right Mid">
+                        <area shape="circle" coords="942,884,35" data-zone="bottom-right" alt="Bottom Right">
+                    </map>
+                    <div id="feedback-display" class="feedback"></div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Quiz Screen -->
-    <div id="quiz-screen" class="screen">
-        <div class="header">
-            <div class="stats">
-                <div class="stat-item">
-                    <span class="stat-label">Score</span>
-                    <span class="stat-value" id="score">0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Question</span>
-                    <span class="stat-value"><span id="current-q">1</span>/<span id="total-q">10</span></span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Level</span>
-                    <span class="stat-value" id="difficulty-display">Elite</span>
-                </div>
+        <!-- Results Screen -->
+        <div id="results-screen" class="screen">
+            <h1>Quiz Complete!</h1>
+            <div class="results-box">
+                <p class="final-score">Final Score: <span id="final-score">0</span></p>
+                <p class="accuracy">Accuracy: <span id="accuracy">0</span>%</p>
+                <p class="performance-msg" id="performance-msg"></p>
             </div>
-            <button class="btn-quit" onclick="quitQuiz()">Quit</button>
-        </div>
-
-        <div class="quiz-container">
-            <!-- Question -->
-            <div class="question-box">
-                <div class="question-meta">
-                    <span class="question-topic" id="question-topic">Topic</span>
-                    <span class="question-level" id="question-level">SL</span>
-                </div>
-                <h2 class="question-text" id="question-text">Question</h2>
-            </div>
-
-            <!-- Answer Boxes - Simple text only -->
-            <div class="answer-options">
-                <div class="answer-box" id="answer-1">Option 1</div>
-                <div class="answer-box" id="answer-2">Option 2</div>
-                <div class="answer-box" id="answer-3">Option 3</div>
-            </div>
-
-            <!-- Triangle with Image Map -->
-            <div class="triangle-area">
-                <img src="images/triangle.png" alt="Triangle" usemap="#triangle-map" id="triangle-img">
-
-                <map name="triangle-map">
-                    <!-- Row 1: Top -->
-                    <area shape="circle" coords="400,50,35" data-position="top" alt="Top" onclick="handleClick('top')">
-
-                    <!-- Row 2 -->
-                    <area shape="circle" coords="300,130,30" data-position="top-left" alt="Top Left" onclick="handleClick('top-left')">
-                    <area shape="circle" coords="500,130,30" data-position="top-right" alt="Top Right" onclick="handleClick('top-right')">
-
-                    <!-- Row 3 -->
-                    <area shape="circle" coords="220,220,30" data-position="mid-left" alt="Mid Left" onclick="handleClick('mid-left')">
-                    <area shape="circle" coords="580,220,30" data-position="mid-right" alt="Mid Right" onclick="handleClick('mid-right')">
-
-                    <!-- Row 4: Center -->
-                    <area shape="circle" coords="400,315,35" data-position="center" alt="Center" onclick="handleClick('center')">
-
-                    <!-- Row 5 -->
-                    <area shape="circle" coords="170,410,30" data-position="lower-left" alt="Lower Left" onclick="handleClick('lower-left')">
-                    <area shape="circle" coords="630,410,30" data-position="lower-right" alt="Lower Right" onclick="handleClick('lower-right')">
-
-                    <!-- Row 6: Bottom -->
-                    <area shape="circle" coords="100,550,35" data-position="bottom-left" alt="Bottom Left" onclick="handleClick('bottom-left')">
-                    <area shape="circle" coords="220,550,25" data-position="bottom-left-mid" alt="BL Mid" onclick="handleClick('bottom-left-mid')">
-                    <area shape="circle" coords="330,550,25" data-position="bottom-center-left" alt="BC Left" onclick="handleClick('bottom-center-left')">
-                    <area shape="circle" coords="470,550,25" data-position="bottom-center-right" alt="BC Right" onclick="handleClick('bottom-center-right')">
-                    <area shape="circle" coords="580,550,25" data-position="bottom-right-mid" alt="BR Mid" onclick="handleClick('bottom-right-mid')">
-                    <area shape="circle" coords="700,550,35" data-position="bottom-right" alt="Bottom Right" onclick="handleClick('bottom-right')">
-                </map>
-            </div>
-
-            <div class="feedback" id="feedback"></div>
-        </div>
-    </div>
-
-    <!-- Results Screen -->
-    <div id="results-screen" class="screen">
-        <div class="container">
-            <h1>🎯 Quiz Complete! 🎯</h1>
-
-            <div class="results-card">
-                <div class="final-score">
-                    <div class="score-label">Final Score</div>
-                    <div class="score-number" id="final-score">0</div>
-                </div>
-
-                <div class="results-stats">
-                    <div class="result-stat">
-                        <div class="result-icon">✅</div>
-                        <div class="result-label">Correct</div>
-                        <div class="result-value" id="correct-count">0</div>
-                    </div>
-                    <div class="result-stat">
-                        <div class="result-icon">❌</div>
-                        <div class="result-label">Wrong</div>
-                        <div class="result-value" id="wrong-count">0</div>
-                    </div>
-                    <div class="result-stat">
-                        <div class="result-icon">🎯</div>
-                        <div class="result-label">Accuracy</div>
-                        <div class="result-value" id="accuracy">0%</div>
-                    </div>
-                </div>
-
-                <div class="performance-message" id="performance-message">Great job!</div>
-            </div>
-
-            <div class="action-buttons">
-                <button class="btn btn-primary" onclick="restartQuiz()">Play Again</button>
-                <button class="btn btn-secondary" onclick="changeDifficulty()">Change Difficulty</button>
-            </div>
+            <button id="restart-btn" class="restart-button">Try Again</button>
         </div>
     </div>
 
