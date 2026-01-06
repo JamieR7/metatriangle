@@ -29,6 +29,28 @@ const scoringTables = {
     }
 };
 
+// DEBUG MODE - Set to true to see clickable circles
+const DEBUG_MODE = true;
+
+// Circle positions based on your triangle.png (adjusted for accuracy)
+const circlePositions = [
+    { x: 0.50, y: 0.135, zone: 'top', radius: 0.04 },
+    { x: 0.415, y: 0.255, zone: 'top-left', radius: 0.04 },
+    { x: 0.585, y: 0.255, zone: 'top-right', radius: 0.04 },
+    { x: 0.332, y: 0.395, zone: 'mid-left', radius: 0.04 },
+    { x: 0.50, y: 0.395, zone: 'center', radius: 0.04 },
+    { x: 0.668, y: 0.395, zone: 'mid-right', radius: 0.04 },
+    { x: 0.247, y: 0.540, zone: 'lower-left', radius: 0.04 },
+    { x: 0.415, y: 0.540, zone: 'lower-mid-left', radius: 0.04 },
+    { x: 0.585, y: 0.540, zone: 'lower-mid-right', radius: 0.04 },
+    { x: 0.753, y: 0.540, zone: 'lower-right', radius: 0.04 },
+    { x: 0.120, y: 0.835, zone: 'bottom-left', radius: 0.04 },
+    { x: 0.288, y: 0.835, zone: 'bottom-left-mid', radius: 0.04 },
+    { x: 0.458, y: 0.835, zone: 'bottom-center', radius: 0.04 },
+    { x: 0.627, y: 0.835, zone: 'bottom-right-mid', radius: 0.04 },
+    { x: 0.795, y: 0.835, zone: 'bottom-right', radius: 0.04 }
+];
+
 // Initialize game
 document.querySelectorAll('.diff-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -40,6 +62,79 @@ document.querySelectorAll('.diff-btn').forEach(btn => {
 document.getElementById('restart-btn').addEventListener('click', () => {
     resetGame();
 });
+
+// Setup canvas-based clicking
+let canvas, ctx, triangleImg;
+
+window.addEventListener('load', () => {
+    canvas = document.getElementById('triangle-canvas');
+    triangleImg = document.getElementById('triangle-image');
+    
+    if (canvas && triangleImg) {
+        ctx = canvas.getContext('2d');
+        setupTriangleClick();
+    }
+});
+
+function setupTriangleClick() {
+    function updateCanvas() {
+        const rect = triangleImg.getBoundingClientRect();
+        canvas.width = triangleImg.offsetWidth;
+        canvas.height = triangleImg.offsetHeight;
+        canvas.style.width = triangleImg.offsetWidth + 'px';
+        canvas.style.height = triangleImg.offsetHeight + 'px';
+        
+        // Draw debug circles if enabled
+        if (DEBUG_MODE) {
+            drawDebugCircles();
+        }
+    }
+    
+    function drawDebugCircles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = 'rgba(251, 186, 7, 0.5)';
+        ctx.lineWidth = 2;
+        
+        circlePositions.forEach(circle => {
+            const x = circle.x * canvas.width;
+            const y = circle.y * canvas.height;
+            const radius = circle.radius * canvas.width;
+            
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.stroke();
+        });
+    }
+    
+    triangleImg.addEventListener('load', updateCanvas);
+    window.addEventListener('resize', updateCanvas);
+    
+    // Initial setup after small delay to ensure image is loaded
+    setTimeout(updateCanvas, 100);
+    
+    canvas.addEventListener('click', (e) => {
+        if (game.answered) return;
+        
+        const rect = canvas.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / canvas.width;
+        const y = (e.clientY - rect.top) / canvas.height;
+        
+        // Find which circle was clicked (with larger tolerance)
+        for (let circle of circlePositions) {
+            const dx = x - circle.x;
+            const dy = y - circle.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < circle.radius * 1.5) { // 50% larger hit area
+                handleAnswer(circle.zone);
+                console.log('Clicked:', circle.zone); // Debug log
+                return;
+            }
+        }
+        
+        console.log('Clicked at:', x.toFixed(3), y.toFixed(3)); // Debug log for missed clicks
+    });
+}
 
 function startGame() {
     game.questions = getRandomQuestions(10, game.difficulty);
@@ -97,17 +192,6 @@ function loadQuestion() {
     document.getElementById('feedback-display').textContent = '';
     document.getElementById('feedback-display').classList.remove('show');
 }
-
-// Handle triangle clicks
-document.querySelectorAll('area').forEach(area => {
-    area.addEventListener('click', (e) => {
-        if (game.answered) return;
-        
-        e.preventDefault();
-        const zone = e.target.dataset.zone;
-        handleAnswer(zone);
-    });
-});
 
 function handleAnswer(clickedZone) {
     game.answered = true;
