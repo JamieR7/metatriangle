@@ -25,8 +25,6 @@ body {
     border-radius: 15px;
     padding: 20px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    max-height: 95vh;
-    overflow-y: auto;
 }
 
 .screen.active {
@@ -128,7 +126,6 @@ body {
 
 /* Triangle Game Area Layout */
 .triangle-game-area {
-    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -183,7 +180,7 @@ body {
 
 #triangle-image {
     width: 100%;
-    max-width: 450px;
+    max-width: 500px;
     height: auto;
     display: block;
     margin: 0 auto;
@@ -191,12 +188,27 @@ body {
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
 }
 
-#triangle-canvas {
+/* Radio Button Circles */
+.triangle-wrapper input[type="radio"] {
     position: absolute;
-    top: 0;
-    left: 0;
+    width: 30px;
+    height: 30px;
+    transform: translate(-50%, -50%);
     cursor: pointer;
-    border-radius: 15px;
+    opacity: 0;
+    z-index: 2;
+}
+
+.triangle-wrapper input[type="radio"]:hover {
+    opacity: 0.3;
+    background: #fbba07;
+    border-radius: 50%;
+}
+
+.triangle-wrapper input[type="radio"]:checked {
+    opacity: 0.5;
+    background: #4CAF50;
+    border-radius: 50%;
 }
 
 .feedback {
@@ -221,19 +233,11 @@ body {
 
 /* Bottom Answers (B and C) */
 .answers-bottom {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     width: 100%;
-    max-width: 450px;
+    max-width: 500px;
     gap: 15px;
-}
-
-.answer-bottom-left {
-    flex: 1;
-}
-
-.answer-bottom-right {
-    flex: 1;
 }
 
 /* Results Screen */
@@ -301,30 +305,15 @@ body {
         font-size: 1.6em;
     }
     
-    .diff-btn {
-        padding: 12px 30px;
-        font-size: 1em;
-    }
-    
     .question-area h2 {
         font-size: 1em;
     }
-    
-    .game-header {
-        font-size: 0.85em;
-    }
 
     .answers-bottom {
-        flex-direction: column;
-        gap: 10px;
+        grid-template-columns: 1fr;
     }
 
     .answer-box {
         min-width: 150px;
-        font-size: 0.9em;
-    }
-
-    .feedback {
-        font-size: 2em;
     }
 }
