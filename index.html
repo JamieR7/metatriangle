@@ -14,7 +14,7 @@
             <p class="subtitle">Test your Sports, Exercise & Health Science knowledge!</p>
 
             <div class="difficulty-options">
-                <div class="difficulty-card" data-level="elite">
+                <div class="difficulty-card">
                     <div class="difficulty-icon">🥇</div>
                     <h2>Elite Athlete</h2>
                     <p class="difficulty-desc">Serious business only</p>
@@ -22,7 +22,7 @@
                     <button class="btn btn-elite" onclick="startQuiz('elite')">Select Elite</button>
                 </div>
 
-                <div class="difficulty-card" data-level="varsity">
+                <div class="difficulty-card">
                     <div class="difficulty-icon">🥈</div>
                     <h2>Varsity Player</h2>
                     <p class="difficulty-desc">Balanced challenge</p>
@@ -30,7 +30,7 @@
                     <button class="btn btn-varsity" onclick="startQuiz('varsity')">Select Varsity</button>
                 </div>
 
-                <div class="difficulty-card" data-level="rookie">
+                <div class="difficulty-card">
                     <div class="difficulty-icon">🥉</div>
                     <h2>Rookie Trainee</h2>
                     <p class="difficulty-desc">Learning mode</p>
@@ -86,56 +86,46 @@
                 <h2 class="question-text" id="question-text">Question will appear here</h2>
             </div>
 
-            <!-- Main Game Area -->
+            <!-- Answer Options -->
+            <div class="answer-box" id="answer-1">Option A answer</div>
+            <div class="answer-box" id="answer-2">Option B answer</div>
+            <div class="answer-box" id="answer-3">Option C answer</div>
+
+            <!-- TRUE EQUILATERAL TRIANGLE -->
             <div class="game-area">
-                <!-- Answer boxes positioned around triangle -->
-                <div class="answer-box answer-top" id="answer-top">
-                    <div class="answer-content">Option A answer</div>
-                </div>
-
-                <div class="answer-box answer-bottom-left" id="answer-bottom-left">
-                    <div class="answer-content">Option B answer</div>
-                </div>
-
-                <div class="answer-box answer-bottom-right" id="answer-bottom-right">
-                    <div class="answer-content">Option C answer</div>
-                </div>
-
-                <!-- Clean Triangle -->
-                <svg id="triangle-svg" viewBox="0 0 1000 900" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Triangle outline -->
-                    <path d="M 500 50 L 100 800 L 900 800 Z" 
+                <svg id="triangle-svg" viewBox="0 0 1000 800" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Triangle outline - TRUE EQUILATERAL -->
+                    <path d="M 500 57.2 L 100 750 L 900 750 Z" 
                           fill="none" 
                           stroke="#fbba07" 
                           stroke-width="4"/>
 
-                    <!-- Clickable circles - NO LABELS -->
-                    <!-- Row 1: Top -->
-                    <circle cx="500" cy="50" r="45" class="node corner" data-position="top"/>
+                    <!-- Row 1: Top corner -->
+                    <circle cx="500" cy="57.2" r="45" class="node corner" data-position="top"/>
 
-                    <!-- Row 2 -->
-                    <circle cx="350" cy="150" r="38" class="node" data-position="top-left"/>
-                    <circle cx="650" cy="150" r="38" class="node" data-position="top-right"/>
+                    <!-- Row 2: Second level -->
+                    <circle cx="366.7" cy="172.6" r="38" class="node" data-position="top-left"/>
+                    <circle cx="633.3" cy="172.6" r="38" class="node" data-position="top-right"/>
 
-                    <!-- Row 3 -->
-                    <circle cx="250" cy="280" r="38" class="node" data-position="mid-left"/>
-                    <circle cx="750" cy="280" r="38" class="node" data-position="mid-right"/>
+                    <!-- Row 3: Third level -->
+                    <circle cx="233.3" cy="288.1" r="38" class="node" data-position="mid-left"/>
+                    <circle cx="766.7" cy="288.1" r="38" class="node" data-position="mid-right"/>
 
-                    <!-- Row 4: Center -->
-                    <circle cx="500" cy="420" r="45" class="node center" data-position="center"/>
-                    <text x="500" y="440" class="center-label">?</text>
+                    <!-- Row 4: Center (don't know) -->
+                    <circle cx="500" cy="403.6" r="45" class="node center" data-position="center"/>
+                    <text x="500" y="423.6" class="center-label">?</text>
 
-                    <!-- Row 5 -->
-                    <circle cx="200" cy="560" r="38" class="node" data-position="lower-left"/>
-                    <circle cx="800" cy="560" r="38" class="node" data-position="lower-right"/>
+                    <!-- Row 5: Lower level -->
+                    <circle cx="233.3" cy="519.1" r="38" class="node" data-position="lower-left"/>
+                    <circle cx="766.7" cy="519.1" r="38" class="node" data-position="lower-right"/>
 
-                    <!-- Row 6: Bottom -->
-                    <circle cx="100" cy="800" r="45" class="node corner" data-position="bottom-left"/>
-                    <circle cx="280" cy="800" r="32" class="node" data-position="bottom-left-mid"/>
-                    <circle cx="420" cy="800" r="32" class="node" data-position="bottom-center-left"/>
-                    <circle cx="580" cy="800" r="32" class="node" data-position="bottom-center-right"/>
-                    <circle cx="720" cy="800" r="32" class="node" data-position="bottom-right-mid"/>
-                    <circle cx="900" cy="800" r="45" class="node corner" data-position="bottom-right"/>
+                    <!-- Row 6: Bottom corners and middle positions -->
+                    <circle cx="100" cy="750" r="45" class="node corner" data-position="bottom-left"/>
+                    <circle cx="260.0" cy="750" r="32" class="node" data-position="bottom-left-mid"/>
+                    <circle cx="420.0" cy="750" r="32" class="node" data-position="bottom-center-left"/>
+                    <circle cx="580.0" cy="750" r="32" class="node" data-position="bottom-center-right"/>
+                    <circle cx="740.0" cy="750" r="32" class="node" data-position="bottom-right-mid"/>
+                    <circle cx="900" cy="750" r="45" class="node corner" data-position="bottom-right"/>
                 </svg>
 
                 <div class="feedback" id="feedback"></div>
