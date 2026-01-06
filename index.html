@@ -1,0 +1,203 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEHS Triangle Quiz Challenge</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Difficulty Selection Screen -->
+    <div id="difficulty-screen" class="screen active">
+        <div class="container">
+            <h1>🏆 SEHS Triangle Quiz Challenge 🏆</h1>
+            <p class="subtitle">Test your Sports, Exercise & Health Science knowledge!</p>
+
+            <div class="difficulty-options">
+                <div class="difficulty-card" data-level="elite">
+                    <div class="difficulty-icon">🥇</div>
+                    <h2>Elite Athlete</h2>
+                    <p class="difficulty-desc">Serious business only</p>
+                    <p class="difficulty-detail">No funny answers • Maximum challenge</p>
+                    <button class="btn btn-elite" onclick="startQuiz('elite')">Select Elite</button>
+                </div>
+
+                <div class="difficulty-card" data-level="varsity">
+                    <div class="difficulty-icon">🥈</div>
+                    <h2>Varsity Player</h2>
+                    <p class="difficulty-desc">Balanced challenge</p>
+                    <p class="difficulty-detail">Occasional humor • 20% fun</p>
+                    <button class="btn btn-varsity" onclick="startQuiz('varsity')">Select Varsity</button>
+                </div>
+
+                <div class="difficulty-card" data-level="rookie">
+                    <div class="difficulty-icon">🥉</div>
+                    <h2>Rookie Trainee</h2>
+                    <p class="difficulty-desc">Learning mode</p>
+                    <p class="difficulty-detail">More humor • 50% fun</p>
+                    <button class="btn btn-rookie" onclick="startQuiz('rookie')">Select Rookie</button>
+                </div>
+            </div>
+
+            <div class="filters">
+                <h3>Filter Questions</h3>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-theme="all" onclick="filterTheme('all')">All Themes</button>
+                    <button class="filter-btn" data-theme="A" onclick="filterTheme('A')">Theme A: Physiology</button>
+                    <button class="filter-btn" data-theme="B" onclick="filterTheme('B')">Theme B: Biomechanics</button>
+                    <button class="filter-btn" data-theme="C" onclick="filterTheme('C')">Theme C: Psychology</button>
+                </div>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-level="all" onclick="filterLevel('all')">SL + HL</button>
+                    <button class="filter-btn" data-level="SL" onclick="filterLevel('SL')">SL Only</button>
+                    <button class="filter-btn" data-level="HL" onclick="filterLevel('HL')">HL Only</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Screen -->
+    <div id="quiz-screen" class="screen">
+        <div class="header">
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-label">Score:</span>
+                    <span class="stat-value" id="score">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Question:</span>
+                    <span class="stat-value"><span id="current-q">1</span>/<span id="total-q">10</span></span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Level:</span>
+                    <span class="stat-value" id="difficulty-display">Elite</span>
+                </div>
+            </div>
+            <button class="btn-quit" onclick="quitQuiz()">Quit</button>
+        </div>
+
+        <div class="quiz-container">
+            <div class="question-panel">
+                <div class="question-header">
+                    <span class="question-topic" id="question-topic">Topic</span>
+                    <span class="question-level" id="question-level">SL</span>
+                </div>
+                <h2 class="question-text" id="question-text">Question will appear here</h2>
+            </div>
+
+            <div class="triangle-container">
+                <svg id="triangle-svg" viewBox="0 0 1185 1005" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Triangle structure with clickable circles -->
+
+                    <!-- Top corner - Position A -->
+                    <text x="590" y="70" class="corner-label" id="label-0">A</text>
+                    <circle cx="592" cy="195" r="45" class="node corner" data-position="0" data-points="3"/>
+
+                    <!-- Row 2 -->
+                    <line x1="592" y1="240" x2="492" y2="345" class="connector"/>
+                    <line x1="592" y1="240" x2="692" y2="345" class="connector"/>
+                    <circle cx="492" cy="345" r="45" class="node" data-position="1" data-points="2"/>
+                    <circle cx="692" cy="345" r="45" class="node" data-position="2" data-points="2"/>
+
+                    <!-- Row 3 -->
+                    <line x1="492" y1="390" x2="392" y2="505" class="connector"/>
+                    <line x1="692" y1="390" x2="792" y2="505" class="connector"/>
+                    <circle cx="392" cy="505" r="45" class="node" data-position="3" data-points="1"/>
+                    <circle cx="792" cy="505" r="45" class="node" data-position="4" data-points="1"/>
+
+                    <!-- Row 4 - Position D (center) - ALWAYS "I don't know" -->
+                    <text x="565" y="480" class="corner-label" id="label-1">D</text>
+                    <circle cx="592" cy="610" r="45" class="node corner" data-position="5" data-points="0"/>
+
+                    <!-- Row 5 -->
+                    <line x1="392" y1="550" x2="282" y2="685" class="connector"/>
+                    <line x1="792" y1="550" x2="902" y2="685" class="connector"/>
+                    <circle cx="282" cy="685" r="45" class="node" data-position="6" data-points="-2"/>
+                    <circle cx="902" cy="685" r="45" class="node" data-position="7" data-points="-2"/>
+
+                    <!-- Bottom row - Positions B and C -->
+                    <line x1="282" y1="730" x2="135" y2="875" class="connector"/>
+                    <line x1="135" y1="875" x2="335" y2="875" class="connector"/>
+                    <line x1="335" y1="875" x2="592" y2="875" class="connector"/>
+                    <line x1="592" y1="875" x2="810" y2="875" class="connector"/>
+                    <line x1="810" y1="875" x2="1055" y2="875" class="connector"/>
+                    <line x1="902" y1="730" x2="1055" y2="875" class="connector"/>
+
+                    <text x="40" y="945" class="corner-label" id="label-2">B</text>
+                    <circle cx="135" cy="875" r="45" class="node corner" data-position="8" data-points="3"/>
+                    <circle cx="335" cy="875" r="45" class="node" data-position="9" data-points="1"/>
+                    <circle cx="592" cy="875" r="45" class="node" data-position="10" data-points="-2"/>
+                    <circle cx="810" cy="875" r="45" class="node" data-position="11" data-points="1"/>
+                    <text x="1095" y="945" class="corner-label" id="label-3">C</text>
+                    <circle cx="1055" cy="875" r="45" class="node corner" data-position="12" data-points="3"/>
+                </svg>
+
+                <div class="feedback" id="feedback"></div>
+            </div>
+
+            <div class="options-panel">
+                <div class="option-card" id="option-0">
+                    <div class="option-letter">A</div>
+                    <div class="option-text">Option A</div>
+                </div>
+                <div class="option-card" id="option-1">
+                    <div class="option-letter">B</div>
+                    <div class="option-text">Option B</div>
+                </div>
+                <div class="option-card" id="option-2">
+                    <div class="option-letter">C</div>
+                    <div class="option-text">Option C</div>
+                </div>
+                <div class="option-card" id="option-3">
+                    <div class="option-letter">D</div>
+                    <div class="option-text">I don't know</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Screen -->
+    <div id="results-screen" class="screen">
+        <div class="container">
+            <h1>🎯 Quiz Complete! 🎯</h1>
+
+            <div class="results-card">
+                <div class="final-score">
+                    <div class="score-label">Final Score</div>
+                    <div class="score-number" id="final-score">0</div>
+                </div>
+
+                <div class="results-stats">
+                    <div class="result-stat">
+                        <div class="result-icon">✅</div>
+                        <div class="result-label">Correct Answers</div>
+                        <div class="result-value" id="correct-count">0</div>
+                    </div>
+                    <div class="result-stat">
+                        <div class="result-icon">❌</div>
+                        <div class="result-label">Wrong Answers</div>
+                        <div class="result-value" id="wrong-count">0</div>
+                    </div>
+                    <div class="result-stat">
+                        <div class="result-icon">🎯</div>
+                        <div class="result-label">Accuracy</div>
+                        <div class="result-value" id="accuracy">0%</div>
+                    </div>
+                </div>
+
+                <div class="performance-message" id="performance-message">
+                    Great job!
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="restartQuiz()">Play Again</button>
+                <button class="btn btn-secondary" onclick="changeDifficulty()">Change Difficulty</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="questions.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
