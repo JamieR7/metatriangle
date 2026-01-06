@@ -1,328 +1,575 @@
+/* SEHS Triangle Quiz - Styles */
+/* Confidence-based assessment with triangle layout */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #004587 0%, #002d5a 100%);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
+:root {
+    --primary-blue: #004587;
+    --accent-yellow: #fbba07;
+    --accent-red: #e73037;
+    --success-green: #28a745;
+    --neutral-gray: #6c757d;
+    --text-dark: #333;
+    --text-light: #666;
+    --bg-light: #f8f9fa;
+    --white: #ffffff;
 }
 
-.container {
-    width: 100%;
-    max-width: 900px;
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--primary-blue);
+    min-height: 100vh;
+    color: var(--text-dark);
 }
 
 .screen {
     display: none;
-    background: white;
-    border-radius: 15px;
+    min-height: 100vh;
     padding: 20px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }
 
 .screen.active {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Difficulty Screen */
-#difficulty-screen {
-    text-align: center;
+.container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
 }
 
+/* ==================== DIFFICULTY SELECTION ==================== */
 #difficulty-screen h1 {
-    color: #004587;
-    font-size: 2em;
-    margin-bottom: 8px;
+    color: var(--white);
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .subtitle {
-    color: #666;
-    font-size: 1em;
-    margin-bottom: 25px;
+    color: var(--accent-yellow);
+    text-align: center;
+    font-size: 1.3rem;
+    margin-bottom: 3rem;
 }
 
-.difficulty-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
+.difficulty-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
 }
 
-.diff-btn {
-    padding: 15px 40px;
-    font-size: 1.1em;
-    font-weight: bold;
-    border: 3px solid #004587;
-    background: white;
-    color: #004587;
-    border-radius: 10px;
+.difficulty-card {
+    background: var(--white);
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    border: 3px solid transparent;
+}
+
+.difficulty-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--accent-yellow);
+}
+
+.difficulty-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.difficulty-card h2 {
+    color: var(--primary-blue);
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.difficulty-desc {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.difficulty-detail {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+}
+
+.btn {
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-transform: uppercase;
 }
 
-.diff-btn:hover {
-    background: #004587;
-    color: white;
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 69, 135, 0.3);
+.btn-rookie {
+    background: var(--accent-yellow);
+    color: var(--primary-blue);
 }
 
-/* Quiz Screen */
+.btn-varsity {
+    background: var(--primary-blue);
+    color: var(--white);
+}
+
+.btn-pro {
+    background: var(--accent-red);
+    color: var(--white);
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+/* ==================== QUIZ SCREEN ==================== */
 #quiz-screen {
-    background: linear-gradient(135deg, #004587 0%, #002d5a 100%);
-    color: white;
-    padding: 15px;
+    background: var(--bg-light);
 }
 
-.game-header {
+.quiz-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.header {
+    background: var(--white);
+    padding: 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.score-display {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #fbba07;
-}
-
-.question-counter {
-    font-size: 1em;
-    color: white;
-}
-
-.difficulty-badge {
-    background: #fbba07;
-    color: #004587;
-    padding: 6px 15px;
-    border-radius: 20px;
-    font-weight: bold;
-    font-size: 0.9em;
-}
-
-.question-area {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    margin-bottom: 15px;
-    border-left: 5px solid #fbba07;
+    margin-bottom: 2rem;
+    border-top: 4px solid var(--accent-yellow);
 }
 
-.question-area h2 {
-    color: white;
-    font-size: 1.1em;
-    line-height: 1.4;
+.stats {
+    display: flex;
+    gap: 3rem;
 }
 
-/* Triangle Game Area Layout */
-.triangle-game-area {
+.stat-item {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* Answer Boxes */
-.answer-box {
-    padding: 12px 20px;
-    background: white;
-    border: 2px solid #fbba07;
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+}
+
+.btn-quit {
+    padding: 0.6rem 1.5rem;
+    background: var(--accent-red);
+    color: var(--white);
+    border: none;
     border-radius: 8px;
-    font-size: 0.95em;
-    color: #004587;
-    font-weight: 500;
+    cursor: pointer;
+    font-weight: 700;
     transition: all 0.3s ease;
+}
+
+.btn-quit:hover {
+    background: #c51f25;
+}
+
+/* Question Box */
+.question-box {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    border-left: 6px solid var(--accent-yellow);
+}
+
+.question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.question-topic {
+    color: var(--primary-blue);
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.question-level {
+    background: var(--accent-yellow);
+    color: var(--primary-blue);
+    padding: 0.3rem 0.8rem;
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+.question-text {
+    color: var(--text-dark);
+    font-size: 1.5rem;
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+/* Answer Buttons */
+.answer-btn {
+    background: var(--white);
+    border: 3px solid var(--accent-yellow);
+    border-radius: 15px;
+    padding: 1.5rem 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    font-family: inherit;
+    width: 100%;
+}
+
+.answer-btn:hover:not(.disabled) {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border-color: var(--primary-blue);
+    background: #f0f8ff;
+}
+
+.answer-label {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--accent-yellow);
+    color: var(--primary-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.answer-text {
+    color: var(--text-dark);
+    font-size: 1.1rem;
+    line-height: 1.4;
+    font-weight: 500;
     text-align: center;
-    min-width: 200px;
-    max-width: 400px;
 }
 
-.answer-box.correct {
-    background: #4CAF50;
-    color: white;
-    border-color: #4CAF50;
-    font-weight: bold;
-    box-shadow: 0 0 20px rgba(76, 175, 80, 0.6);
-}
-
-/* Top Answer (A) */
+/* Layout Sections */
 .answer-top {
-    margin-bottom: 12px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.answer-top .answer-btn {
+    max-width: 600px;
+}
+
+.answers-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
 }
 
 /* Triangle Container */
 .triangle-container {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 3px solid var(--primary-blue);
     text-align: center;
-    margin-bottom: 12px;
 }
 
-.instruction {
-    color: #fbba07;
-    font-size: 0.95em;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.triangle-wrapper {
-    position: relative;
-    display: inline-block;
-    max-width: 100%;
-}
-
-#triangle-image {
+.triangle-svg {
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
     height: auto;
     display: block;
     margin: 0 auto;
-    border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
 }
 
-/* Clickable Circle Divs */
-.click-circle {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    transform: translate(-50%, -50%);
-    cursor: pointer;
-    background: rgba(251, 186, 7, 0.2);
-    border: 2px solid rgba(251, 186, 7, 0.5);
-    border-radius: 50%;
-    z-index: 5;
-    transition: all 0.2s ease;
+.triangle-outline {
+    fill: none;
+    stroke: var(--accent-yellow);
+    stroke-width: 3;
 }
 
-.click-circle:hover {
-    background: rgba(251, 186, 7, 0.5);
-    border-color: #fbba07;
-    transform: translate(-50%, -50%) scale(1.15);
-    box-shadow: 0 0 15px rgba(251, 186, 7, 0.6);
-}
-
-.click-circle.clicked {
-    background: rgba(76, 175, 80, 0.7);
-    border-color: #4CAF50;
-    box-shadow: 0 0 20px rgba(76, 175, 80, 0.8);
-}
-
-.feedback {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 2.5em;
-    font-weight: bold;
-    color: #fbba07;
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
-                 0 0 20px rgba(251, 186, 7, 0.5);
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 10;
-}
-
-.feedback.show {
-    opacity: 1;
-}
-
-/* Bottom Answers (B and C) */
-.answers-bottom {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    width: 100%;
-    max-width: 500px;
-    gap: 15px;
-}
-
-/* Results Screen */
-#results-screen {
-    text-align: center;
-}
-
-#results-screen h1 {
-    color: #004587;
-    font-size: 2em;
-    margin-bottom: 20px;
-}
-
-.results-box {
-    background: #f5f5f5;
-    padding: 30px;
-    border-radius: 15px;
-    margin-bottom: 20px;
-}
-
-.final-score {
-    font-size: 2em;
-    color: #004587;
-    font-weight: bold;
-    margin-bottom: 12px;
-}
-
-.accuracy {
-    font-size: 1.5em;
-    color: #666;
-    margin-bottom: 15px;
-}
-
-.performance-msg {
-    font-size: 1.1em;
-    color: #fbba07;
-    font-weight: bold;
-}
-
-.restart-button {
-    padding: 12px 40px;
-    font-size: 1.1em;
-    font-weight: bold;
-    background: #004587;
-    color: white;
-    border: none;
-    border-radius: 10px;
+.confidence-circle {
+    fill: var(--bg-light);
+    stroke: var(--accent-yellow);
+    stroke-width: 3;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.restart-button:hover {
-    background: #003366;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 69, 135, 0.3);
+.confidence-circle:hover {
+    fill: var(--accent-yellow);
+    transform: scale(1.1);
 }
 
-/* Responsive */
+.confidence-circle.selected {
+    fill: var(--primary-blue);
+    stroke: var(--accent-yellow);
+    stroke-width: 4;
+}
+
+.triangle-label {
+    fill: var(--primary-blue);
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.confidence-label {
+    fill: var(--neutral-gray);
+    font-size: 28px;
+}
+
+.confidence-instruction {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    margin-top: 1rem;
+    font-style: italic;
+}
+
+/* Answer States */
+.answer-btn.correct {
+    background: rgba(40, 167, 69, 0.1);
+    border-color: var(--success-green);
+    animation: pulse 0.5s ease;
+}
+
+.answer-btn.correct .answer-label {
+    background: var(--success-green);
+    color: var(--white);
+}
+
+.answer-btn.wrong {
+    background: rgba(231, 48, 55, 0.1);
+    border-color: var(--accent-red);
+    animation: wiggle 0.5s ease;
+}
+
+.answer-btn.wrong .answer-label {
+    background: var(--accent-red);
+    color: var(--white);
+}
+
+.answer-btn.disabled {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes wiggle {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+    20%, 40%, 60%, 80% { transform: translateX(10px); }
+}
+
+/* Feedback */
+.feedback {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: var(--white);
+    padding: 2rem 3rem;
+    border-radius: 15px;
+    font-size: 2rem;
+    font-weight: 700;
+    display: none;
+    z-index: 100;
+    border: 3px solid var(--accent-yellow);
+}
+
+.feedback.show {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.feedback.correct {
+    background: var(--success-green);
+}
+
+.feedback.wrong {
+    background: var(--accent-red);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* ==================== RESULTS SCREEN ==================== */
+#results-screen {
+    background: var(--primary-blue);
+}
+
+#results-screen .container {
+    background: var(--white);
+    border-radius: 15px;
+    padding: 3rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    border: 5px solid var(--accent-yellow);
+}
+
+#results-screen h1 {
+    color: var(--primary-blue);
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 2rem;
+}
+
+.results-card {
+    background: var(--bg-light);
+    border-radius: 10px;
+    padding: 2rem;
+    border: 2px solid var(--accent-yellow);
+}
+
+.final-score {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.score-label {
+    font-size: 1.5rem;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+}
+
+.score-number {
+    font-size: 5rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    text-shadow: 2px 2px 0 var(--accent-yellow);
+}
+
+.results-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.result-stat {
+    text-align: center;
+    padding: 1rem;
+    background: var(--white);
+    border-radius: 10px;
+}
+
+.result-icon {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+.result-label {
+    font-size: 1rem;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+}
+
+.result-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+}
+
+.performance-message {
+    text-align: center;
+    font-size: 1.5rem;
+    color: var(--primary-blue);
+    font-weight: 700;
+    padding: 1.5rem;
+    background: var(--white);
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+}
+
+.btn-primary {
+    background: var(--primary-blue);
+    color: var(--white);
+}
+
+.btn-primary:hover {
+    background: var(--accent-yellow);
+    color: var(--primary-blue);
+}
+
+.btn-secondary {
+    background: var(--accent-red);
+    color: var(--white);
+}
+
+.btn-secondary:hover {
+    background: var(--primary-blue);
+}
+
+/* ==================== RESPONSIVE ==================== */
 @media (max-width: 768px) {
-    .screen {
-        padding: 15px;
+    .difficulty-options {
+        grid-template-columns: 1fr;
     }
 
-    #difficulty-screen h1 {
-        font-size: 1.6em;
-    }
-    
-    .question-area h2 {
-        font-size: 1em;
+    .stats {
+        gap: 1rem;
     }
 
     .answers-bottom {
         grid-template-columns: 1fr;
     }
 
-    .answer-box {
-        min-width: 150px;
+    .action-buttons {
+        flex-direction: column;
     }
 
-    .click-circle {
-        width: 45px;
-        height: 45px;
+    .question-text {
+        font-size: 1.2rem;
+    }
+
+    #difficulty-screen h1 {
+        font-size: 2rem;
     }
 }
