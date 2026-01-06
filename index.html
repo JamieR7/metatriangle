@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SEHS Triangle Quiz</title>
+    <title>SEHS Triangle Quiz - Confidence Assessment</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -11,7 +11,7 @@
     <div id="difficulty-screen" class="screen active">
         <div class="container">
             <h1>SEHS Triangle Quiz</h1>
-            <p class="subtitle">Test your Sports, Exercise & Health Science knowledge!</p>
+            <p class="subtitle">Confidence-Based Assessment</p>
 
             <div class="difficulty-options">
                 <div class="difficulty-card" data-difficulty="pro">
@@ -44,7 +44,7 @@
     <!-- QUIZ SCREEN -->
     <div id="quiz-screen" class="screen">
         <div class="quiz-container">
-            <!-- Header with stats -->
+            <!-- Header -->
             <div class="header">
                 <div class="stats">
                     <div class="stat-item">
@@ -69,61 +69,69 @@
                     <span class="question-topic" id="question-topic">Loading...</span>
                     <span class="question-level" id="question-level">SL</span>
                 </div>
-                <p class="question-text" id="question-text">Loading question...</p>
+                <p class="question-text" id="question-text">Which muscle fiber type is most resistant to fatigue?</p>
             </div>
 
             <!-- Answer A (Top) -->
             <button class="answer-btn" id="btn-A" data-position="A">
                 <div class="answer-label">A</div>
-                <div class="answer-text">Option A</div>
+                <div class="answer-text">Type IIa fast-twitch</div>
             </button>
 
-            <!-- Triangle (Visual Only) -->
-            <div class="triangle-visual">
-                <svg viewBox="0 0 600 400" class="triangle-svg">
-                    <polygon points="300,50 100,350 500,350" class="triangle-line"/>
-
-                    <!-- Decorative circles -->
-                    <circle cx="300" cy="120" r="20" class="tri-circle"/>
-                    <circle cx="260" cy="170" r="20" class="tri-circle"/>
-                    <circle cx="340" cy="170" r="20" class="tri-circle"/>
-                    <circle cx="220" cy="220" r="20" class="tri-circle"/>
-                    <circle cx="300" cy="220" r="20" class="tri-circle"/>
-                    <circle cx="380" cy="220" r="20" class="tri-circle"/>
-                    <circle cx="180" cy="270" r="20" class="tri-circle"/>
-                    <circle cx="260" cy="270" r="20" class="tri-circle"/>
-                    <circle cx="340" cy="270" r="20" class="tri-circle"/>
-                    <circle cx="420" cy="270" r="20" class="tri-circle"/>
-                    <circle cx="140" cy="320" r="20" class="tri-circle"/>
-                    <circle cx="220" cy="320" r="20" class="tri-circle"/>
-                    <circle cx="300" cy="320" r="20" class="tri-circle"/>
-                    <circle cx="380" cy="320" r="20" class="tri-circle"/>
-                    <circle cx="460" cy="320" r="20" class="tri-circle"/>
-
-                    <!-- Corner labels -->
-                    <text x="300" y="35" class="corner-label">A</text>
-                    <text x="100" y="375" class="corner-label">B</text>
-                    <text x="500" y="375" class="corner-label">C</text>
-
-                    <!-- Center label D -->
-                    <text x="300" y="240" class="corner-label center-label">D</text>
-                </svg>
+            <!-- Triangle with 13 Confidence Circles -->
+            <div class="triangle-box">
                 <p class="triangle-instruction">Click a circle on the triangle to indicate your confidence level</p>
+                <svg viewBox="0 0 600 450" class="triangle-svg">
+                    <!-- Triangle outline -->
+                    <polygon points="300,80 120,380 480,380" class="triangle-outline"/>
+
+                    <!-- Corner circles (A, B, C) -->
+                    <circle cx="300" cy="80"  r="20" class="conf-circle" data-conf="5"/>
+                    <circle cx="120" cy="380" r="20" class="conf-circle" data-conf="1"/>
+                    <circle cx="480" cy="380" r="20" class="conf-circle" data-conf="1"/>
+
+                    <!-- Side circles (3 per side, excluding corners) -->
+                    <!-- Left side (between A and B) -->
+                    <circle cx="255" cy="140" r="20" class="conf-circle" data-conf="4"/>
+                    <circle cx="225" cy="205" r="20" class="conf-circle" data-conf="3"/>
+                    <circle cx="175" cy="290" r="20" class="conf-circle" data-conf="2"/>
+
+                    <!-- Right side (between A and C) -->
+                    <circle cx="345" cy="140" r="20" class="conf-circle" data-conf="4"/>
+                    <circle cx="375" cy="205" r="20" class="conf-circle" data-conf="3"/>
+                    <circle cx="425" cy="290" r="20" class="conf-circle" data-conf="2"/>
+
+                    <!-- Base (between B and C) -->
+                    <circle cx="200" cy="380" r="20" class="conf-circle" data-conf="1"/>
+                    <circle cx="300" cy="380" r="20" class="conf-circle" data-conf="1"/>
+                    <circle cx="400" cy="380" r="20" class="conf-circle" data-conf="1"/>
+
+                    <!-- Center circle (D) -->
+                    <circle cx="300" cy="230" r="20" class="conf-circle" data-conf="3"/>
+
+                    <!-- Corner Labels -->
+                    <text x="300" y="55" class="corner-label" text-anchor="middle">A</text>
+                    <text x="95"  y="410" class="corner-label" text-anchor="middle">B</text>
+                    <text x="505" y="410" class="corner-label" text-anchor="middle">C</text>
+
+                    <!-- Center D label -->
+                    <text x="300" y="260" class="center-d-label" text-anchor="middle">D</text>
+                </svg>
             </div>
 
-            <!-- Answers B and C (Bottom) -->
+            <!-- Bottom Answers -->
             <div class="answers-bottom">
                 <button class="answer-btn" id="btn-B" data-position="B">
                     <div class="answer-label">B</div>
-                    <div class="answer-text">Option B</div>
+                    <div class="answer-text">Type I slow-twitch</div>
                 </button>
                 <button class="answer-btn" id="btn-C" data-position="C">
                     <div class="answer-label">C</div>
-                    <div class="answer-text">Option C</div>
+                    <div class="answer-text">Type IIx fast-twitch</div>
                 </button>
             </div>
 
-            <!-- Feedback overlay -->
+            <!-- Feedback -->
             <div class="feedback" id="feedback"></div>
         </div>
     </div>
