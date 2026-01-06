@@ -1,4 +1,4 @@
-// SEHS Triangle Quiz - Clean Design with Positioned Answer Boxes
+// SEHS Triangle Quiz - Simple Stable Version
 
 // ==================== GLOBAL STATE ====================
 let gameState = {
@@ -11,6 +11,7 @@ let gameState = {
     selectedQuestions: [],
     currentQuestion: null,
     correctPosition: null,  // 'top', 'bottom-left', or 'bottom-right'
+    answerMapping: {},  // Maps positions to answer box IDs
     filters: {
         theme: 'all',
         level: 'all'
@@ -25,23 +26,20 @@ const DIFFICULTY_SETTINGS = {
 };
 
 // ==================== SCORING SYSTEM ====================
-// Score based on position clicked and which corner is correct
 const POSITION_SCORES = {
-    // If TOP is correct
     'top': { top: 3, 'top-left': 2, 'top-right': 2, 'mid-left': 1, 'mid-right': 1, 'center': 0, 'lower-left': -1, 'lower-right': -1, 'bottom-left': -2, 'bottom-left-mid': -2, 'bottom-center-left': -2, 'bottom-center-right': -2, 'bottom-right-mid': -2, 'bottom-right': -2 },
-    // If BOTTOM-LEFT is correct
     'bottom-left': { top: -2, 'top-left': 2, 'top-right': -2, 'mid-left': 1, 'mid-right': -2, 'center': 0, 'lower-left': 2, 'lower-right': -1, 'bottom-left': 3, 'bottom-left-mid': 1, 'bottom-center-left': -1, 'bottom-center-right': -2, 'bottom-right-mid': 1, 'bottom-right': -2 },
-    // If BOTTOM-RIGHT is correct
     'bottom-right': { top: -2, 'top-left': -2, 'top-right': 2, 'mid-left': -2, 'mid-right': 1, 'center': 0, 'lower-left': -1, 'lower-right': 2, 'bottom-left': -2, 'bottom-left-mid': 1, 'bottom-center-left': -2, 'bottom-center-right': -1, 'bottom-right-mid': 1, 'bottom-right': 3 }
 };
 
 // ==================== INITIALIZATION ====================
 document.addEventListener('DOMContentLoaded', function() {
     console.log('SEHS Triangle Quiz loaded!');
-    console.log('Questions available:', QUESTIONS_DB.length);
+    if (typeof QUESTIONS_DB !== 'undefined') {
+        console.log('Questions available:', QUESTIONS_DB.length);
+    }
     showScreen('difficulty-screen');
 
-    // Add click listeners to all nodes
     const nodes = document.querySelectorAll('.node');
     nodes.forEach(node => {
         node.addEventListener('click', function() {
@@ -130,10 +128,8 @@ function loadQuestion() {
     const positions = ['top', 'bottom-left', 'bottom-right'];
     gameState.correctPosition = positions[Math.floor(Math.random() * positions.length)];
 
-    // Prepare and display options
     const options = prepareOptions(question);
     displayOptions(options);
-
     resetState();
 }
 
@@ -148,8 +144,7 @@ function prepareOptions(question) {
     const includeFunny = Math.random() < funnyFrequency;
 
     if (includeFunny && question.options.iv) {
-        // Replace one wrong answer with funny one
-        options[Math.floor(Math.random() * 2)] = { text: question.options.iv, isCorrect: false, isFunny: true };
+        options[Math.floor(Math.random() * 2)] = { text: question.options.iv, isCorrect: false };
     }
 
     return shuffleArray(options);
@@ -159,27 +154,34 @@ function displayOptions(options) {
     const correctOption = options.find(opt => opt.isCorrect);
     const wrongOptions = options.filter(opt => !opt.isCorrect);
 
-    // Assign to positions
-    const topBox = document.getElementById('answer-top');
-    const leftBox = document.getElementById('answer-bottom-left');
-    const rightBox = document.getElementById('answer-bottom-right');
+    // Map positions to answer boxes
+    gameState.answerMapping = {};
 
-    topBox.querySelector('.answer-content').textContent = 
-        gameState.correctPosition === 'top' ? correctOption.text : wrongOptions[0].text;
-    leftBox.querySelector('.answer-content').textContent = 
-        gameState.correctPosition === 'bottom-left' ? correctOption.text : wrongOptions[1 % wrongOptions.length].text;
-    rightBox.querySelector('.answer-content').textContent = 
-        gameState.correctPosition === 'bottom-right' ? correctOption.text : wrongOptions[2 % wrongOptions.length].text;
+    // Randomly assign which answer box shows which position
+    const boxes = ['answer-1', 'answer-2', 'answer-3'];
+    const positions = ['top', 'bottom-left', 'bottom-right'];
+    const shuffledBoxes = shuffleArray([...boxes]);
+
+    positions.forEach((pos, idx) => {
+        gameState.answerMapping[pos] = shuffledBoxes[idx];
+    });
+
+    // Display answers
+    const topBox = document.getElementById(gameState.answerMapping['top']);
+    const leftBox = document.getElementById(gameState.answerMapping['bottom-left']);
+    const rightBox = document.getElementById(gameState.answerMapping['bottom-right']);
+
+    topBox.textContent = gameState.correctPosition === 'top' ? correctOption.text : wrongOptions[0].text;
+    leftBox.textContent = gameState.correctPosition === 'bottom-left' ? correctOption.text : wrongOptions[1 % wrongOptions.length].text;
+    rightBox.textContent = gameState.correctPosition === 'bottom-right' ? correctOption.text : wrongOptions[2 % wrongOptions.length].text;
 }
 
 function resetState() {
-    // Reset nodes
     document.querySelectorAll('.node').forEach(node => {
         node.classList.remove('correct', 'wrong', 'disabled', 'neutral');
         node.style.pointerEvents = 'auto';
     });
 
-    // Reset answer boxes
     document.querySelectorAll('.answer-box').forEach(box => {
         box.classList.remove('correct', 'wrong');
     });
@@ -189,17 +191,14 @@ function resetState() {
 function handleNodeClick(node) {
     const clickedPosition = node.getAttribute('data-position');
 
-    // Disable all nodes
     document.querySelectorAll('.node').forEach(n => {
         n.classList.add('disabled');
         n.style.pointerEvents = 'none';
     });
 
-    // Calculate points
     const scoreMap = POSITION_SCORES[gameState.correctPosition];
     const points = scoreMap[clickedPosition];
 
-    // Track stats
     const isExactCorrect = (points === 3);
     const isDontKnow = (clickedPosition === 'center');
 
@@ -209,7 +208,6 @@ function handleNodeClick(node) {
         gameState.wrongAnswers++;
     }
 
-    // Visual feedback on clicked node
     if (points > 0) {
         node.classList.add('correct');
         showFeedback(`+${points} point${points !== 1 ? 's' : ''}!`, 'correct');
@@ -222,15 +220,12 @@ function handleNodeClick(node) {
         highlightCorrectNode();
     }
 
-    // Highlight answer boxes
     highlightAnswerBoxes(clickedPosition);
 
-    // Update score
     gameState.score += points;
     document.getElementById('score').textContent = gameState.score;
     gameState.questionsAnswered++;
 
-    // Move to next question
     setTimeout(() => {
         gameState.currentQuestionIndex++;
         loadQuestion();
@@ -245,46 +240,30 @@ function highlightCorrectNode() {
 }
 
 function highlightAnswerBoxes(clickedPosition) {
-    // Map node positions to answer box IDs
-    const boxMap = {
-        'top': 'answer-top',
-        'top-left': 'answer-top',
-        'top-right': 'answer-top',
-        'mid-left': null,
-        'mid-right': null,
-        'center': null,
-        'lower-left': 'answer-bottom-left',
-        'lower-right': 'answer-bottom-right',
-        'bottom-left': 'answer-bottom-left',
-        'bottom-left-mid': null,
-        'bottom-center-left': null,
-        'bottom-center-right': null,
-        'bottom-right-mid': null,
-        'bottom-right': 'answer-bottom-right'
-    };
+    // Find which box corresponds to clicked position
+    let clickedBoxId = null;
+    if (clickedPosition === 'top' || clickedPosition === 'top-left' || clickedPosition === 'top-right') {
+        clickedBoxId = gameState.answerMapping['top'];
+    } else if (clickedPosition === 'bottom-left' || clickedPosition === 'lower-left' || clickedPosition.includes('bottom-left')) {
+        clickedBoxId = gameState.answerMapping['bottom-left'];
+    } else if (clickedPosition === 'bottom-right' || clickedPosition === 'lower-right' || clickedPosition.includes('bottom-right')) {
+        clickedBoxId = gameState.answerMapping['bottom-right'];
+    }
 
-    const correctBoxMap = {
-        'top': 'answer-top',
-        'bottom-left': 'answer-bottom-left',
-        'bottom-right': 'answer-bottom-right'
-    };
+    const scoreMap = POSITION_SCORES[gameState.correctPosition];
+    const points = scoreMap[clickedPosition];
 
-    // Highlight clicked box if it corresponds to a corner
-    const clickedBoxId = boxMap[clickedPosition];
-    if (clickedBoxId) {
+    if (clickedBoxId && points !== 0) {
         const clickedBox = document.getElementById(clickedBoxId);
-        const scoreMap = POSITION_SCORES[gameState.correctPosition];
-        const points = scoreMap[clickedPosition];
-
         if (points > 0) {
             clickedBox.classList.add('correct');
-        } else if (points < 0) {
+        } else {
             clickedBox.classList.add('wrong');
         }
     }
 
-    // Always highlight correct box
-    const correctBoxId = correctBoxMap[gameState.correctPosition];
+    // Highlight correct box
+    const correctBoxId = gameState.answerMapping[gameState.correctPosition];
     const correctBox = document.getElementById(correctBoxId);
     if (correctBox && !correctBox.classList.contains('correct')) {
         correctBox.classList.add('correct');
@@ -348,4 +327,4 @@ function shuffleArray(array) {
     return shuffled;
 }
 
-console.log('App.js loaded - Clean design with positioned answer boxes!');
+console.log('App.js loaded - Simple stable version!');
