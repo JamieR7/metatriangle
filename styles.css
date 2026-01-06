@@ -352,27 +352,26 @@ body {
     stroke-width: 4;
 }
 
-/* Confidence Circles */
+/* Confidence Circles - NO TRANSFORM ON HOVER (prevents jumping) */
 .conf-circle {
-    fill: var(--bg-light);
+    fill: var(--white);
     stroke: var(--accent-yellow);
     stroke-width: 3;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: fill 0.2s ease, stroke 0.2s ease, stroke-width 0.2s ease;
 }
 
 .conf-circle:hover {
     fill: var(--accent-yellow);
     stroke: var(--primary-blue);
     stroke-width: 4;
-    transform: scale(1.15);
+    /* NO transform - prevents jumping! */
 }
 
 .conf-circle.selected {
     fill: var(--primary-blue);
     stroke: var(--accent-yellow);
     stroke-width: 5;
-    filter: drop-shadow(0 0 8px var(--accent-yellow));
 }
 
 .corner-label {
