@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SEHS Triangle Quiz Challenge</title>
+    <title>SEHS Triangle Quiz</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Difficulty Selection Screen -->
+    <!-- Difficulty Screen -->
     <div id="difficulty-screen" class="screen active">
         <div class="container">
-            <h1>🏆 SEHS Triangle Quiz Challenge 🏆</h1>
+            <h1>🏆 SEHS Triangle Quiz 🏆</h1>
             <p class="subtitle">Test your Sports, Exercise & Health Science knowledge!</p>
 
             <div class="difficulty-options">
@@ -18,39 +18,21 @@
                     <div class="difficulty-icon">🥇</div>
                     <h2>Elite Athlete</h2>
                     <p class="difficulty-desc">Serious business only</p>
-                    <p class="difficulty-detail">No funny answers • Maximum challenge</p>
-                    <button class="btn btn-elite" onclick="startQuiz('elite')">Select Elite</button>
+                    <button class="btn btn-elite" onclick="startQuiz('elite')">Select</button>
                 </div>
 
                 <div class="difficulty-card">
                     <div class="difficulty-icon">🥈</div>
                     <h2>Varsity Player</h2>
                     <p class="difficulty-desc">Balanced challenge</p>
-                    <p class="difficulty-detail">Occasional humor • 20% fun</p>
-                    <button class="btn btn-varsity" onclick="startQuiz('varsity')">Select Varsity</button>
+                    <button class="btn btn-varsity" onclick="startQuiz('varsity')">Select</button>
                 </div>
 
                 <div class="difficulty-card">
                     <div class="difficulty-icon">🥉</div>
                     <h2>Rookie Trainee</h2>
                     <p class="difficulty-desc">Learning mode</p>
-                    <p class="difficulty-detail">More humor • 50% fun</p>
-                    <button class="btn btn-rookie" onclick="startQuiz('rookie')">Select Rookie</button>
-                </div>
-            </div>
-
-            <div class="filters">
-                <h3>Filter Questions</h3>
-                <div class="filter-buttons">
-                    <button class="filter-btn active" data-theme="all" onclick="filterTheme('all')">All Themes</button>
-                    <button class="filter-btn" data-theme="A" onclick="filterTheme('A')">Theme A: Physiology</button>
-                    <button class="filter-btn" data-theme="B" onclick="filterTheme('B')">Theme B: Biomechanics</button>
-                    <button class="filter-btn" data-theme="C" onclick="filterTheme('C')">Theme C: Psychology</button>
-                </div>
-                <div class="filter-buttons">
-                    <button class="filter-btn active" data-level="all" onclick="filterLevel('all')">SL + HL</button>
-                    <button class="filter-btn" data-level="SL" onclick="filterLevel('SL')">SL Only</button>
-                    <button class="filter-btn" data-level="HL" onclick="filterLevel('HL')">HL Only</button>
+                    <button class="btn btn-rookie" onclick="startQuiz('rookie')">Select</button>
                 </div>
             </div>
         </div>
@@ -61,15 +43,15 @@
         <div class="header">
             <div class="stats">
                 <div class="stat-item">
-                    <span class="stat-label">Score:</span>
+                    <span class="stat-label">Score</span>
                     <span class="stat-value" id="score">0</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-label">Question:</span>
+                    <span class="stat-label">Question</span>
                     <span class="stat-value"><span id="current-q">1</span>/<span id="total-q">10</span></span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-label">Level:</span>
+                    <span class="stat-label">Level</span>
                     <span class="stat-value" id="difficulty-display">Elite</span>
                 </div>
             </div>
@@ -77,59 +59,56 @@
         </div>
 
         <div class="quiz-container">
-            <!-- Question Box -->
+            <!-- Question -->
             <div class="question-box">
                 <div class="question-meta">
                     <span class="question-topic" id="question-topic">Topic</span>
                     <span class="question-level" id="question-level">SL</span>
                 </div>
-                <h2 class="question-text" id="question-text">Question will appear here</h2>
+                <h2 class="question-text" id="question-text">Question</h2>
             </div>
 
-            <!-- Answer Options -->
-            <div class="answer-box" id="answer-1">Option A answer</div>
-            <div class="answer-box" id="answer-2">Option B answer</div>
-            <div class="answer-box" id="answer-3">Option C answer</div>
-
-            <!-- TRUE EQUILATERAL TRIANGLE -->
-            <div class="game-area">
-                <svg id="triangle-svg" viewBox="0 0 1000 800" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Triangle outline - TRUE EQUILATERAL -->
-                    <path d="M 500 57.2 L 100 750 L 900 750 Z" 
-                          fill="none" 
-                          stroke="#fbba07" 
-                          stroke-width="4"/>
-
-                    <!-- Row 1: Top corner -->
-                    <circle cx="500" cy="57.2" r="45" class="node corner" data-position="top"/>
-
-                    <!-- Row 2: Second level -->
-                    <circle cx="366.7" cy="172.6" r="38" class="node" data-position="top-left"/>
-                    <circle cx="633.3" cy="172.6" r="38" class="node" data-position="top-right"/>
-
-                    <!-- Row 3: Third level -->
-                    <circle cx="233.3" cy="288.1" r="38" class="node" data-position="mid-left"/>
-                    <circle cx="766.7" cy="288.1" r="38" class="node" data-position="mid-right"/>
-
-                    <!-- Row 4: Center (don't know) -->
-                    <circle cx="500" cy="403.6" r="45" class="node center" data-position="center"/>
-                    <text x="500" y="423.6" class="center-label">?</text>
-
-                    <!-- Row 5: Lower level -->
-                    <circle cx="233.3" cy="519.1" r="38" class="node" data-position="lower-left"/>
-                    <circle cx="766.7" cy="519.1" r="38" class="node" data-position="lower-right"/>
-
-                    <!-- Row 6: Bottom corners and middle positions -->
-                    <circle cx="100" cy="750" r="45" class="node corner" data-position="bottom-left"/>
-                    <circle cx="260.0" cy="750" r="32" class="node" data-position="bottom-left-mid"/>
-                    <circle cx="420.0" cy="750" r="32" class="node" data-position="bottom-center-left"/>
-                    <circle cx="580.0" cy="750" r="32" class="node" data-position="bottom-center-right"/>
-                    <circle cx="740.0" cy="750" r="32" class="node" data-position="bottom-right-mid"/>
-                    <circle cx="900" cy="750" r="45" class="node corner" data-position="bottom-right"/>
-                </svg>
-
-                <div class="feedback" id="feedback"></div>
+            <!-- Answer Boxes - Simple text only -->
+            <div class="answer-options">
+                <div class="answer-box" id="answer-1">Option 1</div>
+                <div class="answer-box" id="answer-2">Option 2</div>
+                <div class="answer-box" id="answer-3">Option 3</div>
             </div>
+
+            <!-- Triangle with Image Map -->
+            <div class="triangle-area">
+                <img src="images/triangle.png" alt="Triangle" usemap="#triangle-map" id="triangle-img">
+
+                <map name="triangle-map">
+                    <!-- Row 1: Top -->
+                    <area shape="circle" coords="400,50,35" data-position="top" alt="Top" onclick="handleClick('top')">
+
+                    <!-- Row 2 -->
+                    <area shape="circle" coords="300,130,30" data-position="top-left" alt="Top Left" onclick="handleClick('top-left')">
+                    <area shape="circle" coords="500,130,30" data-position="top-right" alt="Top Right" onclick="handleClick('top-right')">
+
+                    <!-- Row 3 -->
+                    <area shape="circle" coords="220,220,30" data-position="mid-left" alt="Mid Left" onclick="handleClick('mid-left')">
+                    <area shape="circle" coords="580,220,30" data-position="mid-right" alt="Mid Right" onclick="handleClick('mid-right')">
+
+                    <!-- Row 4: Center -->
+                    <area shape="circle" coords="400,315,35" data-position="center" alt="Center" onclick="handleClick('center')">
+
+                    <!-- Row 5 -->
+                    <area shape="circle" coords="170,410,30" data-position="lower-left" alt="Lower Left" onclick="handleClick('lower-left')">
+                    <area shape="circle" coords="630,410,30" data-position="lower-right" alt="Lower Right" onclick="handleClick('lower-right')">
+
+                    <!-- Row 6: Bottom -->
+                    <area shape="circle" coords="100,550,35" data-position="bottom-left" alt="Bottom Left" onclick="handleClick('bottom-left')">
+                    <area shape="circle" coords="220,550,25" data-position="bottom-left-mid" alt="BL Mid" onclick="handleClick('bottom-left-mid')">
+                    <area shape="circle" coords="330,550,25" data-position="bottom-center-left" alt="BC Left" onclick="handleClick('bottom-center-left')">
+                    <area shape="circle" coords="470,550,25" data-position="bottom-center-right" alt="BC Right" onclick="handleClick('bottom-center-right')">
+                    <area shape="circle" coords="580,550,25" data-position="bottom-right-mid" alt="BR Mid" onclick="handleClick('bottom-right-mid')">
+                    <area shape="circle" coords="700,550,35" data-position="bottom-right" alt="Bottom Right" onclick="handleClick('bottom-right')">
+                </map>
+            </div>
+
+            <div class="feedback" id="feedback"></div>
         </div>
     </div>
 
@@ -147,12 +126,12 @@
                 <div class="results-stats">
                     <div class="result-stat">
                         <div class="result-icon">✅</div>
-                        <div class="result-label">Correct Answers</div>
+                        <div class="result-label">Correct</div>
                         <div class="result-value" id="correct-count">0</div>
                     </div>
                     <div class="result-stat">
                         <div class="result-icon">❌</div>
-                        <div class="result-label">Wrong Answers</div>
+                        <div class="result-label">Wrong</div>
                         <div class="result-value" id="wrong-count">0</div>
                     </div>
                     <div class="result-stat">
@@ -162,9 +141,7 @@
                     </div>
                 </div>
 
-                <div class="performance-message" id="performance-message">
-                    Great job!
-                </div>
+                <div class="performance-message" id="performance-message">Great job!</div>
             </div>
 
             <div class="action-buttons">
