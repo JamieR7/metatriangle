@@ -1,165 +1,92 @@
-// SEHS Questions Database
-// Option D is ALWAYS "I don't know" (worth 0 points)
-// Only options i, ii, iii, and iv are in the questions
-// The app will show 3 of these options in positions A, B, C
-// Position D always shows "I don't know"
-
-const QUESTIONS_DB = [
+const questions = [
     {
-        "id": "Q001",
-        "topic": "Inter-system Communication (A.1.1)",
-        "level": "SL",
-        "theme": "A",
-        "question": "Which division controls involuntary functions like heart rate?",
-        "options": {
-            "i": "Somatic nervous system",
-            "ii": "Central nervous system",
-            "iii": "Autonomic nervous system",
-            "iv": "The nervous Nelly system"
-        },
-        "correct": "iii",
-        "explanation": "The autonomic nervous system regulates involuntary bodily functions, divided into sympathetic and parasympathetic divisions."
+        question: "Which plane of movement does a forward somersault occur in?",
+        correct: "Sagittal plane",
+        incorrect: ["Frontal plane", "Transverse plane"]
     },
     {
-        "id": "Q002",
-        "topic": "Inter-system Communication (A.1.1)",
-        "level": "SL",
-        "theme": "A",
-        "question": "Which hormone lowers blood glucose?",
-        "options": {
-            "i": "Glucagon from pancreas",
-            "ii": "Cortisol from adrenals",
-            "iii": "Insulin from pancreas",
-            "iv": "Sugar police hormone"
-        },
-        "correct": "iii",
-        "explanation": "Insulin, secreted by pancreatic beta cells, facilitates glucose uptake into cells."
+        question: "What type of muscle contraction occurs when a muscle shortens while generating force?",
+        correct: "Isotonic concentric",
+        incorrect: ["Isometric", "Isotonic eccentric"]
     },
     {
-        "id": "Q111",
-        "topic": "Anatomical Position, Planes and Movement (B.1.1)",
-        "level": "SL",
-        "theme": "B",
-        "question": "Which plane divides body into left and right?",
-        "options": {
-            "i": "Frontal plane",
-            "ii": "Transverse plane",
-            "iii": "Sagittal plane",
-            "iv": "The airplane"
-        },
-        "correct": "iii",
-        "explanation": "The sagittal plane divides the body into left and right; movements include flexion and extension."
+        question: "Which fitness component is primarily tested by the Cooper 12-minute run?",
+        correct: "Aerobic capacity",
+        incorrect: ["Muscular power", "Flexibility"]
     },
     {
-        "id": "Q201",
-        "topic": "Individual Differences in Sport (C.1.1)",
-        "level": "SL",
-        "theme": "C",
-        "question": "What is personality in psychology?",
-        "options": {
-            "i": "Temporary emotional states",
-            "ii": "Learned skills and abilities",
-            "iii": "Consistent behavioral patterns",
-            "iv": "How fun you are at parties"
-        },
-        "correct": "iii",
-        "explanation": "Personality refers to consistent patterns of behavior, thought, and emotion across situations."
+        question: "Which receptor detects changes in blood pressure?",
+        correct: "Baroreceptor",
+        incorrect: ["Chemoreceptor", "Proprioceptor"]
     },
     {
-        "id": "Q025",
-        "topic": "Transport (A.1.3)",
-        "level": "SL",
-        "theme": "A",
-        "question": "What is cardiac output?",
-        "options": {
-            "i": "Force of contraction",
-            "ii": "Blood in ventricle",
-            "iii": "Heart rate × stroke volume",
-            "iv": "How loud heart beats"
-        },
-        "correct": "iii",
-        "explanation": "Cardiac output (Q) = HR × SV, total blood pumped per minute."
+        question: "What is the primary function of the axial skeleton?",
+        correct: "Protection of vital organs",
+        incorrect: ["Movement of limbs", "Production of red blood cells"]
     },
     {
-        "id": "Q143",
-        "topic": "Levers (B.1.4)",
-        "level": "SL",
-        "theme": "B",
-        "question": "Fulcrum between effort and load?",
-        "options": {
-            "i": "Second-class lever",
-            "ii": "Third-class lever",
-            "iii": "First-class lever",
-            "iv": "See-saw lever"
-        },
-        "correct": "iii",
-        "explanation": "First-class levers have fulcrum between effort and load (e.g., head on atlas, scissors)."
+        question: "Which energy system is dominant during a 100-meter sprint?",
+        correct: "Phosphagen system",
+        incorrect: ["Glycolytic system", "Oxidative system"]
     },
     {
-        "id": "Q245",
-        "topic": "Achievement Motivation (C.3.1)",
-        "level": "SL",
-        "theme": "C",
-        "question": "What is achievement motivation?",
-        "options": {
-            "i": "Fear of failure only",
-            "ii": "External rewards only",
-            "iii": "Striving for success",
-            "iv": "Collecting achievement badges"
-        },
-        "correct": "iii",
-        "explanation": "Achievement motivation is the drive to pursue and attain goals in achievement contexts."
+        question: "What movement occurs at the shoulder during the upward phase of a lateral raise?",
+        correct: "Abduction",
+        incorrect: ["Flexion", "Adduction"]
     },
     {
-        "id": "Q097",
-        "topic": "Fatigue and Recovery (A.3.3)",
-        "level": "HL",
-        "theme": "A",
-        "question": "Example of peripheral fatigue?",
-        "options": {
-            "i": "Reduced central nervous drive",
-            "ii": "Decreased motivation",
-            "iii": "Metabolite accumulation in muscle",
-            "iv": "Muscles getting bored"
-        },
-        "correct": "iii",
-        "explanation": "Peripheral fatigue involves muscle-level factors like metabolite accumulation and substrate depletion."
+        question: "Which hormone increases blood glucose levels during exercise?",
+        correct: "Glucagon",
+        incorrect: ["Insulin", "Adrenaline"]
     },
     {
-        "id": "Q195",
-        "topic": "Causes of Injury (B.3.1)",
-        "level": "HL",
-        "theme": "B",
-        "question": "Biomechanical factor increasing female knee injury?",
-        "options": {
-            "i": "Wider shoulders",
-            "ii": "Longer arms",
-            "iii": "Greater Q-angle and valgus",
-            "iv": "Being too flexible everywhere"
-        },
-        "correct": "iii",
-        "explanation": "Females typically have larger Q-angle (femur-tibia angle) and greater knee valgus during landing, increasing ACL risk."
+        question: "What type of joint is the elbow?",
+        correct: "Hinge joint",
+        incorrect: ["Ball and socket joint", "Pivot joint"]
     },
     {
-        "id": "Q289",
-        "topic": "Psychological Skills Training (C.5.1)",
-        "level": "SL",
-        "theme": "C",
-        "question": "What is imagery?",
-        "options": {
-            "i": "Watching video recordings",
-            "ii": "Reading about movements",
-            "iii": "Creating mental sensory experiences",
-            "iv": "Making images in Photoshop"
-        },
-        "correct": "iii",
-        "explanation": "Imagery involves creating or recreating experiences in mind using multiple senses."
+        question: "Which muscle fiber type is most resistant to fatigue?",
+        correct: "Type I slow-twitch",
+        incorrect: ["Type IIa fast-twitch", "Type IIx fast-twitch"]
+    },
+    {
+        question: "What is the role of myosin in muscle contraction?",
+        correct: "Forms cross-bridges with actin",
+        incorrect: ["Stores calcium ions", "Provides energy"]
+    },
+    {
+        question: "Which training principle states that improvements are specific to the type of training performed?",
+        correct: "Specificity",
+        incorrect: ["Progressive overload", "Reversibility"]
+    },
+    {
+        question: "What is the definition of cardiac output?",
+        correct: "Heart rate × stroke volume",
+        incorrect: ["Blood pressure × heart rate", "Stroke volume ÷ heart rate"]
+    },
+    {
+        question: "Which component of the autonomic nervous system increases heart rate during exercise?",
+        correct: "Sympathetic nervous system",
+        incorrect: ["Parasympathetic nervous system", "Somatic nervous system"]
+    },
+    {
+        question: "What is the primary macronutrient used during prolonged endurance exercise?",
+        correct: "Carbohydrates",
+        incorrect: ["Proteins", "Fats"]
+    },
+    {
+        question: "Which Newton's law explains why a sprinter pushes backward on the blocks to move forward?",
+        correct: "Third law (action-reaction)",
+        incorrect: ["First law (inertia)", "Second law (F=ma)"]
+    },
+    {
+        question: "What does VO₂ max measure?",
+        correct: "Maximum oxygen consumption",
+        incorrect: ["Maximum heart rate", "Lactate threshold"]
+    },
+    {
+        question: "Which psychological construct describes the motivation driven by external rewards?",
+        correct: "Extrinsic motivation",
+        incorrect: ["Intrinsic motivation", "Amotivation"]
     }
 ];
-
-// Export for use in app.js
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = QUESTIONS_DB;
-}
-
-console.log('Questions loaded successfully! Total questions:', QUESTIONS_DB.length);
