@@ -41,11 +41,13 @@ document.getElementById('restart-btn').addEventListener('click', () => {
     resetGame();
 });
 
-// Setup radio button listeners
-document.querySelectorAll('input[name="confidence"]').forEach(radio => {
-    radio.addEventListener('change', (e) => {
+// Setup clickable circle listeners
+document.querySelectorAll('.click-circle').forEach(circle => {
+    circle.addEventListener('click', (e) => {
         if (game.answered) return;
-        const zone = e.target.dataset.zone;
+        
+        const zone = e.currentTarget.dataset.zone;
+        e.currentTarget.classList.add('clicked');
         handleAnswer(zone);
     });
 });
@@ -102,10 +104,10 @@ function loadQuestion() {
     document.getElementById('current-q').textContent = game.currentQuestion + 1;
     document.getElementById('score').textContent = game.score;
     
-    // Clear feedback and radio buttons
+    // Clear feedback and clicked states
     document.getElementById('feedback-display').textContent = '';
     document.getElementById('feedback-display').classList.remove('show');
-    document.querySelectorAll('input[name="confidence"]').forEach(r => r.checked = false);
+    document.querySelectorAll('.click-circle').forEach(c => c.classList.remove('clicked'));
 }
 
 function handleAnswer(clickedZone) {
