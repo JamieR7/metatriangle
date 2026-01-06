@@ -162,20 +162,4 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = QUESTIONS_DB;
 }
 
-/*
-==================================================================================
-TO COMPLETE THIS FILE:
-==================================================================================
-
-1. Copy all 300 questions from your Python-generated JSON files
-2. Each question should follow this exact structure
-3. Make sure all questions have:
-   - theme property (A, B, or C)
-   - level property (SL or HL)
-   - correct answer is always "iii"
-   - funny answer is always "iv"
-
-4. IMPORTANT: Do NOT include "I don't know" in your questions
-   The app automatically adds this as option D worth 0 points
-
-==================================================================================
+console.log('Questions loaded successfully! Total questions:', QUESTIONS_DB.length);
