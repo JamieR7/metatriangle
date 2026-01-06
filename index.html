@@ -14,7 +14,7 @@
             <p class="subtitle">Test your Sports, Exercise & Health Science knowledge!</p>
 
             <div class="difficulty-options">
-                <div class="difficulty-card" onclick="startQuiz('rookie')">
+                <div class="difficulty-card" data-difficulty="rookie">
                     <div class="difficulty-icon">🎓</div>
                     <h2>Rookie</h2>
                     <p class="difficulty-desc">Learning mode</p>
@@ -22,7 +22,7 @@
                     <button class="btn btn-rookie">Start as Rookie</button>
                 </div>
 
-                <div class="difficulty-card" onclick="startQuiz('varsity')">
+                <div class="difficulty-card" data-difficulty="varsity">
                     <div class="difficulty-icon">⚡</div>
                     <h2>Varsity</h2>
                     <p class="difficulty-desc">Balanced challenge</p>
@@ -30,7 +30,7 @@
                     <button class="btn btn-varsity">Start as Varsity</button>
                 </div>
 
-                <div class="difficulty-card" onclick="startQuiz('pro')">
+                <div class="difficulty-card" data-difficulty="pro">
                     <div class="difficulty-icon">🏆</div>
                     <h2>Pro</h2>
                     <p class="difficulty-desc">Serious business only</p>
@@ -60,7 +60,7 @@
                         <span class="stat-value" id="difficulty-display">Rookie</span>
                     </div>
                 </div>
-                <button class="btn-quit" onclick="quitQuiz()">Quit</button>
+                <button class="btn-quit" id="quit-btn">Quit</button>
             </div>
 
             <!-- Question Box -->
@@ -107,7 +107,6 @@
                     <text x="300" y="30" class="triangle-label" text-anchor="middle">A</text>
                     <text x="80" y="380" class="triangle-label" text-anchor="middle">B</text>
                     <text x="520" y="380" class="triangle-label" text-anchor="middle">C</text>
-                    <text x="300" y="260" class="triangle-label confidence-label" text-anchor="middle">D</text>
                 </svg>
                 <p class="confidence-instruction">Click a circle to indicate your confidence level</p>
             </div>
@@ -161,8 +160,8 @@
                 <p class="performance-message" id="performance-message">Great job!</p>
 
                 <div class="action-buttons">
-                    <button class="btn btn-primary" onclick="restartQuiz()">Try Again</button>
-                    <button class="btn btn-secondary" onclick="changeDifficulty()">Change Difficulty</button>
+                    <button class="btn btn-primary" id="restart-btn">Try Again</button>
+                    <button class="btn btn-secondary" id="change-difficulty-btn">Change Difficulty</button>
                 </div>
             </div>
         </div>
