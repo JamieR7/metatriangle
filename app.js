@@ -1,5 +1,5 @@
-// SEHS Triangle Quiz - Rebuilt to match original interaction
-// Simple click on answer buttons, no confidence selection needed
+// SEHS Triangle Quiz - Confidence-Based Scoring System
+// User must select confidence level THEN answer
 
 // ==================== GLOBAL STATE ====================
 let gameState = {
@@ -12,51 +12,56 @@ let gameState = {
     selectedQuestions: [],
     currentQuestion: null,
     correctPosition: null,
-    currentAssignment: null
+    currentAssignment: null,
+    selectedConfidence: null  // Track confidence level selected
 };
 
 // Difficulty settings
 const DIFFICULTY_SETTINGS = {
-    pro: { 
-        funnyFrequency: 0, 
-        displayName: 'Pro'
-    },
-    varsity: { 
-        funnyFrequency: 0.2, 
-        displayName: 'Varsity'
-    },
-    rookie: { 
-        funnyFrequency: 0.5, 
-        displayName: 'Rookie'
-    }
+    pro: { funnyFrequency: 0, displayName: 'Pro' },
+    varsity: { funnyFrequency: 0.2, displayName: 'Varsity' },
+    rookie: { funnyFrequency: 0.5, displayName: 'Rookie' }
+};
+
+// CONFIDENCE-BASED SCORING
+const CONFIDENCE_SCORES = {
+    5: { correct: 10, wrong: -6, label: '100%' },  // Top row
+    4: { correct: 8,  wrong: -4, label: '80%' },   // Row 2
+    3: { correct: 6,  wrong: -2, label: '60%' },   // Row 3
+    2: { correct: 4,  wrong: -1, label: '40%' },   // Row 4
+    1: { correct: 2,  wrong: 0,  label: '20%' }    // Bottom row
 };
 
 // ==================== INITIALIZATION ====================
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('SEHS Triangle Quiz loaded!');
+    console.log('SEHS Triangle Quiz - Confidence System loaded!');
     console.log('Questions available:', QUESTIONS_DB.length);
     showScreen('difficulty-screen');
 
-    // Difficulty card click handlers
+    // Difficulty selection
     document.querySelectorAll('.difficulty-card').forEach(card => {
         card.addEventListener('click', function() {
-            const difficulty = this.dataset.difficulty;
-            startQuiz(difficulty);
+            startQuiz(this.dataset.difficulty);
         });
     });
 
-    // Answer button click handlers
-    const answerButtons = document.querySelectorAll('.answer-btn');
-    answerButtons.forEach(btn => {
+    // Confidence circle click handlers
+    document.querySelectorAll('.conf-circle').forEach(circle => {
+        circle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            selectConfidence(this);
+        });
+    });
+
+    // Answer button handlers
+    document.querySelectorAll('.answer-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-            handleButtonClick(this);
+            handleAnswerClick(this);
         });
     });
 
-    // Quit button
+    // Other buttons
     document.getElementById('quit-btn').addEventListener('click', quitQuiz);
-
-    // Results buttons
     document.getElementById('restart-btn').addEventListener('click', restartQuiz);
     document.getElementById('change-difficulty-btn').addEventListener('click', changeDifficulty);
 });
@@ -78,7 +83,6 @@ function startQuiz(difficulty) {
     gameState.wrongAnswers = 0;
     gameState.currentQuestionIndex = 0;
 
-    // Select 10 random questions
     const numQuestions = Math.min(10, QUESTIONS_DB.length);
     gameState.selectedQuestions = shuffleArray([...QUESTIONS_DB]).slice(0, numQuestions);
 
@@ -99,6 +103,7 @@ function loadQuestion() {
 
     const question = gameState.selectedQuestions[gameState.currentQuestionIndex];
     gameState.currentQuestion = question;
+    gameState.selectedConfidence = null;
 
     // Update UI
     document.getElementById('question-topic').textContent = question.topic;
@@ -107,32 +112,28 @@ function loadQuestion() {
     document.getElementById('current-q').textContent = gameState.currentQuestionIndex + 1;
     document.getElementById('score').textContent = gameState.score;
 
-    // Prepare options based on difficulty
+    // Prepare and display options
     const options = prepareOptions(question);
     const assignment = randomlyAssignOptions(options);
     gameState.currentAssignment = assignment;
 
     displayOptions(assignment);
-    resetButtons();
+    resetUI();
 }
 
 function prepareOptions(question) {
-    // Always include the two serious wrong answers and the correct answer
     const options = [
         { key: 'i', text: question.options.i, isCorrect: false },
         { key: 'ii', text: question.options.ii, isCorrect: false },
         { key: 'iii', text: question.options.iii, isCorrect: true }
     ];
 
-    // Determine if funny answer should be included based on difficulty
     const funnyFrequency = DIFFICULTY_SETTINGS[gameState.difficulty].funnyFrequency;
     const includeFunny = Math.random() < funnyFrequency;
 
     if (includeFunny) {
-        // Include the funny answer (option iv)
         options.push({ key: 'iv', text: question.options.iv, isCorrect: false, isFunny: true });
     } else {
-        // Duplicate one of the serious wrong answers
         options.push({ ...options[0] });
     }
 
@@ -140,17 +141,14 @@ function prepareOptions(question) {
 }
 
 function randomlyAssignOptions(options) {
-    // Shuffle the options
     const shuffled = shuffleArray([...options]);
 
-    // Assign to positions A, B, C (3 options displayed)
     const assignment = {
         A: shuffled[0],
         B: shuffled[1],
         C: shuffled[2]
     };
 
-    // Find which position has the correct answer
     gameState.correctPosition = Object.keys(assignment).find(
         key => assignment[key].isCorrect
     );
@@ -161,26 +159,53 @@ function randomlyAssignOptions(options) {
 function displayOptions(assignment) {
     ['A', 'B', 'C'].forEach(position => {
         const btn = document.getElementById(`btn-${position}`);
-        const label = btn.querySelector('.answer-label');
         const text = btn.querySelector('.answer-text');
-
-        label.textContent = position;
         text.textContent = assignment[position].text;
         btn.className = 'answer-btn';
     });
 }
 
-function resetButtons() {
+function resetUI() {
+    // Reset answer buttons
     document.querySelectorAll('.answer-btn').forEach(btn => {
         btn.classList.remove('correct', 'wrong', 'disabled');
         btn.disabled = false;
     });
 
+    // Reset confidence circles
+    document.querySelectorAll('.conf-circle').forEach(circle => {
+        circle.classList.remove('selected');
+    });
+
+    // Hide feedback
     document.getElementById('feedback').classList.remove('show');
 }
 
-// ==================== BUTTON INTERACTION ====================
-function handleButtonClick(button) {
+// ==================== CONFIDENCE SELECTION ====================
+function selectConfidence(circle) {
+    // Remove previous selection
+    document.querySelectorAll('.conf-circle').forEach(c => {
+        c.classList.remove('selected');
+    });
+
+    // Mark this circle as selected
+    circle.classList.add('selected');
+
+    // Store confidence level
+    const confidenceLevel = parseInt(circle.dataset.conf);
+    gameState.selectedConfidence = confidenceLevel;
+
+    console.log(`Confidence selected: Level ${confidenceLevel} (${CONFIDENCE_SCORES[confidenceLevel].label})`);
+}
+
+// ==================== ANSWER SELECTION ====================
+function handleAnswerClick(button) {
+    // Check if confidence was selected
+    if (gameState.selectedConfidence === null) {
+        alert('⚠️ Please select your confidence level on the triangle first!');
+        return;
+    }
+
     const position = button.dataset.position;
     const isCorrect = position === gameState.correctPosition;
 
@@ -190,32 +215,34 @@ function handleButtonClick(button) {
         btn.classList.add('disabled');
     });
 
+    // Calculate score based on confidence level
+    const confLevel = gameState.selectedConfidence;
+    const confScore = CONFIDENCE_SCORES[confLevel];
     let points = 0;
 
     if (isCorrect) {
-        // Correct answer: +3 points
         button.classList.add('correct');
-        points = 3;
+        points = confScore.correct;
         gameState.correctAnswers++;
-        showFeedback(`Correct! +${points} points`, 'correct');
+        showFeedback(`✓ Correct! +${points} points (${confScore.label} confidence)`, 'correct');
     } else {
-        // Wrong answer: -2 points
         button.classList.add('wrong');
-        points = -2;
+        points = confScore.wrong;
         gameState.wrongAnswers++;
 
-        // Highlight correct answer
+        // Show correct answer
         const correctBtn = document.getElementById(`btn-${gameState.correctPosition}`);
         correctBtn.classList.add('correct');
 
-        showFeedback(`Wrong! ${points} points`, 'wrong');
+        const pointsText = points === 0 ? '0' : points;
+        showFeedback(`✗ Wrong! ${pointsText} points (${confScore.label} confidence)`, 'wrong');
     }
 
     gameState.score += points;
     document.getElementById('score').textContent = gameState.score;
     gameState.questionsAnswered++;
 
-    // Move to next question after delay
+    // Next question after delay
     setTimeout(() => {
         gameState.currentQuestionIndex++;
         loadQuestion();
@@ -242,13 +269,13 @@ function showResults() {
 
     let message = '';
     if (accuracy >= 90) {
-        message = '🌟 Outstanding Performance! You\'re an SEHS Expert! 🌟';
+        message = '🌟 Outstanding! SEHS Expert! 🌟';
     } else if (accuracy >= 70) {
-        message = '💪 Great Job! You know your stuff! 💪';
+        message = '💪 Great Job! Strong knowledge! 💪';
     } else if (accuracy >= 50) {
         message = '👍 Good Effort! Keep studying! 👍';
     } else {
-        message = '📚 Keep Practicing! You\'ll get there! 📚';
+        message = '📚 Keep Practicing! 📚';
     }
 
     document.getElementById('performance-message').textContent = message;
@@ -264,12 +291,12 @@ function changeDifficulty() {
 }
 
 function quitQuiz() {
-    if (confirm('Are you sure you want to quit? Your progress will be lost.')) {
+    if (confirm('Quit? Your progress will be lost.')) {
         showScreen('difficulty-screen');
     }
 }
 
-// ==================== UTILITY FUNCTIONS ====================
+// ==================== UTILITY ====================
 function shuffleArray(array) {
     const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -279,5 +306,5 @@ function shuffleArray(array) {
     return shuffled;
 }
 
-console.log('App.js loaded successfully!');
-console.log('Simple click interaction - just like the original!');
+console.log('Confidence-based scoring initialized!');
+console.log('Scoring: L5(+10/-6), L4(+8/-4), L3(+6/-2), L2(+4/-1), L1(+2/0)');
