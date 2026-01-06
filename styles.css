@@ -1,4 +1,4 @@
-/* SEHS Triangle Quiz - Styles with Full Triangle */
+/* SEHS Triangle Quiz - Clean Design */
 
 * {
     margin: 0;
@@ -7,14 +7,10 @@
 }
 
 :root {
-    /* School Colors */
     --primary-blue: #004587;
     --accent-yellow: #fbba07;
     --accent-red: #e73037;
-
-    /* Additional Colors */
     --success-green: #28a745;
-    --error-red: #e73037;
     --neutral-gray: #6c757d;
     --text-dark: #333;
     --text-light: #666;
@@ -154,7 +150,6 @@ body {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-/* Filters */
 .filters {
     background: rgba(255, 255, 255, 0.95);
     border-radius: 15px;
@@ -206,7 +201,7 @@ body {
 /* ==================== QUIZ SCREEN ==================== */
 
 #quiz-screen {
-    background: var(--bg-light);
+    background: var(--primary-blue);
 }
 
 .header {
@@ -263,63 +258,109 @@ body {
 }
 
 .quiz-container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
 }
 
-.question-panel {
-    background: var(--white);
+/* Question Box */
+.question-box {
+    background: var(--accent-yellow);
+    border: 4px solid var(--primary-blue);
+    border-radius: 15px;
     padding: 2rem;
-    border-radius: 10px;
-    box-shadow: var(--shadow);
     margin-bottom: 2rem;
-    border-left: 6px solid var(--accent-yellow);
+    text-align: center;
 }
 
-.question-header {
+.question-meta {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    gap: 1rem;
     margin-bottom: 1rem;
 }
 
 .question-topic {
     color: var(--primary-blue);
     font-weight: 700;
-    font-size: 0.95rem;
+    font-size: 1rem;
+    text-transform: uppercase;
 }
 
 .question-level {
-    background: var(--accent-yellow);
-    color: var(--primary-blue);
+    background: var(--primary-blue);
+    color: var(--accent-yellow);
     padding: 0.3rem 0.8rem;
     border-radius: 5px;
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
 }
 
 .question-text {
-    color: var(--text-dark);
-    font-size: 1.5rem;
-    line-height: 1.6;
-    font-weight: 500;
+    color: var(--primary-blue);
+    font-size: 1.8rem;
+    line-height: 1.4;
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
-/* ==================== TRIANGLE SVG ==================== */
+/* ==================== GAME AREA ==================== */
 
-.triangle-container {
-    background: var(--white);
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: var(--shadow);
-    border: 3px solid var(--primary-blue);
+.game-area {
     position: relative;
-    margin-bottom: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
 }
 
+/* Answer Boxes Positioned Around Triangle */
+.answer-box {
+    position: absolute;
+    background: var(--accent-yellow);
+    border: 4px solid var(--primary-blue);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--primary-blue);
+    text-align: center;
+    max-width: 350px;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.answer-top {
+    top: -120px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.answer-bottom-left {
+    bottom: -20px;
+    left: 0;
+}
+
+.answer-bottom-right {
+    bottom: -20px;
+    right: 0;
+}
+
+.answer-box.correct {
+    background: var(--success-green);
+    color: var(--white);
+    border-color: var(--success-green);
+}
+
+.answer-box.wrong {
+    background: var(--accent-red);
+    color: var(--white);
+    border-color: var(--accent-red);
+}
+
+/* Triangle SVG */
 #triangle-svg {
     width: 100%;
-    max-width: 800px;
+    max-width: 900px;
     height: auto;
     display: block;
     margin: 0 auto;
@@ -328,19 +369,18 @@ body {
 .node {
     fill: var(--primary-blue);
     stroke: var(--accent-yellow);
-    stroke-width: 3;
+    stroke-width: 4;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
 }
 
 .node:hover:not(.disabled) {
-    fill: var(--accent-red);
-    stroke-width: 5;
-    transform: scale(1.1);
+    fill: var(--accent-yellow);
+    stroke-width: 6;
+    transform: scale(1.15);
 }
 
 .node.corner {
-    fill: var(--primary-blue);
     stroke-width: 5;
 }
 
@@ -352,15 +392,13 @@ body {
 .node.correct {
     fill: var(--success-green);
     stroke: var(--success-green);
+    stroke-width: 6;
     animation: pulse 0.5s ease;
 }
 
 .node.wrong {
     fill: var(--accent-red);
     stroke: var(--accent-red);
-}
-
-.node.wiggle {
     animation: wiggle 0.5s ease;
 }
 
@@ -374,28 +412,23 @@ body {
     opacity: 0.6;
 }
 
-.node-label {
-    font-size: 1.5rem;
+.center-label {
+    font-size: 2.5rem;
     font-weight: 700;
     fill: var(--white);
     text-anchor: middle;
     pointer-events: none;
 }
 
-.node-label.small {
-    font-size: 1rem;
-    font-weight: 600;
-}
-
 @keyframes pulse {
     0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.15); }
+    50% { transform: scale(1.2); }
 }
 
 @keyframes wiggle {
     0%, 100% { transform: translateX(0); }
-    10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); }
-    20%, 40%, 60%, 80% { transform: translateX(8px); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+    20%, 40%, 60%, 80% { transform: translateX(10px); }
 }
 
 /* Feedback */
@@ -404,16 +437,16 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.95);
     color: var(--white);
-    padding: 2rem 3rem;
-    border-radius: 15px;
-    font-size: 2.5rem;
+    padding: 2.5rem 4rem;
+    border-radius: 20px;
+    font-size: 3rem;
     font-weight: 700;
     display: none;
     z-index: 100;
     animation: fadeIn 0.3s ease;
-    border: 4px solid var(--accent-yellow);
+    border: 5px solid var(--accent-yellow);
 }
 
 .feedback.show {
@@ -435,86 +468,6 @@ body {
 @keyframes fadeIn {
     from { opacity: 0; transform: translate(-50%, -50%) scale(0.7); }
     to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-}
-
-/* ==================== OPTIONS DISPLAY ==================== */
-
-.options-display {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-    margin-top: 2rem;
-}
-
-.option-box {
-    background: var(--white);
-    border: 3px solid var(--accent-yellow);
-    border-radius: 10px;
-    padding: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    transition: all 0.3s ease;
-}
-
-.option-letter {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    background: var(--accent-yellow);
-    color: var(--primary-blue);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.3rem;
-    font-weight: 700;
-    flex-shrink: 0;
-}
-
-.option-text {
-    color: var(--text-dark);
-    font-size: 1rem;
-    font-weight: 500;
-    line-height: 1.3;
-}
-
-.dont-know-box {
-    border: 3px dashed var(--neutral-gray);
-}
-
-.dont-know-box .option-letter {
-    background: var(--neutral-gray);
-    color: var(--white);
-}
-
-.dont-know-box .option-text {
-    color: var(--text-light);
-    font-style: italic;
-}
-
-.option-box.correct {
-    border-color: var(--success-green);
-    background: rgba(40, 167, 69, 0.1);
-}
-
-.option-box.correct .option-letter {
-    background: var(--success-green);
-    color: var(--white);
-}
-
-.option-box.wrong {
-    border-color: var(--accent-red);
-    background: rgba(231, 48, 55, 0.1);
-}
-
-.option-box.wrong .option-letter {
-    background: var(--accent-red);
-    color: var(--white);
-}
-
-.option-box.neutral {
-    border-color: var(--neutral-gray);
-    background: rgba(108, 117, 125, 0.1);
 }
 
 /* ==================== RESULTS SCREEN ==================== */
@@ -641,48 +594,22 @@ body {
 /* ==================== RESPONSIVE ==================== */
 
 @media (max-width: 768px) {
-    #difficulty-screen h1 {
-        font-size: 2rem;
-    }
-
-    .subtitle {
-        font-size: 1rem;
-    }
-
-    .difficulty-options {
-        grid-template-columns: 1fr;
-    }
-
-    .stats {
-        gap: 1rem;
-    }
-
-    .stat-value {
+    .question-text {
         font-size: 1.3rem;
     }
 
-    .question-text {
-        font-size: 1.2rem;
+    .answer-box {
+        font-size: 1rem;
+        padding: 1rem;
+        max-width: 250px;
     }
 
-    .options-display {
-        grid-template-columns: 1fr;
-    }
-
-    .filter-buttons {
-        flex-direction: column;
-    }
-
-    .action-buttons {
-        flex-direction: column;
-    }
-
-    .score-number {
-        font-size: 3.5rem;
+    .answer-top {
+        top: -100px;
     }
 
     .feedback {
-        font-size: 1.8rem;
+        font-size: 2rem;
         padding: 1.5rem 2rem;
     }
 }
