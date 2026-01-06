@@ -50,6 +50,14 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Questions available:', QUESTIONS_DB.length);
     showScreen('difficulty-screen');
 
+    // Add click listeners to difficulty cards
+    document.querySelectorAll('.difficulty-card').forEach(card => {
+        card.addEventListener('click', function() {
+            const difficulty = this.dataset.difficulty;
+            startQuiz(difficulty);
+        });
+    });
+
     // Add click listeners to answer buttons
     const answerButtons = document.querySelectorAll('.answer-btn');
     answerButtons.forEach(btn => {
@@ -65,6 +73,13 @@ document.addEventListener('DOMContentLoaded', function() {
             handleConfidenceClick(this);
         });
     });
+
+    // Add click listener to quit button
+    document.getElementById('quit-btn').addEventListener('click', quitQuiz);
+
+    // Add click listeners to results buttons
+    document.getElementById('restart-btn').addEventListener('click', restartQuiz);
+    document.getElementById('change-difficulty-btn').addEventListener('click', changeDifficulty);
 });
 
 // ==================== SCREEN MANAGEMENT ====================
