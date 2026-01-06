@@ -1,4 +1,4 @@
-// SEHS Triangle Quiz - Simple Stable Version
+// SEHS Triangle Quiz - Fixed Version
 
 // ==================== GLOBAL STATE ====================
 let gameState = {
@@ -10,8 +10,8 @@ let gameState = {
     wrongAnswers: 0,
     selectedQuestions: [],
     currentQuestion: null,
-    correctPosition: null,  // 'top', 'bottom-left', or 'bottom-right'
-    answerMapping: {},  // Maps positions to answer box IDs
+    correctPosition: null,
+    answerMapping: {},
     filters: {
         theme: 'all',
         level: 'all'
@@ -53,7 +53,10 @@ function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(screen => {
         screen.classList.remove('active');
     });
-    document.getElementById(screenId).classList.add('active');
+    const targetScreen = document.getElementById(screenId);
+    if (targetScreen) {
+        targetScreen.classList.add('active');
+    }
 }
 
 // ==================== FILTER MANAGEMENT ====================
@@ -156,8 +159,6 @@ function displayOptions(options) {
 
     // Map positions to answer boxes
     gameState.answerMapping = {};
-
-    // Randomly assign which answer box shows which position
     const boxes = ['answer-1', 'answer-2', 'answer-3'];
     const positions = ['top', 'bottom-left', 'bottom-right'];
     const shuffledBoxes = shuffleArray([...boxes]);
@@ -166,14 +167,14 @@ function displayOptions(options) {
         gameState.answerMapping[pos] = shuffledBoxes[idx];
     });
 
-    // Display answers
-    const topBox = document.getElementById(gameState.answerMapping['top']);
-    const leftBox = document.getElementById(gameState.answerMapping['bottom-left']);
-    const rightBox = document.getElementById(gameState.answerMapping['bottom-right']);
+    // Display answers - FIXED: Direct textContent assignment
+    const box1 = document.getElementById(gameState.answerMapping['top']);
+    const box2 = document.getElementById(gameState.answerMapping['bottom-left']);
+    const box3 = document.getElementById(gameState.answerMapping['bottom-right']);
 
-    topBox.textContent = gameState.correctPosition === 'top' ? correctOption.text : wrongOptions[0].text;
-    leftBox.textContent = gameState.correctPosition === 'bottom-left' ? correctOption.text : wrongOptions[1 % wrongOptions.length].text;
-    rightBox.textContent = gameState.correctPosition === 'bottom-right' ? correctOption.text : wrongOptions[2 % wrongOptions.length].text;
+    if (box1) box1.textContent = gameState.correctPosition === 'top' ? correctOption.text : wrongOptions[0].text;
+    if (box2) box2.textContent = gameState.correctPosition === 'bottom-left' ? correctOption.text : wrongOptions[1 % wrongOptions.length].text;
+    if (box3) box3.textContent = gameState.correctPosition === 'bottom-right' ? correctOption.text : wrongOptions[2 % wrongOptions.length].text;
 }
 
 function resetState() {
@@ -240,7 +241,6 @@ function highlightCorrectNode() {
 }
 
 function highlightAnswerBoxes(clickedPosition) {
-    // Find which box corresponds to clicked position
     let clickedBoxId = null;
     if (clickedPosition === 'top' || clickedPosition === 'top-left' || clickedPosition === 'top-right') {
         clickedBoxId = gameState.answerMapping['top'];
@@ -255,14 +255,15 @@ function highlightAnswerBoxes(clickedPosition) {
 
     if (clickedBoxId && points !== 0) {
         const clickedBox = document.getElementById(clickedBoxId);
-        if (points > 0) {
-            clickedBox.classList.add('correct');
-        } else {
-            clickedBox.classList.add('wrong');
+        if (clickedBox) {
+            if (points > 0) {
+                clickedBox.classList.add('correct');
+            } else {
+                clickedBox.classList.add('wrong');
+            }
         }
     }
 
-    // Highlight correct box
     const correctBoxId = gameState.answerMapping[gameState.correctPosition];
     const correctBox = document.getElementById(correctBoxId);
     if (correctBox && !correctBox.classList.contains('correct')) {
@@ -272,8 +273,10 @@ function highlightAnswerBoxes(clickedPosition) {
 
 function showFeedback(message, type) {
     const feedback = document.getElementById('feedback');
-    feedback.textContent = message;
-    feedback.className = 'feedback show ' + type;
+    if (feedback) {
+        feedback.textContent = message;
+        feedback.className = 'feedback show ' + type;
+    }
 }
 
 // ==================== RESULTS ====================
@@ -327,4 +330,4 @@ function shuffleArray(array) {
     return shuffled;
 }
 
-console.log('App.js loaded - Simple stable version!');
+console.log('App.js loaded - Fixed version!');
