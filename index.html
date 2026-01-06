@@ -3,89 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IB SEHS Triangle Quiz</title>
+    <title>SEHS Triangle Quiz - Confidence-Based Assessment</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Difficulty Selection Screen -->
-        <div id="difficulty-screen" class="screen active">
-            <h1>IB SEHS Triangle Quiz</h1>
-            <p class="subtitle">Test your Sports, Exercise & Health Science knowledge</p>
-            <div class="difficulty-buttons">
-                <button class="diff-btn" data-level="elite">Elite</button>
-                <button class="diff-btn" data-level="varsity">Varsity</button>
-                <button class="diff-btn" data-level="rookie">Rookie</button>
-            </div>
-        </div>
+    <!-- DIFFICULTY SELECTION SCREEN -->
+    <div id="difficulty-screen" class="screen active">
+        <div class="container">
+            <h1>SEHS Triangle Quiz</h1>
+            <p class="subtitle">Test your Sports, Exercise & Health Science knowledge!</p>
 
-        <!-- Quiz Screen -->
-        <div id="quiz-screen" class="screen">
-            <div class="game-header">
-                <div class="score-display">Score: <span id="score">0</span></div>
-                <div class="question-counter">Question <span id="current-q">1</span>/10</div>
-                <div class="difficulty-badge" id="difficulty-badge">Elite</div>
-            </div>
-
-            <div class="question-area">
-                <h2 id="question-text">Question will appear here</h2>
-            </div>
-
-            <div class="triangle-game-area">
-                <!-- Top Answer (A) -->
-                <div class="answer-box answer-top" id="answer-0">Answer 1</div>
-
-                <div class="triangle-container">
-                    <p class="instruction">Click a circle on the triangle to indicate your confidence level</p>
-                    <div class="triangle-wrapper">
-                        <img src="images/triangle.png" alt="Confidence Triangle" id="triangle-image">
-                        
-                        <!-- Clickable Circle Divs -->
-                        <div class="click-circle" data-zone="top" style="top: 13.5%; left: 50%;"></div>
-                        
-                        <div class="click-circle" data-zone="top-left" style="top: 25.5%; left: 41.5%;"></div>
-                        <div class="click-circle" data-zone="top-right" style="top: 25.5%; left: 58.5%;"></div>
-                        
-                        <div class="click-circle" data-zone="mid-left" style="top: 39.5%; left: 33.2%;"></div>
-                        <div class="click-circle" data-zone="center" style="top: 39.5%; left: 50%;"></div>
-                        <div class="click-circle" data-zone="mid-right" style="top: 39.5%; left: 66.8%;"></div>
-                        
-                        <div class="click-circle" data-zone="lower-left" style="top: 54%; left: 24.7%;"></div>
-                        <div class="click-circle" data-zone="lower-mid-left" style="top: 54%; left: 41.5%;"></div>
-                        <div class="click-circle" data-zone="lower-mid-right" style="top: 54%; left: 58.5%;"></div>
-                        <div class="click-circle" data-zone="lower-right" style="top: 54%; left: 75.3%;"></div>
-                        
-                        <div class="click-circle" data-zone="bottom-left" style="top: 83.5%; left: 12%;"></div>
-                        <div class="click-circle" data-zone="bottom-left-mid" style="top: 83.5%; left: 28.8%;"></div>
-                        <div class="click-circle" data-zone="bottom-center" style="top: 83.5%; left: 45.8%;"></div>
-                        <div class="click-circle" data-zone="bottom-right-mid" style="top: 83.5%; left: 62.7%;"></div>
-                        <div class="click-circle" data-zone="bottom-right" style="top: 83.5%; left: 79.5%;"></div>
-                        
-                        <div id="feedback-display" class="feedback"></div>
-                    </div>
+            <div class="difficulty-options">
+                <div class="difficulty-card" onclick="startQuiz('rookie')">
+                    <div class="difficulty-icon">🎓</div>
+                    <h2>Rookie</h2>
+                    <p class="difficulty-desc">Learning mode</p>
+                    <p class="difficulty-detail">50% chance of funny answers</p>
+                    <button class="btn btn-rookie">Start as Rookie</button>
                 </div>
 
-                <!-- Bottom Answers (B and C) -->
-                <div class="answers-bottom">
-                    <div class="answer-box answer-bottom-left" id="answer-1">Answer 2</div>
-                    <div class="answer-box answer-bottom-right" id="answer-2">Answer 3</div>
+                <div class="difficulty-card" onclick="startQuiz('varsity')">
+                    <div class="difficulty-icon">⚡</div>
+                    <h2>Varsity</h2>
+                    <p class="difficulty-desc">Balanced challenge</p>
+                    <p class="difficulty-detail">20% chance of funny answers</p>
+                    <button class="btn btn-varsity">Start as Varsity</button>
+                </div>
+
+                <div class="difficulty-card" onclick="startQuiz('pro')">
+                    <div class="difficulty-icon">🏆</div>
+                    <h2>Pro</h2>
+                    <p class="difficulty-desc">Serious business only</p>
+                    <p class="difficulty-detail">No funny answers • Maximum challenge</p>
+                    <button class="btn btn-pro">Start as Pro</button>
                 </div>
             </div>
-        </div>
-
-        <!-- Results Screen -->
-        <div id="results-screen" class="screen">
-            <h1>Quiz Complete!</h1>
-            <div class="results-box">
-                <p class="final-score">Final Score: <span id="final-score">0</span></p>
-                <p class="accuracy">Accuracy: <span id="accuracy">0</span>%</p>
-                <p class="performance-msg" id="performance-msg"></p>
-            </div>
-            <button id="restart-btn" class="restart-button">Try Again</button>
         </div>
     </div>
 
-    <script src="questions.js"></script>
+    <!-- QUIZ SCREEN -->
+    <div id="quiz-screen" class="screen">
+        <div class="quiz-container">
+            <!-- Header with stats -->
+            <div class="header">
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Score</span>
+                        <span class="stat-value" id="score">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Question</span>
+                        <span class="stat-value"><span id="current-q">1</span>/<span id="total-q">10</span></span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Level</span>
+                        <span class="stat-value" id="difficulty-display">Rookie</span>
+                    </div>
+                </div>
+                <button class="btn-quit" onclick="quitQuiz()">Quit</button>
+            </div>
+
+            <!-- Question Box -->
+            <div class="question-box">
+                <div class="question-header">
+                    <span class="question-topic" id="question-topic">Loading...</span>
+                    <span class="question-level" id="question-level">SL</span>
+                </div>
+                <p class="question-text" id="question-text">Loading question...</p>
+            </div>
+
+            <!-- Answer Layout: Top Answer -->
+            <div class="answer-top">
+                <button class="answer-btn" id="btn-A" data-position="A">
+                    <div class="answer-label">A</div>
+                    <div class="answer-text">Option A</div>
+                </button>
+            </div>
+
+            <!-- Triangle Confidence Indicator -->
+            <div class="triangle-container">
+                <svg class="triangle-svg" viewBox="0 0 600 400">
+                    <!-- Triangle outline -->
+                    <polygon points="300,50 100,350 500,350" class="triangle-outline"/>
+
+                    <!-- Confidence circles -->
+                    <circle cx="300" cy="100" r="25" class="confidence-circle" data-confidence="100" />
+                    <circle cx="250" cy="150" r="25" class="confidence-circle" data-confidence="80" />
+                    <circle cx="350" cy="150" r="25" class="confidence-circle" data-confidence="80" />
+                    <circle cx="200" cy="200" r="25" class="confidence-circle" data-confidence="60" />
+                    <circle cx="300" cy="200" r="25" class="confidence-circle" data-confidence="60" />
+                    <circle cx="400" cy="200" r="25" class="confidence-circle" data-confidence="60" />
+                    <circle cx="150" cy="250" r="25" class="confidence-circle" data-confidence="40" />
+                    <circle cx="250" cy="250" r="25" class="confidence-circle" data-confidence="40" />
+                    <circle cx="350" cy="250" r="25" class="confidence-circle" data-confidence="40" />
+                    <circle cx="450" cy="250" r="25" class="confidence-circle" data-confidence="40" />
+                    <circle cx="120" cy="310" r="25" class="confidence-circle" data-confidence="20" />
+                    <circle cx="200" cy="310" r="25" class="confidence-circle" data-confidence="20" />
+                    <circle cx="300" cy="310" r="25" class="confidence-circle" data-confidence="20" />
+                    <circle cx="400" cy="310" r="25" class="confidence-circle" data-confidence="20" />
+                    <circle cx="480" cy="310" r="25" class="confidence-circle" data-confidence="20" />
+
+                    <!-- Labels -->
+                    <text x="300" y="30" class="triangle-label" text-anchor="middle">A</text>
+                    <text x="80" y="380" class="triangle-label" text-anchor="middle">B</text>
+                    <text x="520" y="380" class="triangle-label" text-anchor="middle">C</text>
+                    <text x="300" y="260" class="triangle-label confidence-label" text-anchor="middle">D</text>
+                </svg>
+                <p class="confidence-instruction">Click a circle to indicate your confidence level</p>
+            </div>
+
+            <!-- Bottom Answers -->
+            <div class="answers-bottom">
+                <button class="answer-btn" id="btn-B" data-position="B">
+                    <div class="answer-label">B</div>
+                    <div class="answer-text">Option B</div>
+                </button>
+                <button class="answer-btn" id="btn-C" data-position="C">
+                    <div class="answer-label">C</div>
+                    <div class="answer-text">Option C</div>
+                </button>
+            </div>
+
+            <!-- Feedback overlay -->
+            <div class="feedback" id="feedback"></div>
+        </div>
+    </div>
+
+    <!-- RESULTS SCREEN -->
+    <div id="results-screen" class="screen">
+        <div class="container">
+            <h1>Quiz Complete! 🎉</h1>
+
+            <div class="results-card">
+                <div class="final-score">
+                    <p class="score-label">Your Final Score</p>
+                    <p class="score-number" id="final-score">0</p>
+                </div>
+
+                <div class="results-stats">
+                    <div class="result-stat">
+                        <div class="result-icon">✅</div>
+                        <p class="result-label">Correct</p>
+                        <p class="result-value" id="correct-count">0</p>
+                    </div>
+                    <div class="result-stat">
+                        <div class="result-icon">❌</div>
+                        <p class="result-label">Wrong</p>
+                        <p class="result-value" id="wrong-count">0</p>
+                    </div>
+                    <div class="result-stat">
+                        <div class="result-icon">📊</div>
+                        <p class="result-label">Accuracy</p>
+                        <p class="result-value" id="accuracy">0%</p>
+                    </div>
+                </div>
+
+                <p class="performance-message" id="performance-message">Great job!</p>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="restartQuiz()">Try Again</button>
+                    <button class="btn btn-secondary" onclick="changeDifficulty()">Change Difficulty</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="questions-db.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
