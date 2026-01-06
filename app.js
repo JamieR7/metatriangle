@@ -1,276 +1,166 @@
-// SEHS Triangle Quiz - Simplified Version
-
-// ==================== GLOBAL STATE ====================
-let gameState = {
-    difficulty: 'elite',
-    currentQuestionIndex: 0,
+const game = {
+    currentQuestion: 0,
     score: 0,
-    questionsAnswered: 0,
-    correctAnswers: 0,
-    wrongAnswers: 0,
-    selectedQuestions: [],
-    currentQuestion: null,
+    difficulty: '',
+    questions: [],
     correctCorner: null,
-    correctBoxId: null,  // Which box (answer-1, answer-2, answer-3) has correct answer
-    lastCorrectCorner: null
+    correctAnswerIndex: null,
+    answered: false
 };
 
-const DIFFICULTY_SETTINGS = {
-    elite: { funnyFrequency: 0, displayName: 'Elite' },
-    varsity: { funnyFrequency: 0.2, displayName: 'Varsity' },
-    rookie: { funnyFrequency: 0.5, displayName: 'Rookie' }
-};
-
-// ==================== SCORING SYSTEM ====================
-const POSITION_SCORES = {
-    'top': {
+const scoringTables = {
+    top: {
         'top': 3, 'top-left': 2, 'top-right': 2,
-        'mid-left': 1, 'mid-right': 1, 'center': 0,
-        'lower-left': -1, 'lower-right': -1,
-        'bottom-left': -2, 'bottom-left-mid': -2, 'bottom-center-left': -2,
-        'bottom-center-right': -2, 'bottom-right-mid': -2, 'bottom-right': -2
+        'mid-left': 1, 'center': 0, 'mid-right': 1,
+        'lower-left': -1, 'lower-mid-left': -1, 'lower-mid-right': -1, 'lower-right': -1,
+        'bottom-left': -2, 'bottom-left-mid': -2, 'bottom-center': -2, 'bottom-right-mid': -2, 'bottom-right': -2
     },
     'bottom-left': {
-        'top': -2, 'top-left': 2, 'top-right': -2,
-        'mid-left': 1, 'mid-right': -2, 'center': 0,
-        'lower-left': 2, 'lower-right': -1,
-        'bottom-left': 3, 'bottom-left-mid': 1, 'bottom-center-left': -1,
-        'bottom-center-right': -2, 'bottom-right-mid': 1, 'bottom-right': -2
+        'bottom-left': 3, 'bottom-left-mid': 2, 'lower-left': 2,
+        'mid-left': 1, 'bottom-center': 1, 'center': 0,
+        'top-left': -1, 'lower-mid-left': -1, 'lower-mid-right': -1,
+        'top': -2, 'top-right': -2, 'mid-right': -2, 'lower-right': -2, 'bottom-right-mid': -2, 'bottom-right': -2
     },
     'bottom-right': {
-        'top': -2, 'top-left': -2, 'top-right': 2,
-        'mid-left': -2, 'mid-right': 1, 'center': 0,
-        'lower-left': -1, 'lower-right': 2,
-        'bottom-left': -2, 'bottom-left-mid': 1, 'bottom-center-left': -2,
-        'bottom-center-right': -1, 'bottom-right-mid': 1, 'bottom-right': 3
+        'bottom-right': 3, 'bottom-right-mid': 2, 'lower-right': 2,
+        'mid-right': 1, 'bottom-center': 1, 'center': 0,
+        'top-right': -1, 'lower-mid-right': -1, 'lower-mid-left': -1,
+        'top': -2, 'top-left': -2, 'mid-left': -2, 'lower-left': -2, 'bottom-left-mid': -2, 'bottom-left': -2
     }
 };
 
-// ==================== INITIALIZATION ====================
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('SEHS Triangle Quiz loaded!');
-    if (typeof QUESTIONS_DB !== 'undefined') {
-        console.log('Questions available:', QUESTIONS_DB.length);
-    }
-    showScreen('difficulty-screen');
+// Initialize game
+document.querySelectorAll('.diff-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        game.difficulty = e.target.dataset.level;
+        startGame();
+    });
 });
 
-// ==================== SCREEN MANAGEMENT ====================
-function showScreen(screenId) {
-    document.querySelectorAll('.screen').forEach(screen => {
-        screen.classList.remove('active');
-    });
-    const targetScreen = document.getElementById(screenId);
-    if (targetScreen) {
-        targetScreen.classList.add('active');
-    }
-}
+document.getElementById('restart-btn').addEventListener('click', () => {
+    resetGame();
+});
 
-// ==================== QUIZ START ====================
-function startQuiz(difficulty) {
-    gameState.difficulty = difficulty;
-    gameState.score = 0;
-    gameState.questionsAnswered = 0;
-    gameState.correctAnswers = 0;
-    gameState.wrongAnswers = 0;
-    gameState.lastCorrectCorner = null;
-
-    const numQuestions = Math.min(10, QUESTIONS_DB.length);
-    gameState.selectedQuestions = shuffleArray([...QUESTIONS_DB]).slice(0, numQuestions);
-    gameState.currentQuestionIndex = 0;
-
-    document.getElementById('difficulty-display').textContent = DIFFICULTY_SETTINGS[difficulty].displayName;
-    document.getElementById('total-q').textContent = numQuestions;
-
-    showScreen('quiz-screen');
+function startGame() {
+    game.questions = getRandomQuestions(10, game.difficulty);
+    game.currentQuestion = 0;
+    game.score = 0;
+    
+    document.getElementById('difficulty-screen').classList.remove('active');
+    document.getElementById('quiz-screen').classList.add('active');
+    document.getElementById('difficulty-badge').textContent = game.difficulty.charAt(0).toUpperCase() + game.difficulty.slice(1);
+    
     loadQuestion();
 }
 
-// ==================== QUESTION LOADING ====================
+function getRandomQuestions(count, difficulty) {
+    const shuffled = [...questions].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, count).map(q => ({
+        ...q,
+        difficulty: difficulty
+    }));
+}
+
 function loadQuestion() {
-    if (gameState.currentQuestionIndex >= gameState.selectedQuestions.length) {
+    if (game.currentQuestion >= game.questions.length) {
         showResults();
         return;
     }
-
-    const question = gameState.selectedQuestions[gameState.currentQuestionIndex];
-    gameState.currentQuestion = question;
-
-    // Display question
-    document.getElementById('question-topic').textContent = question.topic;
-    document.getElementById('question-level').textContent = question.level;
-    document.getElementById('question-text').textContent = question.question;
-    document.getElementById('current-q').textContent = gameState.currentQuestionIndex + 1;
-    document.getElementById('score').textContent = gameState.score;
-
-    // Prepare and shuffle options
-    const options = prepareOptions(question);
-    const shuffledOptions = shuffleArray(options);
-
-    // Display in boxes
-    document.getElementById('answer-1').textContent = shuffledOptions[0].text;
-    document.getElementById('answer-2').textContent = shuffledOptions[1].text;
-    document.getElementById('answer-3').textContent = shuffledOptions[2].text;
-
-    // Track which box has correct answer
-    const correctIndex = shuffledOptions.findIndex(opt => opt.isCorrect);
-    gameState.correctBoxId = 'answer-' + (correctIndex + 1);
-
-    // Randomly assign corner (avoid same as last question)
+    
+    game.answered = false;
+    const q = game.questions[game.currentQuestion];
+    
+    // Random corner assignment (INDEPENDENT of answer position)
     const corners = ['top', 'bottom-left', 'bottom-right'];
-    let availableCorners = corners.filter(c => c !== gameState.lastCorrectCorner);
-    gameState.correctCorner = availableCorners[Math.floor(Math.random() * availableCorners.length)];
-    gameState.lastCorrectCorner = gameState.correctCorner;
-
-    console.log('Question loaded:', {
-        correctBoxId: gameState.correctBoxId,
-        correctCorner: gameState.correctCorner
+    game.correctCorner = corners[Math.floor(Math.random() * corners.length)];
+    
+    // Shuffle answers
+    const allAnswers = [q.correct, ...q.incorrect];
+    const shuffled = allAnswers.sort(() => Math.random() - 0.5);
+    
+    // Track which box has correct answer
+    game.correctAnswerIndex = shuffled.indexOf(q.correct);
+    
+    // Display question and answers
+    document.getElementById('question-text').textContent = q.question;
+    shuffled.forEach((answer, index) => {
+        const box = document.getElementById(`answer-${index}`);
+        box.textContent = answer;
+        box.classList.remove('correct');
     });
-
-    resetState();
+    
+    // Update header
+    document.getElementById('current-q').textContent = game.currentQuestion + 1;
+    document.getElementById('score').textContent = game.score;
+    
+    // Clear feedback
+    document.getElementById('feedback-display').textContent = '';
+    document.getElementById('feedback-display').classList.remove('show');
 }
 
-function prepareOptions(question) {
-    const options = [
-        { text: question.options.i, isCorrect: false },
-        { text: question.options.ii, isCorrect: false },
-        { text: question.options.iii, isCorrect: true }
-    ];
-
-    const funnyFrequency = DIFFICULTY_SETTINGS[gameState.difficulty].funnyFrequency;
-    const includeFunny = Math.random() < funnyFrequency;
-
-    if (includeFunny && question.options.iv) {
-        options[Math.floor(Math.random() * 2)] = { text: question.options.iv, isCorrect: false };
-    }
-
-    return options;
-}
-
-function resetState() {
-    // Reset answer boxes
-    document.querySelectorAll('.answer-box').forEach(box => {
-        box.classList.remove('correct', 'wrong');
+// Handle triangle clicks
+document.querySelectorAll('area').forEach(area => {
+    area.addEventListener('click', (e) => {
+        if (game.answered) return;
+        
+        e.preventDefault();
+        const zone = e.target.dataset.zone;
+        handleAnswer(zone);
     });
+});
 
-    // Enable triangle
-    const triangleImg = document.getElementById('triangle-img');
-    if (triangleImg) {
-        triangleImg.classList.remove('disabled');
-    }
-}
-
-// ==================== CLICK HANDLER ====================
-function handleClick(position) {
-    console.log('Clicked position:', position);
-
-    // Disable further clicks
-    const triangleImg = document.getElementById('triangle-img');
-    if (triangleImg) {
-        triangleImg.classList.add('disabled');
-    }
-
-    // Calculate score
-    const scoreMap = POSITION_SCORES[gameState.correctCorner];
-    const points = scoreMap[position];
-
-    const isExactCorrect = (points === 3);
-    const isDontKnow = (position === 'center');
-
-    if (isExactCorrect) {
-        gameState.correctAnswers++;
-    } else if (!isDontKnow) {
-        gameState.wrongAnswers++;
-    }
-
+function handleAnswer(clickedZone) {
+    game.answered = true;
+    
+    // Calculate score based on correct corner
+    const points = scoringTables[game.correctCorner][clickedZone];
+    game.score += points;
+    
     // Show feedback
-    if (points > 0) {
-        showFeedback(`+${points} point${points !== 1 ? 's' : ''}!`, 'correct');
-    } else if (points === 0) {
-        showFeedback('No points', 'neutral');
-    } else {
-        showFeedback(`${points} points`, 'wrong');
-    }
-
+    const feedback = document.getElementById('feedback-display');
+    feedback.textContent = points >= 0 ? `+${points} points!` : `${points} points`;
+    feedback.style.color = points >= 2 ? '#4CAF50' : points >= 0 ? '#fbba07' : '#f44336';
+    feedback.classList.add('show');
+    
     // Highlight correct answer box
-    const correctBox = document.getElementById(gameState.correctBoxId);
-    if (correctBox) {
-        correctBox.classList.add('correct');
-    }
-
-    // Update score
-    gameState.score += points;
-    document.getElementById('score').textContent = gameState.score;
-    gameState.questionsAnswered++;
-
-    // Next question
+    document.getElementById(`answer-${game.correctAnswerIndex}`).classList.add('correct');
+    
+    // Update score display
+    document.getElementById('score').textContent = game.score;
+    
+    // Auto-advance after 2.5 seconds
     setTimeout(() => {
-        gameState.currentQuestionIndex++;
+        game.currentQuestion++;
         loadQuestion();
     }, 2500);
 }
 
-function showFeedback(message, type) {
-    const feedback = document.getElementById('feedback');
-    if (feedback) {
-        feedback.textContent = message;
-        feedback.className = 'feedback show ' + type;
-
-        setTimeout(() => {
-            feedback.classList.remove('show');
-        }, 2000);
-    }
-}
-
-// ==================== RESULTS ====================
 function showResults() {
-    const totalQuestions = gameState.questionsAnswered;
-    const accuracy = totalQuestions > 0 
-        ? Math.round((gameState.correctAnswers / totalQuestions) * 100) 
-        : 0;
-
-    document.getElementById('final-score').textContent = gameState.score;
-    document.getElementById('correct-count').textContent = gameState.correctAnswers;
-    document.getElementById('wrong-count').textContent = gameState.wrongAnswers;
-    document.getElementById('accuracy').textContent = accuracy + '%';
-
+    const totalQuestions = game.questions.length;
+    const maxScore = totalQuestions * 3;
+    const percentage = Math.round((game.score + (totalQuestions * 2)) / (maxScore + (totalQuestions * 2)) * 100);
+    
+    document.getElementById('quiz-screen').classList.remove('active');
+    document.getElementById('results-screen').classList.add('active');
+    
+    document.getElementById('final-score').textContent = game.score;
+    document.getElementById('accuracy').textContent = percentage;
+    
     let message = '';
-    if (accuracy >= 90) {
-        message = '🌟 Outstanding! SEHS Expert! 🌟';
-    } else if (accuracy >= 70) {
-        message = '💪 Great Job! Well done! 💪';
-    } else if (accuracy >= 50) {
-        message = '👍 Good Effort! Keep studying! 👍';
-    } else {
-        message = '📚 Keep Practicing! 📚';
-    }
-    document.getElementById('performance-message').textContent = message;
-
-    showScreen('results-screen');
+    if (percentage >= 90) message = 'Outstanding! IB 7 Level Performance!';
+    else if (percentage >= 80) message = 'Excellent! Strong IB Understanding!';
+    else if (percentage >= 70) message = 'Good Work! Solid SEHS Knowledge!';
+    else if (percentage >= 60) message = 'Keep Practicing! Review Key Concepts!';
+    else message = 'More Study Needed! Focus on Fundamentals!';
+    
+    document.getElementById('performance-msg').textContent = message;
 }
 
-function restartQuiz() {
-    startQuiz(gameState.difficulty);
+function resetGame() {
+    game.currentQuestion = 0;
+    game.score = 0;
+    game.questions = [];
+    
+    document.getElementById('results-screen').classList.remove('active');
+    document.getElementById('difficulty-screen').classList.add('active');
 }
-
-function changeDifficulty() {
-    showScreen('difficulty-screen');
-}
-
-function quitQuiz() {
-    if (confirm('Quit? Your progress will be lost.')) {
-        showScreen('difficulty-screen');
-    }
-}
-
-// ==================== UTILITY ====================
-function shuffleArray(array) {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-}
-
-console.log('App.js loaded - Simplified version!');
