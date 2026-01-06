@@ -77,95 +77,68 @@
         </div>
 
         <div class="quiz-container">
-            <div class="question-panel">
-                <div class="question-header">
+            <!-- Question Box -->
+            <div class="question-box">
+                <div class="question-meta">
                     <span class="question-topic" id="question-topic">Topic</span>
                     <span class="question-level" id="question-level">SL</span>
                 </div>
                 <h2 class="question-text" id="question-text">Question will appear here</h2>
             </div>
 
-            <!-- Full Triangle with Dynamic Labels -->
-            <div class="triangle-container">
+            <!-- Main Game Area -->
+            <div class="game-area">
+                <!-- Answer boxes positioned around triangle -->
+                <div class="answer-box answer-top" id="answer-top">
+                    <div class="answer-content">Option A answer</div>
+                </div>
+
+                <div class="answer-box answer-bottom-left" id="answer-bottom-left">
+                    <div class="answer-content">Option B answer</div>
+                </div>
+
+                <div class="answer-box answer-bottom-right" id="answer-bottom-right">
+                    <div class="answer-content">Option C answer</div>
+                </div>
+
+                <!-- Clean Triangle -->
                 <svg id="triangle-svg" viewBox="0 0 1000 900" xmlns="http://www.w3.org/2000/svg">
-
-                    <!-- Triangle outline (gray background) -->
+                    <!-- Triangle outline -->
                     <path d="M 500 50 L 100 800 L 900 800 Z" 
-                          fill="#e8e8e8" 
-                          stroke="#ccc" 
-                          stroke-width="3"
-                          style="pointer-events: none;"/>
+                          fill="none" 
+                          stroke="#fbba07" 
+                          stroke-width="4"/>
 
+                    <!-- Clickable circles - NO LABELS -->
                     <!-- Row 1: Top -->
-                    <circle cx="500" cy="50" r="40" class="node corner" data-position="top"/>
-                    <text x="500" y="65" class="node-label" data-position="top">A</text>
+                    <circle cx="500" cy="50" r="45" class="node corner" data-position="top"/>
 
-                    <!-- Row 2: Top intermediate -->
-                    <circle cx="350" cy="150" r="35" class="node" data-position="top-left"/>
-                    <text x="350" y="162" class="node-label small" data-position="top-left">A&gt;B</text>
+                    <!-- Row 2 -->
+                    <circle cx="350" cy="150" r="38" class="node" data-position="top-left"/>
+                    <circle cx="650" cy="150" r="38" class="node" data-position="top-right"/>
 
-                    <circle cx="650" cy="150" r="35" class="node" data-position="top-right"/>
-                    <text x="650" y="162" class="node-label small" data-position="top-right">A&gt;C</text>
-
-                    <!-- Row 3: Mid level -->
-                    <circle cx="250" cy="280" r="35" class="node" data-position="mid-left"/>
-                    <text x="250" y="292" class="node-label small" data-position="mid-left">A=B</text>
-
-                    <circle cx="750" cy="280" r="35" class="node" data-position="mid-right"/>
-                    <text x="750" y="292" class="node-label small" data-position="mid-right">A=C</text>
+                    <!-- Row 3 -->
+                    <circle cx="250" cy="280" r="38" class="node" data-position="mid-left"/>
+                    <circle cx="750" cy="280" r="38" class="node" data-position="mid-right"/>
 
                     <!-- Row 4: Center -->
-                    <circle cx="500" cy="420" r="40" class="node center" data-position="center"/>
-                    <text x="500" y="435" class="node-label" data-position="center">?</text>
+                    <circle cx="500" cy="420" r="45" class="node center" data-position="center"/>
+                    <text x="500" y="440" class="center-label">?</text>
 
-                    <!-- Row 5: Lower intermediate -->
-                    <circle cx="200" cy="560" r="35" class="node" data-position="lower-left"/>
-                    <text x="200" y="572" class="node-label small" data-position="lower-left">B&gt;A</text>
-
-                    <circle cx="800" cy="560" r="35" class="node" data-position="lower-right"/>
-                    <text x="800" y="572" class="node-label small" data-position="lower-right">C&gt;A</text>
+                    <!-- Row 5 -->
+                    <circle cx="200" cy="560" r="38" class="node" data-position="lower-left"/>
+                    <circle cx="800" cy="560" r="38" class="node" data-position="lower-right"/>
 
                     <!-- Row 6: Bottom -->
-                    <circle cx="100" cy="800" r="40" class="node corner" data-position="bottom-left"/>
-                    <text x="100" y="815" class="node-label" data-position="bottom-left">B</text>
-
-                    <circle cx="280" cy="800" r="30" class="node" data-position="bottom-left-mid"/>
-                    <text x="280" y="812" class="node-label small" data-position="bottom-left-mid">B&gt;C</text>
-
-                    <circle cx="420" cy="800" r="30" class="node" data-position="bottom-center-left"/>
-                    <text x="420" y="812" class="node-label small" data-position="bottom-center-left">B=C</text>
-
-                    <circle cx="580" cy="800" r="30" class="node" data-position="bottom-center-right"/>
-                    <text x="580" y="812" class="node-label small" data-position="bottom-center-right">C&gt;B</text>
-
-                    <circle cx="720" cy="800" r="30" class="node" data-position="bottom-right-mid"/>
-                    <text x="720" y="812" class="node-label small" data-position="bottom-right-mid">C&lt;B</text>
-
-                    <circle cx="900" cy="800" r="40" class="node corner" data-position="bottom-right"/>
-                    <text x="900" y="815" class="node-label" data-position="bottom-right">C</text>
+                    <circle cx="100" cy="800" r="45" class="node corner" data-position="bottom-left"/>
+                    <circle cx="280" cy="800" r="32" class="node" data-position="bottom-left-mid"/>
+                    <circle cx="420" cy="800" r="32" class="node" data-position="bottom-center-left"/>
+                    <circle cx="580" cy="800" r="32" class="node" data-position="bottom-center-right"/>
+                    <circle cx="720" cy="800" r="32" class="node" data-position="bottom-right-mid"/>
+                    <circle cx="900" cy="800" r="45" class="node corner" data-position="bottom-right"/>
                 </svg>
 
                 <div class="feedback" id="feedback"></div>
-            </div>
-
-            <!-- Answer Options Display -->
-            <div class="options-display">
-                <div class="option-box" id="option-A">
-                    <span class="option-letter">A</span>
-                    <span class="option-text">Option A</span>
-                </div>
-                <div class="option-box" id="option-B">
-                    <span class="option-letter">B</span>
-                    <span class="option-text">Option B</span>
-                </div>
-                <div class="option-box" id="option-C">
-                    <span class="option-letter">C</span>
-                    <span class="option-text">Option C</span>
-                </div>
-                <div class="option-box dont-know-box" id="option-D">
-                    <span class="option-letter">D</span>
-                    <span class="option-text">I don't know</span>
-                </div>
             </div>
         </div>
     </div>
