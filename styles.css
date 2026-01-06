@@ -11,20 +11,22 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 10px;
 }
 
 .container {
     width: 100%;
-    max-width: 1200px;
+    max-width: 900px;
 }
 
 .screen {
     display: none;
     background: white;
     border-radius: 15px;
-    padding: 30px;
+    padding: 20px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    max-height: 95vh;
+    overflow-y: auto;
 }
 
 .screen.active {
@@ -38,26 +40,26 @@ body {
 
 #difficulty-screen h1 {
     color: #004587;
-    font-size: 2.5em;
-    margin-bottom: 10px;
+    font-size: 2em;
+    margin-bottom: 8px;
 }
 
 .subtitle {
     color: #666;
-    font-size: 1.1em;
-    margin-bottom: 40px;
+    font-size: 1em;
+    margin-bottom: 25px;
 }
 
 .difficulty-buttons {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 15px;
     flex-wrap: wrap;
 }
 
 .diff-btn {
-    padding: 20px 50px;
-    font-size: 1.3em;
+    padding: 15px 40px;
+    font-size: 1.1em;
     font-weight: bold;
     border: 3px solid #004587;
     background: white;
@@ -78,48 +80,50 @@ body {
 #quiz-screen {
     background: linear-gradient(135deg, #004587 0%, #002d5a 100%);
     color: white;
+    padding: 15px;
 }
 
 .game-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 10px;
 }
 
 .score-display {
-    font-size: 1.4em;
+    font-size: 1.2em;
     font-weight: bold;
     color: #fbba07;
 }
 
 .question-counter {
-    font-size: 1.2em;
+    font-size: 1em;
     color: white;
 }
 
 .difficulty-badge {
     background: #fbba07;
     color: #004587;
-    padding: 8px 20px;
+    padding: 6px 15px;
     border-radius: 20px;
     font-weight: bold;
+    font-size: 0.9em;
 }
 
 .question-area {
     background: rgba(255, 255, 255, 0.1);
-    padding: 25px;
+    padding: 15px;
     border-radius: 10px;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
     border-left: 5px solid #fbba07;
 }
 
 .question-area h2 {
     color: white;
-    font-size: 1.4em;
-    line-height: 1.5;
+    font-size: 1.1em;
+    line-height: 1.4;
 }
 
 /* Triangle Game Area Layout */
@@ -132,16 +136,17 @@ body {
 
 /* Answer Boxes */
 .answer-box {
-    padding: 18px 25px;
+    padding: 12px 20px;
     background: white;
     border: 2px solid #fbba07;
     border-radius: 8px;
-    font-size: 1.1em;
+    font-size: 0.95em;
     color: #004587;
     font-weight: 500;
     transition: all 0.3s ease;
     text-align: center;
-    min-width: 250px;
+    min-width: 200px;
+    max-width: 400px;
 }
 
 .answer-box.correct {
@@ -154,20 +159,20 @@ body {
 
 /* Top Answer (A) */
 .answer-top {
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 /* Triangle Container */
 .triangle-container {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 .instruction {
     color: #fbba07;
-    font-size: 1.1em;
+    font-size: 0.95em;
     font-weight: bold;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .triangle-wrapper {
@@ -178,7 +183,7 @@ body {
 
 #triangle-image {
     width: 100%;
-    max-width: 600px;
+    max-width: 450px;
     height: auto;
     display: block;
     margin: 0 auto;
@@ -199,7 +204,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 3em;
+    font-size: 2.5em;
     font-weight: bold;
     color: #fbba07;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
@@ -219,8 +224,8 @@ body {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    max-width: 600px;
-    gap: 30px;
+    max-width: 450px;
+    gap: 15px;
 }
 
 .answer-bottom-left {
@@ -238,39 +243,39 @@ body {
 
 #results-screen h1 {
     color: #004587;
-    font-size: 2.5em;
-    margin-bottom: 30px;
+    font-size: 2em;
+    margin-bottom: 20px;
 }
 
 .results-box {
     background: #f5f5f5;
-    padding: 40px;
+    padding: 30px;
     border-radius: 15px;
-    margin-bottom: 30px;
-}
-
-.final-score {
-    font-size: 2.5em;
-    color: #004587;
-    font-weight: bold;
-    margin-bottom: 15px;
-}
-
-.accuracy {
-    font-size: 1.8em;
-    color: #666;
     margin-bottom: 20px;
 }
 
+.final-score {
+    font-size: 2em;
+    color: #004587;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.accuracy {
+    font-size: 1.5em;
+    color: #666;
+    margin-bottom: 15px;
+}
+
 .performance-msg {
-    font-size: 1.3em;
+    font-size: 1.1em;
     color: #fbba07;
     font-weight: bold;
 }
 
 .restart-button {
-    padding: 15px 50px;
-    font-size: 1.3em;
+    padding: 12px 40px;
+    font-size: 1.1em;
     font-weight: bold;
     background: #004587;
     color: white;
@@ -288,95 +293,38 @@ body {
 
 /* Responsive */
 @media (max-width: 768px) {
-    body {
-        padding: 10px;
-    }
-
     .screen {
-        padding: 20px;
+        padding: 15px;
     }
 
     #difficulty-screen h1 {
-        font-size: 2em;
+        font-size: 1.6em;
     }
     
     .diff-btn {
-        padding: 15px 35px;
-        font-size: 1.1em;
+        padding: 12px 30px;
+        font-size: 1em;
     }
     
     .question-area h2 {
-        font-size: 1.2em;
+        font-size: 1em;
     }
     
     .game-header {
-        font-size: 0.9em;
-        justify-content: center;
-    }
-
-    .score-display {
-        font-size: 1.2em;
-    }
-
-    .question-counter {
-        font-size: 1em;
+        font-size: 0.85em;
     }
 
     .answers-bottom {
         flex-direction: column;
-        gap: 15px;
+        gap: 10px;
     }
 
     .answer-box {
-        min-width: 200px;
-        font-size: 1em;
-        padding: 15px 20px;
+        min-width: 150px;
+        font-size: 0.9em;
     }
 
     .feedback {
         font-size: 2em;
-    }
-
-    #triangle-image {
-        max-width: 100%;
-    }
-
-    .final-score {
-        font-size: 2em;
-    }
-
-    .accuracy {
-        font-size: 1.5em;
-    }
-
-    .performance-msg {
-        font-size: 1.1em;
-    }
-}
-
-@media (max-width: 480px) {
-    #difficulty-screen h1 {
-        font-size: 1.6em;
-    }
-
-    .subtitle {
-        font-size: 1em;
-    }
-
-    .diff-btn {
-        padding: 12px 25px;
-        font-size: 1em;
-    }
-
-    .question-area {
-        padding: 20px;
-    }
-
-    .question-area h2 {
-        font-size: 1.1em;
-    }
-
-    .instruction {
-        font-size: 1em;
     }
 }
