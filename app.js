@@ -1,4 +1,4 @@
-// SEHS Triangle Quiz - Fixed to use question.options
+// SEHS Triangle Quiz - Defensive code for different question structures
 // Load questions from questions-db.js (assume it's already loaded)
 
 // State Management
@@ -12,7 +12,7 @@ let state = {
     selectedConfidence: null,
     correctCount: 0,
     wrongCount: 0,
-    answerMapping: {} // Track which button has which answer
+    answerMapping: {}
 };
 
 // DOM Elements
@@ -85,7 +85,7 @@ function startQuiz() {
     let filteredQuestions = db.filter(q => {
         if (state.difficulty === 'pro') return q.style === 'serious';
         if (state.difficulty === 'varsity') return q.style === 'serious' || q.style === 'mixed';
-        return true; // rookie includes all
+        return true;
     });
 
     // Select random questions
@@ -116,6 +116,8 @@ function loadQuestion() {
     const question = state.questions[state.currentQuestionIndex];
 
     console.log('Loading question:', question);
+    console.log('Question options structure:', question.options);
+    console.log('Type of options:', typeof question.options);
 
     // Update question info
     document.getElementById('question-topic').textContent = question.topic;
@@ -124,11 +126,53 @@ function loadQuestion() {
     document.getElementById('current-q').textContent = state.currentQuestionIndex + 1;
     document.getElementById('score').textContent = state.score;
 
-    // FIX: Access options from question.options object
+    // DEFENSIVE: Try multiple ways to get answer text
+    let answerA, answerB, answerC;
+
+    // Try 1: question.options.A
+    if (question.options && question.options.A) {
+        answerA = question.options.A;
+        answerB = question.options.B;
+        answerC = question.options.C;
+        console.log('✓ Using question.options.A/B/C');
+    }
+    // Try 2: question.A directly
+    else if (question.A) {
+        answerA = question.A;
+        answerB = question.B;
+        answerC = question.C;
+        console.log('✓ Using question.A/B/C directly');
+    }
+    // Try 3: question.options as array
+    else if (question.options && Array.isArray(question.options) && question.options.length >= 3) {
+        answerA = question.options[0];
+        answerB = question.options[1];
+        answerC = question.options[2];
+        console.log('✓ Using question.options as array');
+    }
+    // Try 4: question.answers
+    else if (question.answers) {
+        answerA = question.answers.A || question.answers[0];
+        answerB = question.answers.B || question.answers[1];
+        answerC = question.answers.C || question.answers[2];
+        console.log('✓ Using question.answers');
+    }
+    else {
+        console.error('❌ Could not find answers in question object!');
+        console.error('Available properties:', Object.keys(question));
+        answerA = 'Answer A';
+        answerB = 'Answer B';
+        answerC = 'Answer C';
+    }
+
+    console.log('Answer A:', answerA);
+    console.log('Answer B:', answerB);
+    console.log('Answer C:', answerC);
+
     const allAnswers = [
-        { id: 'A', text: question.options.A, isCorrect: question.correct === 'A' },
-        { id: 'B', text: question.options.B, isCorrect: question.correct === 'B' },
-        { id: 'C', text: question.options.C, isCorrect: question.correct === 'C' }
+        { id: 'A', text: answerA, isCorrect: question.correct === 'A' },
+        { id: 'B', text: answerB, isCorrect: question.correct === 'B' },
+        { id: 'C', text: answerC, isCorrect: question.correct === 'C' }
     ];
 
     console.log('All answers:', allAnswers);
@@ -140,17 +184,15 @@ function loadQuestion() {
 
     // Assign shuffled answers to buttons A, B, C
     const buttonIds = ['A', 'B', 'C'];
-    state.answerMapping = {}; // Reset mapping
+    state.answerMapping = {};
 
     buttonIds.forEach((btnId, index) => {
         const answer = shuffledAnswers[index];
         const btn = document.getElementById(`btn-${btnId}`);
         const textSpan = btn.querySelector('.answer-text');
 
-        // Store mapping: which button shows which original answer
         state.answerMapping[btnId] = answer.id;
 
-        // Set text
         if (textSpan && answer.text) {
             textSpan.textContent = answer.text;
             console.log(`✓ Button ${btnId} displays answer ${answer.id}: "${answer.text}"`);
@@ -158,7 +200,6 @@ function loadQuestion() {
             console.error(`✗ Problem with button ${btnId}:`, { textSpan, answer });
         }
 
-        // Store whether THIS button's answer is correct
         btn.dataset.correct = answer.isCorrect;
         btn.classList.remove('correct', 'wrong', 'disabled');
         btn.onclick = () => selectAnswer(btnId);
@@ -169,33 +210,28 @@ function loadQuestion() {
         circle.classList.remove('selected', 'disabled');
     });
 
-    // Reset state
     state.selectedAnswer = null;
     state.selectedConfidence = null;
     nextBtn.classList.remove('show');
 }
 
 function selectAnswer(buttonId) {
-    if (state.selectedAnswer) return; // Already answered
+    if (state.selectedAnswer) return;
 
     state.selectedAnswer = buttonId;
 
-    // Disable answer buttons and show which is correct
     ['A', 'B', 'C'].forEach(btnId => {
         const btn = document.getElementById(`btn-${btnId}`);
         btn.classList.add('disabled');
 
-        // Show correct answer with GREEN background
         if (btn.dataset.correct === 'true') {
             btn.classList.add('correct');
         }
-        // Show wrong answer if selected
         if (btnId === buttonId && btn.dataset.correct !== 'true') {
             btn.classList.add('wrong');
         }
     });
 
-    // Enable triangle
     document.querySelectorAll('.conf-circle').forEach(circle => {
         circle.style.cursor = 'pointer';
     });
@@ -209,7 +245,6 @@ document.querySelectorAll('.conf-circle').forEach(circle => {
         state.selectedConfidence = circle;
         circle.classList.add('selected');
 
-        // Disable all circles
         document.querySelectorAll('.conf-circle').forEach(c => {
             c.classList.add('disabled');
         });
@@ -222,11 +257,10 @@ function calculateScore(circle) {
     const selectedBtn = document.getElementById(`btn-${state.selectedAnswer}`);
     const isCorrect = selectedBtn.dataset.correct === 'true';
 
-    // Find which triangle position corresponds to the correct answer
     let correctAnswerId = null;
     ['A', 'B', 'C'].forEach(btnId => {
         if (document.getElementById(`btn-${btnId}`).dataset.correct === 'true') {
-            correctAnswerId = state.answerMapping[btnId]; // Get original answer ID
+            correctAnswerId = state.answerMapping[btnId];
         }
     });
 
@@ -239,7 +273,6 @@ function calculateScore(circle) {
     let pointsClass = 'neutral';
 
     if (isCorrect) {
-        // CORRECT ANSWER
         if (position === correctAnswerId) {
             points = 3;
             pointsText = '+3 points';
@@ -271,7 +304,6 @@ function calculateScore(circle) {
         }
         state.correctCount++;
     } else {
-        // WRONG ANSWER
         const selectedAnswerId = state.answerMapping[state.selectedAnswer];
 
         if (position === selectedAnswerId) {
@@ -302,7 +334,6 @@ function calculateScore(circle) {
 
     state.score += points;
 
-    // Display points
     const pointsDisplay = document.getElementById('points-display');
     pointsDisplay.querySelector('#points-text').textContent = pointsText;
     pointsDisplay.className = `points-display show ${pointsClass}`;
@@ -311,14 +342,10 @@ function calculateScore(circle) {
         pointsDisplay.classList.remove('show');
     }, 2000);
 
-    // Update score display
     document.getElementById('score').textContent = state.score;
-
-    // Show next button
     nextBtn.classList.add('show');
 }
 
-// Next Question
 nextBtn.addEventListener('click', () => {
     state.currentQuestionIndex++;
 
@@ -329,7 +356,6 @@ nextBtn.addEventListener('click', () => {
     }
 });
 
-// Show Results
 function showResults() {
     quizScreen.classList.remove('active');
     resultsScreen.classList.add('active');
@@ -341,7 +367,6 @@ function showResults() {
     const accuracy = Math.round((state.correctCount / state.questions.length) * 100);
     document.getElementById('accuracy').textContent = accuracy + '%';
 
-    // Performance message
     let message = '';
     if (accuracy >= 90) message = '🏆 Outstanding!';
     else if (accuracy >= 80) message = '💪 Great Job!';
@@ -352,19 +377,16 @@ function showResults() {
     document.getElementById('performance-message').textContent = message;
 }
 
-// Restart Quiz
 restartBtn.addEventListener('click', () => {
     resultsScreen.classList.remove('active');
     startQuiz();
 });
 
-// Change Difficulty
 changeDifficultyBtn.addEventListener('click', () => {
     resultsScreen.classList.remove('active');
     difficultyScreen.classList.add('active');
 });
 
-// Quit Quiz
 quitBtn.addEventListener('click', () => {
     if (confirm('Are you sure you want to quit?')) {
         quizScreen.classList.remove('active');
@@ -372,7 +394,6 @@ quitBtn.addEventListener('click', () => {
     }
 });
 
-// Utility Functions
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
