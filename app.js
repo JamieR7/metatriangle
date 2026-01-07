@@ -12,7 +12,8 @@ let gameState = {
     selectedQuestions: [],
     currentQuestion: null,
     correctPosition: null,
-    currentAssignment: null
+    currentAssignment: null,
+    questionReady: false  // NEW: Track if question is ready
 };
 
 // Difficulty settings
@@ -189,6 +190,9 @@ function loadQuestion() {
         return;
     }
 
+    // Mark question as NOT ready while loading
+    gameState.questionReady = false;
+
     const question = gameState.selectedQuestions[gameState.currentQuestionIndex];
     gameState.currentQuestion = question;
 
@@ -204,6 +208,10 @@ function loadQuestion() {
 
     displayOptions(assignment);
     resetUI();
+
+    // Mark question as ready AFTER everything is set
+    gameState.questionReady = true;
+    console.log('Question ready. Correct answer:', gameState.correctPosition);
 }
 
 function prepareOptions(question) {
@@ -249,8 +257,6 @@ function randomlyAssignOptions(options) {
         }
     }
 
-    console.log('Correct answer at position:', gameState.correctPosition);
-
     return assignment;
 }
 
@@ -280,6 +286,12 @@ function resetUI() {
 
 // ==================== CIRCLE CLICK - TRIGGERS SCORING ====================
 function handleCircleClick(circle) {
+    // DEFENSIVE CHECK: Don't allow clicks if question not ready
+    if (!gameState.questionReady) {
+        console.log('Question not ready yet, ignoring click');
+        return;
+    }
+
     if (circle.classList.contains('disabled')) {
         return;
     }
@@ -295,8 +307,11 @@ function handleCircleClick(circle) {
 
 // ==================== PROCESS ANSWER ====================
 function processAnswer(chosenAnswer, circle) {
+    // Double check correctPosition exists
     if (!gameState.correctPosition) {
         console.error('ERROR: correctPosition is null or undefined!');
+        console.log('Question state:', gameState.currentQuestion);
+        console.log('Assignment:', gameState.currentAssignment);
         return;
     }
 
