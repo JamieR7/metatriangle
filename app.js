@@ -1,4 +1,5 @@
-// SEHS Triangle Quiz - Position-Based Confidence Scoring
+// SEHS Triangle Quiz - Circle-Based Confidence Scoring
+// Clicking a circle automatically scores the question
 
 // ==================== GLOBAL STATE ====================
 let gameState = {
@@ -11,8 +12,7 @@ let gameState = {
     selectedQuestions: [],
     currentQuestion: null,
     correctPosition: null,
-    currentAssignment: null,
-    selectedCircle: null
+    currentAssignment: null
 };
 
 // Difficulty settings
@@ -31,6 +31,51 @@ function showCustomAlert() {
 function hideCustomAlert() {
     const alertOverlay = document.getElementById('custom-alert');
     alertOverlay.classList.remove('show');
+}
+
+// ==================== DETERMINE ANSWER FROM CIRCLE ====================
+function getAnswerFromCircle(circleElement) {
+    const position = circleElement.dataset.position;
+    const side = circleElement.dataset.side;
+    const level = circleElement.dataset.level;
+
+    // Corner circles - clear choice
+    if (position && position !== 'center') {
+        return position; // Returns 'A', 'B', or 'C'
+    }
+
+    // Center circle - show answer buttons
+    if (position === 'center') {
+        return null; // User must pick answer
+    }
+
+    // Side circles - determine which answer based on side
+    if (side && level) {
+        // Circles on AB side closer to A = choosing A
+        if (side === 'AB' && (level === 'close-A' || level === 'equal')) {
+            return 'A';
+        }
+        // Circles on AB side closer to B = choosing B
+        if (side === 'AB' && level === 'close-B') {
+            return 'B';
+        }
+
+        // Circles on AC side closer to A = choosing A
+        if (side === 'AC' && (level === 'close-A' || level === 'equal')) {
+            return 'A';
+        }
+        // Circles on AC side closer to C = choosing C
+        if (side === 'AC' && level === 'close-C') {
+            return 'C';
+        }
+
+        // Base circles (BC) - need to choose
+        if (side === 'BC') {
+            return null; // User must pick B or C
+        }
+    }
+
+    return null;
 }
 
 // ==================== POSITION-BASED SCORING ====================
@@ -106,18 +151,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Confidence circles
+    // Confidence circles - NOW TRIGGER SCORING
     document.querySelectorAll('.conf-circle').forEach(circle => {
         circle.addEventListener('click', function(e) {
             e.stopPropagation();
-            selectCircle(this);
+            handleCircleClick(this);
         });
     });
 
-    // Answer buttons
+    // Answer buttons - for center/base circles only
     document.querySelectorAll('.answer-btn').forEach(btn => {
         btn.addEventListener('click', function(e) {
-            console.log('Answer button clicked:', this.dataset.position);
             handleAnswerClick(this);
         });
     });
@@ -172,9 +216,6 @@ function loadQuestion() {
     const question = gameState.selectedQuestions[gameState.currentQuestionIndex];
     gameState.currentQuestion = question;
 
-    // DON'T RESET selectedCircle here - keep it from previous selection
-    // gameState.selectedCircle = null;  // REMOVED THIS LINE
-
     document.getElementById('question-topic').textContent = question.topic;
     document.getElementById('question-level').textContent = question.level;
     document.getElementById('question-text').textContent = question.question;
@@ -223,6 +264,9 @@ function randomlyAssignOptions(options) {
         key => assignment[key].isCorrect
     );
 
+    console.log('Assignment:', assignment);
+    console.log('Correct position:', gameState.correctPosition);
+
     return assignment;
 }
 
@@ -237,61 +281,76 @@ function displayOptions(assignment) {
 }
 
 function resetUI() {
-    // Reset answer buttons
     document.querySelectorAll('.answer-btn').forEach(btn => {
         btn.classList.remove('correct', 'wrong', 'disabled');
         btn.disabled = false;
     });
 
-    // Reset circles but PRESERVE selected state
     document.querySelectorAll('.conf-circle').forEach(circle => {
-        circle.classList.remove('disabled');
-        // Keep 'selected' class if it exists
+        circle.classList.remove('selected', 'disabled');
     });
 
-    // Hide displays
     document.getElementById('points-display').classList.remove('show', 'positive', 'negative', 'neutral');
     document.getElementById('next-btn').classList.remove('show');
 }
 
-// ==================== CIRCLE SELECTION ====================
-function selectCircle(circle) {
-    // Remove previous selection
+// ==================== CIRCLE CLICK - TRIGGERS SCORING ====================
+function handleCircleClick(circle) {
+    // Check if already answered
+    if (circle.classList.contains('disabled')) {
+        return;
+    }
+
+    console.log('Circle clicked:', circle.dataset);
+
+    // Mark circle as selected
     document.querySelectorAll('.conf-circle').forEach(c => {
         c.classList.remove('selected');
     });
-
-    // Mark this circle as selected
     circle.classList.add('selected');
-    gameState.selectedCircle = circle;
 
-    console.log('Circle selected:', circle.dataset);
+    // Determine which answer this circle represents
+    const chosenAnswer = getAnswerFromCircle(circle);
+
+    console.log('Circle represents answer:', chosenAnswer);
+    console.log('Correct answer:', gameState.correctPosition);
+
+    // If circle doesn't determine answer (center or base), stop here
+    if (!chosenAnswer) {
+        console.log('Circle requires manual answer selection');
+        return;
+    }
+
+    // Score the question
+    processAnswer(chosenAnswer, circle);
 }
 
-// ==================== ANSWER SELECTION ====================
+// ==================== ANSWER BUTTON CLICK - FOR CENTER/BASE CIRCLES ====================
 function handleAnswerClick(button) {
-    console.log('handleAnswerClick called');
-    console.log('Selected circle:', gameState.selectedCircle);
+    // Only works if a circle is selected but hasn't determined answer yet
+    const selectedCircle = document.querySelector('.conf-circle.selected');
 
-    // Check if circle was selected
-    if (!gameState.selectedCircle) {
+    if (!selectedCircle) {
         showCustomAlert();
         return;
     }
 
-    // Check if already answered
     if (button.classList.contains('disabled')) {
-        console.log('Button already disabled');
         return;
     }
 
-    const position = button.dataset.position;
-    const isCorrect = position === gameState.correctPosition;
+    const chosenAnswer = button.dataset.position;
+    processAnswer(chosenAnswer, selectedCircle);
+}
 
-    console.log('Answer:', position, 'Correct:', gameState.correctPosition, 'Is correct:', isCorrect);
+// ==================== PROCESS ANSWER ====================
+function processAnswer(chosenAnswer, circle) {
+    const isCorrect = chosenAnswer === gameState.correctPosition;
+
+    console.log('Processing answer:', { chosenAnswer, correct: gameState.correctPosition, isCorrect });
 
     // Calculate points
-    const points = calculatePoints(gameState.selectedCircle, gameState.correctPosition);
+    const points = calculatePoints(circle, gameState.correctPosition);
     console.log('Points earned:', points);
 
     // Update score
@@ -299,25 +358,27 @@ function handleAnswerClick(button) {
     document.getElementById('score').textContent = gameState.score;
     gameState.questionsAnswered++;
 
+    // Update answer buttons
+    const chosenBtn = document.getElementById(`btn-${chosenAnswer}`);
+    const correctBtn = document.getElementById(`btn-${gameState.correctPosition}`);
+
     if (isCorrect) {
         gameState.correctAnswers++;
-        button.classList.add('correct');
+        chosenBtn.classList.add('correct');
     } else {
         gameState.wrongAnswers++;
-        button.classList.add('wrong');
-
-        const correctBtn = document.getElementById(`btn-${gameState.correctPosition}`);
+        chosenBtn.classList.add('wrong');
         correctBtn.classList.add('correct');
     }
 
-    // Disable all buttons and circles
+    // Disable everything
     document.querySelectorAll('.answer-btn').forEach(btn => {
         btn.disabled = true;
         btn.classList.add('disabled');
     });
 
-    document.querySelectorAll('.conf-circle').forEach(circle => {
-        circle.classList.add('disabled');
+    document.querySelectorAll('.conf-circle').forEach(c => {
+        c.classList.add('disabled');
     });
 
     showPoints(points);
@@ -344,8 +405,6 @@ function showPoints(points) {
 }
 
 function nextQuestion() {
-    // Clear the selected circle for the next question
-    gameState.selectedCircle = null;
     gameState.currentQuestionIndex++;
     loadQuestion();
 }
@@ -401,5 +460,5 @@ function shuffleArray(array) {
     return shuffled;
 }
 
-console.log('Position-Based Scoring with Custom Alert initialized!');
-console.log('Starting score: 10 points');
+console.log('Circle-Based Scoring initialized!');
+console.log('Click a circle to automatically score!');
