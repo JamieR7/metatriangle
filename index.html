@@ -11,44 +11,29 @@
     <div class="screen active" id="difficulty-screen">
         <div class="screen-content">
             <h1>🎯 SEHS Triangle Quiz</h1>
-            <p class="subtitle">Choose your difficulty level</p>
+            <p class="subtitle">Choose your settings</p>
 
-            <div class="difficulty-grid">
-                <div class="difficulty-card" data-difficulty="pro">
-                    <div class="difficulty-icon">🔥</div>
-                    <h2>Pro</h2>
-                    <p>3 serious options only</p>
-                </div>
-
-                <div class="difficulty-card" data-difficulty="varsity">
-                    <div class="difficulty-icon">💪</div>
-                    <h2>Varsity</h2>
-                    <p>Occasional funny answers</p>
-                </div>
-
-                <div class="difficulty-card" data-difficulty="rookie">
-                    <div class="difficulty-icon">🎓</div>
-                    <h2>Rookie</h2>
-                    <p>Funny answers included</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- TOPIC SELECTION SCREEN -->
-    <div class="screen" id="topic-screen">
-        <div class="screen-content">
-            <h1>📚 Quiz Settings</h1>
-            <p class="subtitle">Customize your practice session</p>
-
-            <!-- Theme Filter -->
+            <!-- Difficulty Selection -->
             <div class="filter-section">
-                <h3>Select Theme</h3>
-                <div class="theme-buttons">
-                    <button class="theme-btn active" data-theme="all">All Themes</button>
-                    <button class="theme-btn" data-theme="A">Theme A: Exercise Physiology</button>
-                    <button class="theme-btn" data-theme="B">Theme B: Biomechanics</button>
-                    <button class="theme-btn" data-theme="C">Theme C: Sports Psychology</button>
+                <h3>Select Difficulty Level</h3>
+                <div class="difficulty-grid">
+                    <div class="difficulty-card" data-difficulty="pro">
+                        <div class="difficulty-icon">🔥</div>
+                        <h2>Pro</h2>
+                        <p>3 serious options only</p>
+                    </div>
+
+                    <div class="difficulty-card" data-difficulty="varsity">
+                        <div class="difficulty-icon">💪</div>
+                        <h2>Varsity</h2>
+                        <p>Occasional funny answers</p>
+                    </div>
+
+                    <div class="difficulty-card" data-difficulty="rookie">
+                        <div class="difficulty-icon">🎓</div>
+                        <h2>Rookie</h2>
+                        <p>Funny answers included</p>
+                    </div>
                 </div>
             </div>
 
@@ -64,27 +49,7 @@
                 </div>
             </div>
 
-            <!-- Topic Selection -->
-            <div class="filter-section">
-                <h3>Select Specific Topics (Optional)</h3>
-                <div class="topic-controls">
-                    <button id="select-all-btn" class="control-btn">Select All</button>
-                    <button id="deselect-all-btn" class="control-btn">Deselect All</button>
-                </div>
-
-                <div id="topic-list" class="topic-list">
-                    <!-- Topics will be populated by JavaScript -->
-                </div>
-            </div>
-
-            <div class="topic-actions">
-                <button id="back-to-difficulty-btn" class="secondary-btn">← Back</button>
-                <button id="start-quiz-btn" class="primary-btn">Start Quiz →</button>
-            </div>
-
-            <div id="topic-warning" class="warning-message" style="display: none;">
-                Please select at least one topic
-            </div>
+            <button id="start-quiz-btn" class="primary-btn">Start Quiz →</button>
         </div>
     </div>
 
@@ -203,14 +168,6 @@
                 <button id="restart-btn" class="primary-btn">Try Again</button>
                 <button id="change-difficulty-btn" class="secondary-btn">Change Settings</button>
             </div>
-        </div>
-    </div>
-
-    <!-- Custom Alert -->
-    <div id="custom-alert" class="alert-overlay">
-        <div class="alert-box">
-            <p id="alert-message">Alert message</p>
-            <button id="alert-ok-btn" class="alert-btn">OK</button>
         </div>
     </div>
 
