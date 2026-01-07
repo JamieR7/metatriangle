@@ -20,18 +20,26 @@
           <div class="difficulty-card" data-difficulty="rookie">
             <div class="difficulty-icon">🎓</div>
             <h2>Rookie</h2>
-            <p>SL focus</p>
+            <p>Learning mode</p>
           </div>
           <div class="difficulty-card" data-difficulty="varsity">
             <div class="difficulty-icon">🏃</div>
             <h2>Varsity</h2>
-            <p>SL + HL mix</p>
+            <p>Balanced challenge</p>
           </div>
           <div class="difficulty-card" data-difficulty="pro">
             <div class="difficulty-icon">🏆</div>
             <h2>Pro</h2>
-            <p>HL focus</p>
+            <p>Serious business</p>
           </div>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <h3>Question level</h3>
+        <div class="question-count-buttons" aria-label="Question level selection">
+          <button class="count-btn active" data-level-select="sl" type="button">SL only</button>
+          <button class="count-btn" data-level-select="slhl" type="button">SL + HL</button>
         </div>
       </div>
 
@@ -97,42 +105,42 @@
 
         <svg class="confidence-triangle" viewBox="0 0 500 450" role="img" aria-label="Confidence triangle">
           <!-- Triangle (equilateral) -->
-<polygon points="250,78 70,390 430,390"
-         fill="#d9d9d9" stroke="#111" stroke-width="6" stroke-linejoin="round"/>
+          <polygon points="250,78 70,390 430,390"
+                   fill="#d9d9d9" stroke="#111" stroke-width="6" stroke-linejoin="round"/>
 
-<!-- Edges -->
-<line x1="250" y1="78" x2="70"  y2="390" stroke="#111" stroke-width="6" />
-<line x1="250" y1="78" x2="430" y2="390" stroke="#111" stroke-width="6" />
-<line x1="70"  y1="390" x2="430" y2="390" stroke="#111" stroke-width="6" />
+          <!-- Edges -->
+          <line x1="250" y1="78" x2="70"  y2="390" stroke="#111" stroke-width="6" />
+          <line x1="250" y1="78" x2="430" y2="390" stroke="#111" stroke-width="6" />
+          <line x1="70"  y1="390" x2="430" y2="390" stroke="#111" stroke-width="6" />
 
-<!-- Corner circles -->
-<circle class="conf-circle" data-key="A" cx="250" cy="78"  r="28"></circle>
-<circle class="conf-circle" data-key="B" cx="70"  cy="390" r="28"></circle>
-<circle class="conf-circle" data-key="C" cx="430" cy="390" r="28"></circle>
+          <!-- Corner circles -->
+          <circle class="conf-circle" data-key="A" cx="250" cy="78"  r="28"></circle>
+          <circle class="conf-circle" data-key="B" cx="70"  cy="390" r="28"></circle>
+          <circle class="conf-circle" data-key="C" cx="430" cy="390" r="28"></circle>
 
-<!-- AB side circles (25/50/75% down the edge) -->
-<circle class="conf-circle" data-key="AB_closeA" cx="205" cy="156" r="22"></circle>
-<circle class="conf-circle" data-key="AB_equal"  cx="160" cy="234" r="22"></circle>
-<circle class="conf-circle" data-key="AB_closeB" cx="115" cy="312" r="22"></circle>
+          <!-- AB side circles (25/50/75% down the edge) -->
+          <circle class="conf-circle" data-key="AB_closeA" cx="205" cy="156" r="22"></circle>
+          <circle class="conf-circle" data-key="AB_equal"  cx="160" cy="234" r="22"></circle>
+          <circle class="conf-circle" data-key="AB_closeB" cx="115" cy="312" r="22"></circle>
 
-<!-- AC side circles -->
-<circle class="conf-circle" data-key="AC_closeA" cx="295" cy="156" r="22"></circle>
-<circle class="conf-circle" data-key="AC_equal"  cx="340" cy="234" r="22"></circle>
-<circle class="conf-circle" data-key="AC_closeC" cx="385" cy="312" r="22"></circle>
+          <!-- AC side circles -->
+          <circle class="conf-circle" data-key="AC_closeA" cx="295" cy="156" r="22"></circle>
+          <circle class="conf-circle" data-key="AC_equal"  cx="340" cy="234" r="22"></circle>
+          <circle class="conf-circle" data-key="AC_closeC" cx="385" cy="312" r="22"></circle>
 
-<!-- BC base circles -->
-<circle class="conf-circle" data-key="BC_closeB" cx="180" cy="390" r="22"></circle>
-<circle class="conf-circle" data-key="BC_equal"  cx="250" cy="390" r="22"></circle>
-<circle class="conf-circle" data-key="BC_closeC" cx="320" cy="390" r="22"></circle>
+          <!-- BC base circles -->
+          <circle class="conf-circle" data-key="BC_closeB" cx="180" cy="390" r="22"></circle>
+          <circle class="conf-circle" data-key="BC_equal"  cx="250" cy="390" r="22"></circle>
+          <circle class="conf-circle" data-key="BC_closeC" cx="320" cy="390" r="22"></circle>
 
-<!-- Center -->
-<circle class="conf-circle" data-key="center" cx="250" cy="286" r="26"></circle>
+          <!-- Center -->
+          <circle class="conf-circle" data-key="center" cx="250" cy="286" r="26"></circle>
 
-<!-- Labels -->
-<text x="250" y="88" text-anchor="middle" font-size="20" font-weight="800" fill="#111">A</text>
-<text x="70"  y="398" text-anchor="middle" font-size="20" font-weight="800" fill="#111">B</text>
-<text x="430" y="398" text-anchor="middle" font-size="20" font-weight="800" fill="#111">C</text>
-<text x="250" y="293" text-anchor="middle" font-size="22" font-weight="900" fill="#111">?</text>
+          <!-- Labels -->
+          <text x="250" y="88" text-anchor="middle" font-size="20" font-weight="800" fill="#111">A</text>
+          <text x="70"  y="398" text-anchor="middle" font-size="20" font-weight="800" fill="#111">B</text>
+          <text x="430" y="398" text-anchor="middle" font-size="20" font-weight="800" fill="#111">C</text>
+          <text x="250" y="293" text-anchor="middle" font-size="22" font-weight="900" fill="#111">?</text>
         </svg>
       </div>
 
