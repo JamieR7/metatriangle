@@ -721,3 +721,11 @@ body {
         font-size: 2rem;
     }
 }
+
+/* ===== Additions for triangle-only input ===== */
+.answers-grid .answer-btn{
+  pointer-events: none;
+}
+.conf-circle{
+  pointer-events: all;
+}
