@@ -80,7 +80,25 @@
             </div>
         </div>
 
-        <!-- TRIANGLE FIRST, THEN BUTTONS BELOW -->
+        <!-- ANSWER BUTTONS FIRST: A above, B and C side by side -->
+        <div class="answers-grid">
+            <button class="answer-btn" id="btn-A">
+                <span class="answer-label">A</span>
+                <span class="answer-text" id="answer-text-A">Central nervous system</span>
+            </button>
+
+            <button class="answer-btn" id="btn-B">
+                <span class="answer-label">B</span>
+                <span class="answer-text" id="answer-text-B">Somatic nervous system</span>
+            </button>
+
+            <button class="answer-btn" id="btn-C">
+                <span class="answer-label">C</span>
+                <span class="answer-text" id="answer-text-C">Autonomic nervous system</span>
+            </button>
+        </div>
+
+        <!-- TRIANGLE BELOW BUTTONS -->
         <div class="triangle-container">
             <p class="triangle-instruction">Click a circle on the triangle to indicate your confidence level</p>
 
@@ -113,24 +131,6 @@
                 <!-- Center circle (0 points) -->
                 <circle cx="300" cy="260" r="12" class="conf-circle" data-position="center"/>
             </svg>
-        </div>
-
-        <!-- ANSWER BUTTONS BELOW TRIANGLE -->
-        <div class="answers-grid">
-            <button class="answer-btn" id="btn-A">
-                <span class="answer-label">A</span>
-                <span class="answer-text">Central nervous system</span>
-            </button>
-
-            <button class="answer-btn" id="btn-B">
-                <span class="answer-label">B</span>
-                <span class="answer-text">Somatic nervous system</span>
-            </button>
-
-            <button class="answer-btn" id="btn-C">
-                <span class="answer-label">C</span>
-                <span class="answer-text">Autonomic nervous system</span>
-            </button>
         </div>
 
         <div id="points-display" class="points-display">
