@@ -1,4 +1,4 @@
-/* SEHS Triangle Quiz - Compact Layout */
+/* SEHS Triangle Quiz - Compact Layout with Position-Based Scoring */
 
 * {
     margin: 0;
@@ -284,7 +284,7 @@ body {
 }
 
 .answer-btn.correct {
-    background: rgba(40, 167, 69, 0.1);
+    background: rgba(40, 167, 69, 0.15);
     border-color: var(--success-green);
     animation: pulse 0.5s ease;
 }
@@ -297,7 +297,6 @@ body {
 .answer-btn.wrong {
     background: rgba(231, 48, 55, 0.1);
     border-color: var(--accent-red);
-    animation: shake 0.5s ease;
 }
 
 .answer-btn.wrong .answer-label {
@@ -313,12 +312,6 @@ body {
 @keyframes pulse {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.02); }
-}
-
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-6px); }
-    75% { transform: translateX(6px); }
 }
 
 /* Triangle Box - COMPACT */
@@ -374,6 +367,11 @@ body {
     stroke-width: 5;
 }
 
+.conf-circle.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
 .corner-label {
     fill: var(--primary-blue);
     font-size: 28px;
@@ -395,39 +393,83 @@ body {
     gap: 1rem;
 }
 
-/* Feedback */
-.feedback {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.9);
-    color: var(--white);
-    padding: 1.5rem 2.5rem;
-    border-radius: 12px;
-    font-size: 1.8rem;
-    font-weight: 700;
+/* Points Display - Rounded Box */
+.points-display {
     display: none;
-    z-index: 1000;
-    border: 3px solid var(--accent-yellow);
+    background: var(--accent-yellow);
+    border: 3px solid var(--primary-blue);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin: 1.5rem auto;
+    text-align: center;
+    max-width: 300px;
+    animation: slideIn 0.4s ease;
 }
 
-.feedback.show {
+.points-display.show {
     display: block;
-    animation: fadeIn 0.3s ease;
 }
 
-.feedback.correct {
+.points-display.positive {
     background: var(--success-green);
+    border-color: #1e7e34;
 }
 
-.feedback.wrong {
+.points-display.negative {
     background: var(--accent-red);
+    border-color: #bd2130;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.points-display.neutral {
+    background: var(--neutral-gray);
+    border-color: #495057;
+}
+
+.points-text {
+    color: var(--white);
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Next Question Button */
+.btn-next {
+    display: none;
+    width: 100%;
+    max-width: 400px;
+    margin: 1rem auto;
+    padding: 1rem 2rem;
+    background: var(--primary-blue);
+    color: var(--white);
+    border: 3px solid var(--accent-yellow);
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.btn-next.show {
+    display: block;
+}
+
+.btn-next:hover {
+    background: var(--accent-yellow);
+    color: var(--primary-blue);
+    transform: scale(1.05);
 }
 
 /* ==================== RESULTS ==================== */
@@ -562,5 +604,39 @@ body {
 
     #difficulty-screen h1 {
         font-size: 2rem;
+    }
+}
+
+/* MOBILE - Extra compact, corners forced */
+@media (max-width: 480px) {
+    .triangle-box {
+        padding: 0.6rem;
+        margin-bottom: 0.6rem;
+    }
+
+    .triangle-svg {
+        max-width: 380px;
+    }
+
+    .question-box {
+        padding: 0.8rem 1rem;
+        margin-bottom: 0.6rem;
+    }
+
+    .answer-btn {
+        padding: 0.8rem 1rem;
+        margin-bottom: 0.6rem;
+    }
+
+    .header {
+        padding: 0.8rem 1rem;
+    }
+
+    .stats {
+        gap: 1rem;
+    }
+
+    .stat-value {
+        font-size: 1.3rem;
     }
 }
