@@ -1,22 +1,22 @@
 // app.js — SEHS Triangle Quiz (triangle-only input)
-// Difficulty controls funny distractor frequency.
-// Separate "Question level" control chooses SL only vs SL+HL.
+// HL inclusion is controlled by "Question level" buttons.
+// Funny distractor frequency is controlled by Rookie/Varsity/Pro.
 
 let state = {
   difficulty: null,          // rookie | varsity | pro
   questionCount: 10,         // number | "all"
-  levelSelect: 'sl',         // 'sl' | 'slhl'  (SL only vs SL+HL)
-
+  levelSelect: 'sl',         // 'sl' | 'slhl'
   currentQuestionIndex: 0,
   score: 10,
 
   questions: [],
-
   correctSlot: null,         // 'A' | 'B' | 'C'
   locked: false,
 
   correctCount: 0,           // points > 0
-  wrongCount: 0              // points <= 0
+  wrongCount: 0,             // points <= 0
+
+  history: []                // { topic, points, circleKey, correctSlot }
 };
 
 const DIFFICULTY_DISPLAY = {
@@ -36,7 +36,6 @@ function includeHL() {
 }
 
 function getQuestionsDB() {
-  // questions-db.js should do: window.questionsDB = QUESTIONS_DB;
   return window.questionsDB || window.QUESTIONS_DB || window.questions || [];
 }
 
@@ -60,6 +59,9 @@ const SCORE = {
 
   center:    { A: 0, B: 0, C: 0 }
 };
+
+const MAX_POS_POINTS = 3;
+const MAX_NEG_POINTS = -2;
 
 // ----- DOM -----
 const difficultyScreen = document.getElementById('difficulty-screen');
@@ -109,7 +111,7 @@ document.querySelectorAll('.difficulty-card').forEach(card => {
   });
 });
 
-// ----- Count selection (buttons with data-count) -----
+// ----- Count selection (data-count) -----
 document.querySelectorAll('.count-btn[data-count]').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.count-btn[data-count]').forEach(b => b.classList.remove('active'));
@@ -119,7 +121,7 @@ document.querySelectorAll('.count-btn[data-count]').forEach(btn => {
   });
 });
 
-// ----- Level selection (buttons with data-level-select) -----
+// ----- Level selection (data-level-select) -----
 document.querySelectorAll('.count-btn[data-level-select]').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.count-btn[data-level-select]').forEach(b => b.classList.remove('active'));
@@ -145,7 +147,6 @@ startBtn.addEventListener('click', () => {
 function startQuiz() {
   const db = getQuestionsDB();
 
-  // Filter by SL-only vs SL+HL
   const filtered = db.filter(q => {
     const lvl = normLevel(q.level);
     if (includeHL()) return lvl === 'SL' || lvl === 'HL';
@@ -166,6 +167,7 @@ function startQuiz() {
   state.score = 10;
   state.correctCount = 0;
   state.wrongCount = 0;
+  state.history = [];
 
   setText('difficulty-display', DIFFICULTY_DISPLAY[state.difficulty] || '—');
   setText('total-q', state.questions.length);
@@ -211,7 +213,6 @@ function pickThreeOptions(question) {
 
   let chosen = correctEntry ? [correctEntry, ...distractors] : shuffleArray(entries).slice(0, 3);
 
-  // Safety: ensure 3 unique-ish options
   chosen = chosen.filter(Boolean);
   chosen = Array.from(new Map(chosen.map(x => [x.key, x])).values());
   while (chosen.length < 3) {
@@ -220,7 +221,7 @@ function pickThreeOptions(question) {
     chosen = Array.from(new Map(chosen.map(x => [x.key, x])).values());
   }
 
-  return { chosen: chosen.slice(0, 3), correctEntry };
+  return { chosen: chosen.slice(0, 3), correctEntry, includeFunny };
 }
 
 function assignToSlots(chosen, correctEntry) {
@@ -282,7 +283,6 @@ function loadQuestion() {
 
   const { chosen, correctEntry } = pickThreeOptions(question);
   const { slotMap, correctSlot } = assignToSlots(chosen, correctEntry);
-
   state.correctSlot = correctSlot;
 
   const aText = document.querySelector('#btn-A .answer-text');
@@ -313,13 +313,19 @@ function applyAnswer(circleKey) {
 
   state.locked = true;
 
-  // Lock triangle
   document.querySelectorAll('.conf-circle').forEach(c => {
     c.classList.add('disabled');
     c.style.pointerEvents = 'none';
   });
 
   const points = SCORE[circleKey][state.correctSlot];
+
+  state.history.push({
+    topic: state.questions[state.currentQuestionIndex]?.topic || 'Unknown',
+    points,
+    circleKey,
+    correctSlot: state.correctSlot
+  });
 
   state.score += points;
   setText('score', state.score);
@@ -338,7 +344,6 @@ document.querySelectorAll('.conf-circle').forEach(circle => {
   circle.addEventListener('click', () => {
     if (state.locked) return;
 
-    // Visual: only one selected ring
     document.querySelectorAll('.conf-circle').forEach(c => c.classList.remove('selected'));
     circle.classList.add('selected');
 
@@ -353,37 +358,74 @@ nextBtn.addEventListener('click', () => {
   else loadQuestion();
 });
 
+// ----- Topic bars -----
+function renderTopicBars() {
+  const byTopic = {};
+  state.history.forEach(rec => {
+    const topic = rec.topic || 'Unknown';
+    if (!byTopic[topic]) byTopic[topic] = { sum: 0, count: 0 };
+    byTopic[topic].sum += rec.points;
+    byTopic[topic].count += 1;
+  });
+
+  const topicList = document.getElementById('topic-list');
+  if (!topicList) return;
+
+  const topics = Object.keys(byTopic);
+  if (topics.length === 0) {
+    topicList.innerHTML = '<div style="text-align:center;color:var(--text-light);font-weight:700;">No topic data yet</div>';
+    return;
+  }
+
+  const rows = topics.map(topic => {
+    const { sum, count } = byTopic[topic];
+    const avg = sum / count;
+    return { topic, avg, count };
+  });
+
+  // Show weakest first (like a diagnostic)
+  rows.sort((a, b) => a.avg - b.avg);
+
+  topicList.innerHTML = '';
+  rows.forEach(({ topic, avg, count }) => {
+    let widthPct = 0;
+    let cls = 'positive';
+
+    if (avg >= 0) {
+      widthPct = Math.min((avg / MAX_POS_POINTS) * 50, 50);
+      cls = 'positive';
+    } else {
+      widthPct = Math.min((Math.abs(avg) / Math.abs(MAX_NEG_POINTS)) * 50, 50);
+      cls = 'negative';
+    }
+
+    const item = document.createElement('div');
+    item.className = 'topic-item';
+    item.innerHTML = `
+      <div class="topic-header">
+        <div class="topic-name">${escapeHtml(topic)} <span style="color:var(--text-light);font-weight:800;">(${count})</span></div>
+        <div class="topic-avg">${avg >= 0 ? '+' : ''}${avg.toFixed(1)}</div>
+      </div>
+      <div class="topic-bar">
+        <div class="topic-fill ${cls}" style="width:${widthPct}%"></div>
+      </div>
+    `;
+    topicList.appendChild(item);
+  });
+}
+
+function escapeHtml(s) {
+  return String(s)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
 // ----- Results -----
 function showResults() {
   showScreen(resultsScreen);
 
   setText('final-score', state.score);
   setText('correct-count', state.correctCount);
-  setText('wrong-count', state.wrongCount);
-
-  const total = state.questions.length || 1;
-  const accuracy = Math.round((state.correctCount / total) * 100);
-  setText('accuracy', accuracy + '%');
-
-  let msg = 'Review and try again!';
-  if (accuracy >= 90) msg = 'Outstanding!';
-  else if (accuracy >= 80) msg = 'Great job!';
-  else if (accuracy >= 70) msg = 'Well done!';
-  else if (accuracy >= 60) msg = 'Keep practicing!';
-
-  setText('performance-message', msg);
-}
-
-restartBtn.addEventListener('click', () => {
-  startQuiz();
-});
-
-changeDifficultyBtn.addEventListener('click', () => {
-  showScreen(difficultyScreen);
-});
-
-quitBtn.addEventListener('click', () => {
-  if (confirm('Are you sure you want to quit?')) {
-    showScreen(difficultyScreen);
-  }
-});
