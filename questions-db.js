@@ -4233,3 +4233,9 @@ const ALL_TOPICS = [
   "Transport (A.1.3)",
   "Water and Electrolyte Balance (A.2.1)"
 ];
+// If your questions array is called QUESTIONS_DB, add this:
+window.questionsDB = QUESTIONS_DB;
+
+// OR if your questions array has a different name, replace QUESTIONS_DB with your array name
+// For example, if your array is called 'questions', use:
+// window.questionsDB = questions;
