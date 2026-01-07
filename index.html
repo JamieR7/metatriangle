@@ -78,43 +78,35 @@
                 <div class="answer-text">Type IIa fast-twitch</div>
             </button>
 
-            <!-- Triangle with 13 Confidence Circles -->
+            <!-- Triangle with 13 Confidence Circles - NO LABELS -->
             <div class="triangle-box">
                 <p class="triangle-instruction">Click a circle on the triangle to indicate your confidence level</p>
                 <svg viewBox="0 0 600 450" class="triangle-svg">
                     <!-- Triangle outline -->
                     <polygon points="300,80 120,380 480,380" class="triangle-outline"/>
 
-                    <!-- 3 CORNER circles (data-position tells us which corner) -->
+                    <!-- 3 CORNER circles -->
                     <circle cx="300" cy="80"  r="20" class="conf-circle" data-position="A"/>
                     <circle cx="120" cy="380" r="20" class="conf-circle" data-position="B"/>
                     <circle cx="480" cy="380" r="20" class="conf-circle" data-position="C"/>
 
-                    <!-- LEFT SIDE (A→B): closer to A (+2), middle (+1), closer to B (-1) -->
+                    <!-- LEFT SIDE (A→B) -->
                     <circle cx="255" cy="155" r="20" class="conf-circle" data-side="AB" data-level="close-A"/>
                     <circle cx="210" cy="230" r="20" class="conf-circle" data-side="AB" data-level="equal"/>
                     <circle cx="165" cy="305" r="20" class="conf-circle" data-side="AB" data-level="close-B"/>
 
-                    <!-- RIGHT SIDE (A→C): closer to A (+2), middle (+1), closer to C (-1) -->
+                    <!-- RIGHT SIDE (A→C) -->
                     <circle cx="345" cy="155" r="20" class="conf-circle" data-side="AC" data-level="close-A"/>
                     <circle cx="390" cy="230" r="20" class="conf-circle" data-side="AC" data-level="equal"/>
                     <circle cx="435" cy="305" r="20" class="conf-circle" data-side="AC" data-level="close-C"/>
 
-                    <!-- BASE (B→C): all -2 points -->
+                    <!-- BASE (B→C) -->
                     <circle cx="210" cy="380" r="20" class="conf-circle" data-side="BC" data-level="base"/>
                     <circle cx="300" cy="380" r="20" class="conf-circle" data-side="BC" data-level="base"/>
                     <circle cx="390" cy="380" r="20" class="conf-circle" data-side="BC" data-level="base"/>
 
-                    <!-- CENTER circle (0 points always) -->
+                    <!-- CENTER circle -->
                     <circle cx="300" cy="280" r="20" class="conf-circle" data-position="center"/>
-
-                    <!-- Corner Labels -->
-                    <text x="300" y="60" class="corner-label" text-anchor="middle">A</text>
-                    <text x="95"  y="410" class="corner-label" text-anchor="middle">B</text>
-                    <text x="505" y="410" class="corner-label" text-anchor="middle">C</text>
-
-                    <!-- Center D label -->
-                    <text x="300" y="310" class="center-d-label" text-anchor="middle">D</text>
                 </svg>
             </div>
 
