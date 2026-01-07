@@ -6,7 +6,7 @@
 const QUESTIONS_DB = [
   {
     id: 'Q001',
-    topic: `Inter-system Communication (A.1.1)`,
+    topic: 'Inter-system Communication (A.1.1)',
     level: 'SL',
     question: `Which division controls involuntary functions like heart rate?`,
     options: {
@@ -18,7 +18,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q002',
-    topic: `Inter-system Communication (A.1.1)`,
+    topic: 'Inter-system Communication (A.1.1)',
     level: 'SL',
     question: `Which hormone lowers blood glucose?`,
     options: {
@@ -30,7 +30,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q003',
-    topic: `Inter-system Communication (A.1.1)`,
+    topic: 'Inter-system Communication (A.1.1)',
     level: 'SL',
     question: `What do proprioceptors detect?`,
     options: {
@@ -42,7 +42,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q004',
-    topic: `Inter-system Communication (A.1.1)`,
+    topic: 'Inter-system Communication (A.1.1)',
     level: 'SL',
     question: `Which system promotes 'rest and digest' functions?`,
     options: {
@@ -54,7 +54,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q005',
-    topic: `Inter-system Communication (A.1.1)`,
+    topic: 'Inter-system Communication (A.1.1)',
     level: 'SL',
     question: `What does epinephrine do to the heart?`,
     options: {
@@ -66,7 +66,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q006',
-    topic: `Inter-system Communication (A.1.1)`,
+    topic: 'Inter-system Communication (A.1.1)',
     level: 'SL',
     question: `What is glucagon's primary action?`,
     options: {
@@ -78,7 +78,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q007',
-    topic: `Inter-system Communication (A.1.1)`,
+    topic: 'Inter-system Communication (A.1.1)',
     level: 'SL',
     question: `Which receptors detect blood gas levels?`,
     options: {
@@ -90,7 +90,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q008',
-    topic: `Inter-system Communication (A.1.1)`,
+    topic: 'Inter-system Communication (A.1.1)',
     level: 'SL',
     question: `What do baroreceptors detect?`,
     options: {
@@ -102,7 +102,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q009',
-    topic: `Inter-system Communication (A.1.1)`,
+    topic: 'Inter-system Communication (A.1.1)',
     level: 'SL',
     question: `How does progesterone affect body temperature?`,
     options: {
@@ -114,7 +114,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q010',
-    topic: `Inter-system Communication (A.1.1)`,
+    topic: 'Inter-system Communication (A.1.1)',
     level: 'SL',
     question: `The sympathetic system prepares the body for what?`,
     options: {
@@ -126,7 +126,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q011',
-    topic: `Inter-system Communication (A.1.1)`,
+    topic: 'Inter-system Communication (A.1.1)',
     level: 'SL',
     question: `What does testosterone increase?`,
     options: {
@@ -138,7 +138,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q012',
-    topic: `Inter-system Communication (A.1.1)`,
+    topic: 'Inter-system Communication (A.1.1)',
     level: 'SL',
     question: `Mechanoreceptors include which receptors?`,
     options: {
@@ -150,7 +150,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q013',
-    topic: `Maintaining Homeostasis (A.1.2)`,
+    topic: 'Maintaining Homeostasis (A.1.2)',
     level: 'SL',
     question: `How is homeostasis primarily maintained?`,
     options: {
@@ -162,7 +162,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q014',
-    topic: `Maintaining Homeostasis (A.1.2)`,
+    topic: 'Maintaining Homeostasis (A.1.2)',
     level: 'SL',
     question: `What is the normal core temperature range?`,
     options: {
@@ -174,7 +174,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q015',
-    topic: `Maintaining Homeostasis (A.1.2)`,
+    topic: 'Maintaining Homeostasis (A.1.2)',
     level: 'SL',
     question: `Which promotes heat loss during exercise?`,
     options: {
@@ -186,7 +186,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q016',
-    topic: `Maintaining Homeostasis (A.1.2)`,
+    topic: 'Maintaining Homeostasis (A.1.2)',
     level: 'SL',
     question: `How does breathing maintain blood pH?`,
     options: {
@@ -198,7 +198,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q017',
-    topic: `Maintaining Homeostasis (A.1.2)`,
+    topic: 'Maintaining Homeostasis (A.1.2)',
     level: 'SL',
     question: `What is the hypothalamus's role in thermoregulation?`,
     options: {
@@ -210,7 +210,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q018',
-    topic: `Maintaining Homeostasis (A.1.2)`,
+    topic: 'Maintaining Homeostasis (A.1.2)',
     level: 'SL',
     question: `Which mechanism produces heat in cold conditions?`,
     options: {
@@ -222,7 +222,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q019',
-    topic: `Maintaining Homeostasis (A.1.2)`,
+    topic: 'Maintaining Homeostasis (A.1.2)',
     level: 'SL',
     question: `What happens to skin blood flow during heat loss?`,
     options: {
@@ -234,7 +234,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q020',
-    topic: `Maintaining Homeostasis (A.1.2)`,
+    topic: 'Maintaining Homeostasis (A.1.2)',
     level: 'SL',
     question: `Which systems maintain thermoregulation during exercise?`,
     options: {
@@ -246,7 +246,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q021',
-    topic: `Maintaining Homeostasis (A.1.2)`,
+    topic: 'Maintaining Homeostasis (A.1.2)',
     level: 'HL',
     question: `What's a short-term altitude response?`,
     options: {
@@ -258,7 +258,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q022',
-    topic: `Maintaining Homeostasis (A.1.2)`,
+    topic: 'Maintaining Homeostasis (A.1.2)',
     level: 'HL',
     question: `What's a long-term altitude adaptation?`,
     options: {
@@ -270,7 +270,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q023',
-    topic: `Maintaining Homeostasis (A.1.2)`,
+    topic: 'Maintaining Homeostasis (A.1.2)',
     level: 'HL',
     question: `What challenges hot, humid exercise?`,
     options: {
@@ -282,7 +282,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q024',
-    topic: `Maintaining Homeostasis (A.1.2)`,
+    topic: 'Maintaining Homeostasis (A.1.2)',
     level: 'HL',
     question: `What does heat acclimatization cause?`,
     options: {
@@ -294,7 +294,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q025',
-    topic: `Transport (A.1.3)`,
+    topic: 'Transport (A.1.3)',
     level: 'SL',
     question: `What is cardiac output?`,
     options: {
@@ -306,7 +306,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q026',
-    topic: `Transport (A.1.3)`,
+    topic: 'Transport (A.1.3)',
     level: 'SL',
     question: `Where does blood flow decrease during intense exercise?`,
     options: {
@@ -318,7 +318,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q027',
-    topic: `Transport (A.1.3)`,
+    topic: 'Transport (A.1.3)',
     level: 'SL',
     question: `What is tidal volume?`,
     options: {
@@ -330,7 +330,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q028',
-    topic: `Transport (A.1.3)`,
+    topic: 'Transport (A.1.3)',
     level: 'SL',
     question: `How is minute ventilation calculated?`,
     options: {
@@ -342,7 +342,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q029',
-    topic: `Transport (A.1.3)`,
+    topic: 'Transport (A.1.3)',
     level: 'SL',
     question: `What is stroke volume?`,
     options: {
@@ -354,7 +354,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q030',
-    topic: `Transport (A.1.3)`,
+    topic: 'Transport (A.1.3)',
     level: 'SL',
     question: `What increases during aerobic exercise?`,
     options: {
@@ -366,7 +366,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q031',
-    topic: `Transport (A.1.3)`,
+    topic: 'Transport (A.1.3)',
     level: 'SL',
     question: `What is the a-vO₂ difference?`,
     options: {
@@ -378,7 +378,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q032',
-    topic: `Transport (A.1.3)`,
+    topic: 'Transport (A.1.3)',
     level: 'SL',
     question: `What mechanisms aid venous return?`,
     options: {
@@ -390,7 +390,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q033',
-    topic: `Transport (A.1.3)`,
+    topic: 'Transport (A.1.3)',
     level: 'SL',
     question: `What happens to breathing frequency during exercise?`,
     options: {
@@ -402,7 +402,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q034',
-    topic: `Transport (A.1.3)`,
+    topic: 'Transport (A.1.3)',
     level: 'SL',
     question: `Which variable increases most during maximal exercise?`,
     options: {
@@ -414,7 +414,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q035',
-    topic: `Water and Electrolyte Balance (A.2.1)`,
+    topic: 'Water and Electrolyte Balance (A.2.1)',
     level: 'SL',
     question: `What is cardiovascular drift?`,
     options: {
@@ -426,7 +426,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q036',
-    topic: `Water and Electrolyte Balance (A.2.1)`,
+    topic: 'Water and Electrolyte Balance (A.2.1)',
     level: 'SL',
     question: `What results from excessive water without electrolytes?`,
     options: {
@@ -438,7 +438,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q037',
-    topic: `Water and Electrolyte Balance (A.2.1)`,
+    topic: 'Water and Electrolyte Balance (A.2.1)',
     level: 'SL',
     question: `Which hormone regulates kidney water retention?`,
     options: {
@@ -450,7 +450,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q038',
-    topic: `Water and Electrolyte Balance (A.2.1)`,
+    topic: 'Water and Electrolyte Balance (A.2.1)',
     level: 'SL',
     question: `What dehydration level impairs performance?`,
     options: {
@@ -462,7 +462,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q039',
-    topic: `Water and Electrolyte Balance (A.2.1)`,
+    topic: 'Water and Electrolyte Balance (A.2.1)',
     level: 'SL',
     question: `What's the primary electrolyte lost in sweat?`,
     options: {
@@ -474,7 +474,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q040',
-    topic: `Water and Electrolyte Balance (A.2.1)`,
+    topic: 'Water and Electrolyte Balance (A.2.1)',
     level: 'SL',
     question: `What does aldosterone regulate?`,
     options: {
@@ -486,7 +486,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q041',
-    topic: `Water and Electrolyte Balance (A.2.1)`,
+    topic: 'Water and Electrolyte Balance (A.2.1)',
     level: 'SL',
     question: `What's the recommended hydration strategy?`,
     options: {
@@ -498,7 +498,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q042',
-    topic: `Water and Electrolyte Balance (A.2.1)`,
+    topic: 'Water and Electrolyte Balance (A.2.1)',
     level: 'SL',
     question: `What triggers thirst sensation?`,
     options: {
@@ -510,7 +510,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q043',
-    topic: `Water and Electrolyte Balance (A.2.1)`,
+    topic: 'Water and Electrolyte Balance (A.2.1)',
     level: 'SL',
     question: `What's a consequence of dehydration?`,
     options: {
@@ -522,7 +522,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q044',
-    topic: `Water and Electrolyte Balance (A.2.1)`,
+    topic: 'Water and Electrolyte Balance (A.2.1)',
     level: 'SL',
     question: `Why include carbs in hydration drinks?`,
     options: {
@@ -534,7 +534,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q045',
-    topic: `Fuelling for Health and Performance (A.2.2)`,
+    topic: 'Fuelling for Health and Performance (A.2.2)',
     level: 'SL',
     question: `Primary fuel for high-intensity exercise?`,
     options: {
@@ -546,7 +546,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q046',
-    topic: `Fuelling for Health and Performance (A.2.2)`,
+    topic: 'Fuelling for Health and Performance (A.2.2)',
     level: 'SL',
     question: `What does LOW energy availability mean?`,
     options: {
@@ -558,7 +558,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q047',
-    topic: `Fuelling for Health and Performance (A.2.2)`,
+    topic: 'Fuelling for Health and Performance (A.2.2)',
     level: 'SL',
     question: `Most important for muscle repair?`,
     options: {
@@ -570,7 +570,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q048',
-    topic: `Fuelling for Health and Performance (A.2.2)`,
+    topic: 'Fuelling for Health and Performance (A.2.2)',
     level: 'SL',
     question: `Optimal carb timing post-exercise?`,
     options: {
@@ -582,7 +582,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q049',
-    topic: `Fuelling for Health and Performance (A.2.2)`,
+    topic: 'Fuelling for Health and Performance (A.2.2)',
     level: 'SL',
     question: `Most beneficial fat type?`,
     options: {
@@ -594,7 +594,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q050',
-    topic: `Fuelling for Health and Performance (A.2.2)`,
+    topic: 'Fuelling for Health and Performance (A.2.2)',
     level: 'SL',
     question: `What is glycogen?`,
     options: {
@@ -606,7 +606,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q051',
-    topic: `Fuelling for Health and Performance (A.2.2)`,
+    topic: 'Fuelling for Health and Performance (A.2.2)',
     level: 'SL',
     question: `Which is a RED-S symptom?`,
     options: {
@@ -618,7 +618,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q052',
-    topic: `Fuelling for Health and Performance (A.2.2)`,
+    topic: 'Fuelling for Health and Performance (A.2.2)',
     level: 'HL',
     question: `What's iron's primary role?`,
     options: {
@@ -630,7 +630,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q053',
-    topic: `Fuelling for Health and Performance (A.2.2)`,
+    topic: 'Fuelling for Health and Performance (A.2.2)',
     level: 'HL',
     question: `How does gut microbiome affect performance?`,
     options: {
@@ -642,7 +642,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q054',
-    topic: `Fuelling for Health and Performance (A.2.2)`,
+    topic: 'Fuelling for Health and Performance (A.2.2)',
     level: 'HL',
     question: `Recommended protein for strength athletes?`,
     options: {
@@ -654,7 +654,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q055',
-    topic: `Fuelling for Health and Performance (A.2.2)`,
+    topic: 'Fuelling for Health and Performance (A.2.2)',
     level: 'HL',
     question: `Which vitamin for calcium absorption?`,
     options: {
@@ -666,7 +666,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q056',
-    topic: `Fuelling for Health and Performance (A.2.2)`,
+    topic: 'Fuelling for Health and Performance (A.2.2)',
     level: 'HL',
     question: `What is carbohydrate loading?`,
     options: {
@@ -678,7 +678,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q057',
-    topic: `Fuelling for Health and Performance (A.2.2)`,
+    topic: 'Fuelling for Health and Performance (A.2.2)',
     level: 'HL',
     question: `Most common female athlete deficiency?`,
     options: {
@@ -690,7 +690,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q058',
-    topic: `Fuelling for Health and Performance (A.2.2)`,
+    topic: 'Fuelling for Health and Performance (A.2.2)',
     level: 'HL',
     question: `What is glycemic index?`,
     options: {
@@ -702,7 +702,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q059',
-    topic: `Fuelling for Health and Performance (A.2.2)`,
+    topic: 'Fuelling for Health and Performance (A.2.2)',
     level: 'HL',
     question: `Why combine carbs and protein post-exercise?`,
     options: {
@@ -714,7 +714,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q060',
-    topic: `Energy Systems (A.2.3)`,
+    topic: 'Energy Systems (A.2.3)',
     level: 'SL',
     question: `Primary system for 400m sprint?`,
     options: {
@@ -726,7 +726,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q061',
-    topic: `Energy Systems (A.2.3)`,
+    topic: 'Energy Systems (A.2.3)',
     level: 'SL',
     question: `Fuel for phosphagen system?`,
     options: {
@@ -738,7 +738,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q062',
-    topic: `Energy Systems (A.2.3)`,
+    topic: 'Energy Systems (A.2.3)',
     level: 'SL',
     question: `What does VO₂max represent?`,
     options: {
@@ -750,7 +750,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q063',
-    topic: `Energy Systems (A.2.3)`,
+    topic: 'Energy Systems (A.2.3)',
     level: 'SL',
     question: `When is oxidative system dominant?`,
     options: {
@@ -762,7 +762,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q064',
-    topic: `Energy Systems (A.2.3)`,
+    topic: 'Energy Systems (A.2.3)',
     level: 'SL',
     question: `Primary glycolytic system limitation?`,
     options: {
@@ -774,7 +774,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q065',
-    topic: `Energy Systems (A.2.3)`,
+    topic: 'Energy Systems (A.2.3)',
     level: 'SL',
     question: `Highest ATP production capacity?`,
     options: {
@@ -786,7 +786,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q066',
-    topic: `Energy Systems (A.2.3)`,
+    topic: 'Energy Systems (A.2.3)',
     level: 'SL',
     question: `Phosphagen system duration?`,
     options: {
@@ -798,7 +798,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q067',
-    topic: `Energy Systems (A.2.3)`,
+    topic: 'Energy Systems (A.2.3)',
     level: 'SL',
     question: `Where does glycolysis occur?`,
     options: {
@@ -810,7 +810,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q068',
-    topic: `Energy Systems (A.2.3)`,
+    topic: 'Energy Systems (A.2.3)',
     level: 'HL',
     question: `What is lactate threshold?`,
     options: {
@@ -822,7 +822,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q069',
-    topic: `Energy Systems (A.2.3)`,
+    topic: 'Energy Systems (A.2.3)',
     level: 'HL',
     question: `What is EPOC?`,
     options: {
@@ -834,7 +834,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q070',
-    topic: `Energy Systems (A.2.3)`,
+    topic: 'Energy Systems (A.2.3)',
     level: 'HL',
     question: `Primary substrate at moderate intensity?`,
     options: {
@@ -846,7 +846,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q071',
-    topic: `Energy Systems (A.2.3)`,
+    topic: 'Energy Systems (A.2.3)',
     level: 'HL',
     question: `Oxidative contribution as intensity increases?`,
     options: {
@@ -858,7 +858,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q072',
-    topic: `Energy Systems (A.2.3)`,
+    topic: 'Energy Systems (A.2.3)',
     level: 'HL',
     question: `ATP from one glucose aerobically?`,
     options: {
@@ -870,7 +870,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q073',
-    topic: `Energy Systems (A.2.3)`,
+    topic: 'Energy Systems (A.2.3)',
     level: 'HL',
     question: `What is RER?`,
     options: {
@@ -882,7 +882,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q074',
-    topic: `Energy Systems (A.2.3)`,
+    topic: 'Energy Systems (A.2.3)',
     level: 'HL',
     question: `Rate-limiting enzyme in glycolysis?`,
     options: {
@@ -894,7 +894,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q075',
-    topic: `Qualities of Training (A.3.1)`,
+    topic: 'Qualities of Training (A.3.1)',
     level: 'SL',
     question: `What does specificity principle state?`,
     options: {
@@ -906,7 +906,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q076',
-    topic: `Qualities of Training (A.3.1)`,
+    topic: 'Qualities of Training (A.3.1)',
     level: 'SL',
     question: `What is a macrocycle?`,
     options: {
@@ -918,7 +918,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q077',
-    topic: `Qualities of Training (A.3.1)`,
+    topic: 'Qualities of Training (A.3.1)',
     level: 'SL',
     question: `Overreaching vs overtraining difference?`,
     options: {
@@ -930,7 +930,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q078',
-    topic: `Qualities of Training (A.3.1)`,
+    topic: 'Qualities of Training (A.3.1)',
     level: 'SL',
     question: `What does progressive overload require?`,
     options: {
@@ -942,7 +942,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q079',
-    topic: `Qualities of Training (A.3.1)`,
+    topic: 'Qualities of Training (A.3.1)',
     level: 'SL',
     question: `Typical mesocycle duration?`,
     options: {
@@ -954,7 +954,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q080',
-    topic: `Qualities of Training (A.3.1)`,
+    topic: 'Qualities of Training (A.3.1)',
     level: 'SL',
     question: `What is a microcycle?`,
     options: {
@@ -966,7 +966,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q081',
-    topic: `Qualities of Training (A.3.1)`,
+    topic: 'Qualities of Training (A.3.1)',
     level: 'SL',
     question: `What does reversibility state?`,
     options: {
@@ -978,7 +978,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q082',
-    topic: `Qualities of Training (A.3.1)`,
+    topic: 'Qualities of Training (A.3.1)',
     level: 'SL',
     question: `Which principle addresses individual differences?`,
     options: {
@@ -990,7 +990,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q083',
-    topic: `Qualities of Training (A.3.1)`,
+    topic: 'Qualities of Training (A.3.1)',
     level: 'SL',
     question: `What is periodization?`,
     options: {
@@ -1002,7 +1002,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q084',
-    topic: `Qualities of Training (A.3.1)`,
+    topic: 'Qualities of Training (A.3.1)',
     level: 'SL',
     question: `What is tapering?`,
     options: {
@@ -1014,7 +1014,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q085',
-    topic: `Qualities of Training (A.3.1)`,
+    topic: 'Qualities of Training (A.3.1)',
     level: 'SL',
     question: `Goal of recovery microcycle?`,
     options: {
@@ -1026,7 +1026,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q086',
-    topic: `Qualities of Training (A.3.1)`,
+    topic: 'Qualities of Training (A.3.1)',
     level: 'SL',
     question: `What involves alternating intensity?`,
     options: {
@@ -1038,7 +1038,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q087',
-    topic: `Benefits to Health (A.3.2)`,
+    topic: 'Benefits to Health (A.3.2)',
     level: 'SL',
     question: `What does aerobic exercise reduce?`,
     options: {
@@ -1050,7 +1050,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q088',
-    topic: `Benefits to Health (A.3.2)`,
+    topic: 'Benefits to Health (A.3.2)',
     level: 'SL',
     question: `Primary resistance training benefit?`,
     options: {
@@ -1062,7 +1062,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q089',
-    topic: `Benefits to Health (A.3.2)`,
+    topic: 'Benefits to Health (A.3.2)',
     level: 'SL',
     question: `Key mental health benefit?`,
     options: {
@@ -1074,7 +1074,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q090',
-    topic: `Benefits to Health (A.3.2)`,
+    topic: 'Benefits to Health (A.3.2)',
     level: 'SL',
     question: `How does exercise affect bones?`,
     options: {
@@ -1086,7 +1086,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q091',
-    topic: `Benefits to Health (A.3.2)`,
+    topic: 'Benefits to Health (A.3.2)',
     level: 'SL',
     question: `WHO weekly activity recommendation?`,
     options: {
@@ -1098,7 +1098,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q092',
-    topic: `Benefits to Health (A.3.2)`,
+    topic: 'Benefits to Health (A.3.2)',
     level: 'HL',
     question: `Exercise effect on insulin sensitivity?`,
     options: {
@@ -1110,7 +1110,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q093',
-    topic: `Benefits to Health (A.3.2)`,
+    topic: 'Benefits to Health (A.3.2)',
     level: 'HL',
     question: `Aerobic training effect on resting HR?`,
     options: {
@@ -1122,7 +1122,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q094',
-    topic: `Benefits to Health (A.3.2)`,
+    topic: 'Benefits to Health (A.3.2)',
     level: 'HL',
     question: `Which cardiovascular adaptation occurs?`,
     options: {
@@ -1134,7 +1134,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q095',
-    topic: `Benefits to Health (A.3.2)`,
+    topic: 'Benefits to Health (A.3.2)',
     level: 'HL',
     question: `Exercise effect on HDL?`,
     options: {
@@ -1146,7 +1146,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q096',
-    topic: `Benefits to Health (A.3.2)`,
+    topic: 'Benefits to Health (A.3.2)',
     level: 'HL',
     question: `Physical activity and mortality relationship?`,
     options: {
@@ -1158,7 +1158,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q097',
-    topic: `Fatigue and Recovery (A.3.3)`,
+    topic: 'Fatigue and Recovery (A.3.3)',
     level: 'HL',
     question: `Example of peripheral fatigue?`,
     options: {
@@ -1170,7 +1170,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q098',
-    topic: `Fatigue and Recovery (A.3.3)`,
+    topic: 'Fatigue and Recovery (A.3.3)',
     level: 'HL',
     question: `What is central fatigue?`,
     options: {
@@ -1182,7 +1182,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q099',
-    topic: `Fatigue and Recovery (A.3.3)`,
+    topic: 'Fatigue and Recovery (A.3.3)',
     level: 'HL',
     question: `Strongest evidence for reducing soreness?`,
     options: {
@@ -1194,7 +1194,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q100',
-    topic: `Fatigue and Recovery (A.3.3)`,
+    topic: 'Fatigue and Recovery (A.3.3)',
     level: 'HL',
     question: `What is glycogen depletion?`,
     options: {
@@ -1206,7 +1206,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q101',
-    topic: `Fatigue and Recovery (A.3.3)`,
+    topic: 'Fatigue and Recovery (A.3.3)',
     level: 'HL',
     question: `Sleep's role in recovery?`,
     options: {
@@ -1218,7 +1218,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q102',
-    topic: `Fatigue and Recovery (A.3.3)`,
+    topic: 'Fatigue and Recovery (A.3.3)',
     level: 'HL',
     question: `What is DOMS?`,
     options: {
@@ -1230,7 +1230,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q103',
-    topic: `Fatigue and Recovery (A.3.3)`,
+    topic: 'Fatigue and Recovery (A.3.3)',
     level: 'HL',
     question: `Which contraction causes most DOMS?`,
     options: {
@@ -1242,7 +1242,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q104',
-    topic: `Fatigue and Recovery (A.3.3)`,
+    topic: 'Fatigue and Recovery (A.3.3)',
     level: 'HL',
     question: `Primary purpose of active recovery?`,
     options: {
@@ -1254,7 +1254,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q105',
-    topic: `Fatigue and Recovery (A.3.3)`,
+    topic: 'Fatigue and Recovery (A.3.3)',
     level: 'HL',
     question: `How might cold immersion aid recovery?`,
     options: {
@@ -1266,7 +1266,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q106',
-    topic: `Fatigue and Recovery (A.3.3)`,
+    topic: 'Fatigue and Recovery (A.3.3)',
     level: 'HL',
     question: `Recovery time between resistance sessions?`,
     options: {
@@ -1278,7 +1278,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q107',
-    topic: `Fatigue and Recovery (A.3.3)`,
+    topic: 'Fatigue and Recovery (A.3.3)',
     level: 'HL',
     question: `Which hormone promotes muscle recovery during sleep?`,
     options: {
@@ -1290,7 +1290,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q108',
-    topic: `Fatigue and Recovery (A.3.3)`,
+    topic: 'Fatigue and Recovery (A.3.3)',
     level: 'HL',
     question: `What might compression garments do?`,
     options: {
@@ -1302,7 +1302,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q109',
-    topic: `Fatigue and Recovery (A.3.3)`,
+    topic: 'Fatigue and Recovery (A.3.3)',
     level: 'HL',
     question: `What is 'repeated bout effect'?`,
     options: {
@@ -1314,7 +1314,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q110',
-    topic: `Fatigue and Recovery (A.3.3)`,
+    topic: 'Fatigue and Recovery (A.3.3)',
     level: 'HL',
     question: `Sign of inadequate recovery?`,
     options: {
@@ -1326,7 +1326,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q111',
-    topic: `Anatomical Position, Planes and Movement (B.1.1)`,
+    topic: 'Anatomical Position, Planes and Movement (B.1.1)',
     level: 'SL',
     question: `Which plane divides body into left and right?`,
     options: {
@@ -1338,7 +1338,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q112',
-    topic: `Anatomical Position, Planes and Movement (B.1.1)`,
+    topic: 'Anatomical Position, Planes and Movement (B.1.1)',
     level: 'SL',
     question: `What movement occurs during lateral arm raise?`,
     options: {
@@ -1350,7 +1350,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q113',
-    topic: `Anatomical Position, Planes and Movement (B.1.1)`,
+    topic: 'Anatomical Position, Planes and Movement (B.1.1)',
     level: 'SL',
     question: `Which movement occurs during bicep curl?`,
     options: {
@@ -1362,7 +1362,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q114',
-    topic: `Anatomical Position, Planes and Movement (B.1.1)`,
+    topic: 'Anatomical Position, Planes and Movement (B.1.1)',
     level: 'SL',
     question: `What is the anatomical position?`,
     options: {
@@ -1374,7 +1374,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q115',
-    topic: `Anatomical Position, Planes and Movement (B.1.1)`,
+    topic: 'Anatomical Position, Planes and Movement (B.1.1)',
     level: 'SL',
     question: `Which plane divides into upper and lower?`,
     options: {
@@ -1386,7 +1386,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q116',
-    topic: `Anatomical Position, Planes and Movement (B.1.1)`,
+    topic: 'Anatomical Position, Planes and Movement (B.1.1)',
     level: 'SL',
     question: `What movement brings part toward midline?`,
     options: {
@@ -1398,7 +1398,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q117',
-    topic: `Anatomical Position, Planes and Movement (B.1.1)`,
+    topic: 'Anatomical Position, Planes and Movement (B.1.1)',
     level: 'SL',
     question: `Dorsiflexion occurs at which joint?`,
     options: {
@@ -1410,7 +1410,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q118',
-    topic: `Anatomical Position, Planes and Movement (B.1.1)`,
+    topic: 'Anatomical Position, Planes and Movement (B.1.1)',
     level: 'SL',
     question: `Which axis runs front to back?`,
     options: {
@@ -1422,7 +1422,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q119',
-    topic: `Anatomical Position, Planes and Movement (B.1.1)`,
+    topic: 'Anatomical Position, Planes and Movement (B.1.1)',
     level: 'SL',
     question: `What movement increases joint angle?`,
     options: {
@@ -1434,7 +1434,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q120',
-    topic: `Anatomical Position, Planes and Movement (B.1.1)`,
+    topic: 'Anatomical Position, Planes and Movement (B.1.1)',
     level: 'HL',
     question: `What is circumduction?`,
     options: {
@@ -1446,7 +1446,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q121',
-    topic: `Anatomical Position, Planes and Movement (B.1.1)`,
+    topic: 'Anatomical Position, Planes and Movement (B.1.1)',
     level: 'HL',
     question: `What describes sole turning inward?`,
     options: {
@@ -1458,7 +1458,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q122',
-    topic: `Anatomical Position, Planes and Movement (B.1.1)`,
+    topic: 'Anatomical Position, Planes and Movement (B.1.1)',
     level: 'HL',
     question: `Pronation vs supination of forearm?`,
     options: {
@@ -1470,7 +1470,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q123',
-    topic: `Structure and Function of Connective Tissues (B.1.2)`,
+    topic: 'Structure and Function of Connective Tissues (B.1.2)',
     level: 'SL',
     question: `What is ligaments' primary function?`,
     options: {
@@ -1482,7 +1482,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q124',
-    topic: `Structure and Function of Connective Tissues (B.1.2)`,
+    topic: 'Structure and Function of Connective Tissues (B.1.2)',
     level: 'SL',
     question: `What is the function of tendons?`,
     options: {
@@ -1494,7 +1494,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q125',
-    topic: `Structure and Function of Connective Tissues (B.1.2)`,
+    topic: 'Structure and Function of Connective Tissues (B.1.2)',
     level: 'SL',
     question: `Which joint type has greatest ROM?`,
     options: {
@@ -1506,7 +1506,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q126',
-    topic: `Structure and Function of Connective Tissues (B.1.2)`,
+    topic: 'Structure and Function of Connective Tissues (B.1.2)',
     level: 'SL',
     question: `What is articular cartilage's role?`,
     options: {
@@ -1518,7 +1518,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q127',
-    topic: `Structure and Function of Connective Tissues (B.1.2)`,
+    topic: 'Structure and Function of Connective Tissues (B.1.2)',
     level: 'SL',
     question: `What produces synovial fluid?`,
     options: {
@@ -1530,7 +1530,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q128',
-    topic: `Structure and Function of Connective Tissues (B.1.2)`,
+    topic: 'Structure and Function of Connective Tissues (B.1.2)',
     level: 'SL',
     question: `Which cartilage in intervertebral discs?`,
     options: {
@@ -1542,7 +1542,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q129',
-    topic: `Structure and Function of Connective Tissues (B.1.2)`,
+    topic: 'Structure and Function of Connective Tissues (B.1.2)',
     level: 'SL',
     question: `What is a sprain?`,
     options: {
@@ -1554,7 +1554,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q130',
-    topic: `Structure and Function of Connective Tissues (B.1.2)`,
+    topic: 'Structure and Function of Connective Tissues (B.1.2)',
     level: 'SL',
     question: `What is a strain?`,
     options: {
@@ -1566,7 +1566,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q131',
-    topic: `Muscular Function (B.1.3)`,
+    topic: 'Muscular Function (B.1.3)',
     level: 'SL',
     question: `Which fiber type resists fatigue most?`,
     options: {
@@ -1578,7 +1578,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q132',
-    topic: `Muscular Function (B.1.3)`,
+    topic: 'Muscular Function (B.1.3)',
     level: 'SL',
     question: `Contraction with no length change?`,
     options: {
@@ -1590,7 +1590,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q133',
-    topic: `Muscular Function (B.1.3)`,
+    topic: 'Muscular Function (B.1.3)',
     level: 'SL',
     question: `Which fiber produces most force rapidly?`,
     options: {
@@ -1602,7 +1602,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q134',
-    topic: `Muscular Function (B.1.3)`,
+    topic: 'Muscular Function (B.1.3)',
     level: 'SL',
     question: `What is concentric contraction?`,
     options: {
@@ -1614,7 +1614,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q135',
-    topic: `Muscular Function (B.1.3)`,
+    topic: 'Muscular Function (B.1.3)',
     level: 'SL',
     question: `What is eccentric contraction?`,
     options: {
@@ -1626,7 +1626,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q136',
-    topic: `Muscular Function (B.1.3)`,
+    topic: 'Muscular Function (B.1.3)',
     level: 'SL',
     question: `Agonist during elbow flexion?`,
     options: {
@@ -1638,7 +1638,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q137',
-    topic: `Muscular Function (B.1.3)`,
+    topic: 'Muscular Function (B.1.3)',
     level: 'SL',
     question: `What role does antagonist play?`,
     options: {
@@ -1650,7 +1650,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q138',
-    topic: `Muscular Function (B.1.3)`,
+    topic: 'Muscular Function (B.1.3)',
     level: 'SL',
     question: `What is muscle hypertrophy?`,
     options: {
@@ -1662,7 +1662,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q139',
-    topic: `Muscular Function (B.1.3)`,
+    topic: 'Muscular Function (B.1.3)',
     level: 'HL',
     question: `Which filaments slide in contraction?`,
     options: {
@@ -1674,7 +1674,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q140',
-    topic: `Muscular Function (B.1.3)`,
+    topic: 'Muscular Function (B.1.3)',
     level: 'HL',
     question: `Which ion triggers contraction?`,
     options: {
@@ -1686,7 +1686,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q141',
-    topic: `Muscular Function (B.1.3)`,
+    topic: 'Muscular Function (B.1.3)',
     level: 'HL',
     question: `What is neuromuscular junction?`,
     options: {
@@ -1698,7 +1698,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q142',
-    topic: `Muscular Function (B.1.3)`,
+    topic: 'Muscular Function (B.1.3)',
     level: 'HL',
     question: `What is a motor unit?`,
     options: {
@@ -1710,7 +1710,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q143',
-    topic: `Levers (B.1.4)`,
+    topic: 'Levers (B.1.4)',
     level: 'SL',
     question: `Fulcrum between effort and load?`,
     options: {
@@ -1722,7 +1722,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q144',
-    topic: `Levers (B.1.4)`,
+    topic: 'Levers (B.1.4)',
     level: 'SL',
     question: `Load between fulcrum and effort?`,
     options: {
@@ -1734,7 +1734,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q145',
-    topic: `Levers (B.1.4)`,
+    topic: 'Levers (B.1.4)',
     level: 'SL',
     question: `Most common lever in body?`,
     options: {
@@ -1746,7 +1746,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q146',
-    topic: `Levers (B.1.4)`,
+    topic: 'Levers (B.1.4)',
     level: 'SL',
     question: `Where is effort in third-class?`,
     options: {
@@ -1758,7 +1758,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q147',
-    topic: `Levers (B.1.4)`,
+    topic: 'Levers (B.1.4)',
     level: 'SL',
     question: `What represents fulcrum in body?`,
     options: {
@@ -1770,7 +1770,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q148',
-    topic: `Levers (B.1.4)`,
+    topic: 'Levers (B.1.4)',
     level: 'SL',
     question: `What is mechanical advantage?`,
     options: {
@@ -1782,7 +1782,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q149',
-    topic: `Levers (B.1.4)`,
+    topic: 'Levers (B.1.4)',
     level: 'SL',
     question: `Load during bicep curl?`,
     options: {
@@ -1794,7 +1794,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q150',
-    topic: `Levers (B.1.4)`,
+    topic: 'Levers (B.1.4)',
     level: 'SL',
     question: `Greatest mechanical advantage?`,
     options: {
@@ -1806,7 +1806,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q151',
-    topic: `Newton's Laws of Motion (B.2.1)`,
+    topic: 'Newton's Laws of Motion (B.2.1)',
     level: 'SL',
     question: `What does Newton's First Law state?`,
     options: {
@@ -1818,7 +1818,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q152',
-    topic: `Newton's Laws of Motion (B.2.1)`,
+    topic: 'Newton's Laws of Motion (B.2.1)',
     level: 'SL',
     question: `Impulse is product of which quantities?`,
     options: {
@@ -1830,7 +1830,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q153',
-    topic: `Newton's Laws of Motion (B.2.1)`,
+    topic: 'Newton's Laws of Motion (B.2.1)',
     level: 'SL',
     question: `What does Newton's Second Law state?`,
     options: {
@@ -1842,7 +1842,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q154',
-    topic: `Newton's Laws of Motion (B.2.1)`,
+    topic: 'Newton's Laws of Motion (B.2.1)',
     level: 'SL',
     question: `What is momentum?`,
     options: {
@@ -1854,7 +1854,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q155',
-    topic: `Newton's Laws of Motion (B.2.1)`,
+    topic: 'Newton's Laws of Motion (B.2.1)',
     level: 'SL',
     question: `Newton's Third Law: forces occur how?`,
     options: {
@@ -1866,7 +1866,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q156',
-    topic: `Newton's Laws of Motion (B.2.1)`,
+    topic: 'Newton's Laws of Motion (B.2.1)',
     level: 'SL',
     question: `Sprinter pushes back on blocks, what happens?`,
     options: {
@@ -1878,7 +1878,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q157',
-    topic: `Newton's Laws of Motion (B.2.1)`,
+    topic: 'Newton's Laws of Motion (B.2.1)',
     level: 'HL',
     question: `What is center of mass?`,
     options: {
@@ -1890,7 +1890,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q158',
-    topic: `Newton's Laws of Motion (B.2.1)`,
+    topic: 'Newton's Laws of Motion (B.2.1)',
     level: 'HL',
     question: `What is inertia?`,
     options: {
@@ -1902,7 +1902,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q159',
-    topic: `Newton's Laws of Motion (B.2.1)`,
+    topic: 'Newton's Laws of Motion (B.2.1)',
     level: 'HL',
     question: `How to reduce impact force?`,
     options: {
@@ -1914,7 +1914,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q160',
-    topic: `Newton's Laws of Motion (B.2.1)`,
+    topic: 'Newton's Laws of Motion (B.2.1)',
     level: 'HL',
     question: `What is angular momentum?`,
     options: {
@@ -1926,7 +1926,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q161',
-    topic: `Newton's Laws of Motion (B.2.1)`,
+    topic: 'Newton's Laws of Motion (B.2.1)',
     level: 'HL',
     question: `Diver tucks during somersault, angular velocity?`,
     options: {
@@ -1938,7 +1938,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q162',
-    topic: `Newton's Laws of Motion (B.2.1)`,
+    topic: 'Newton's Laws of Motion (B.2.1)',
     level: 'HL',
     question: `What is torque?`,
     options: {
@@ -1950,7 +1950,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q163',
-    topic: `Newton's Laws of Motion (B.2.1)`,
+    topic: 'Newton's Laws of Motion (B.2.1)',
     level: 'HL',
     question: `What is moment of inertia?`,
     options: {
@@ -1962,7 +1962,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q164',
-    topic: `Newton's Laws of Motion (B.2.1)`,
+    topic: 'Newton's Laws of Motion (B.2.1)',
     level: 'HL',
     question: `Conservation of momentum principle?`,
     options: {
@@ -1974,7 +1974,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q165',
-    topic: `Newton's Laws of Motion (B.2.1)`,
+    topic: 'Newton's Laws of Motion (B.2.1)',
     level: 'HL',
     question: `What is projectile motion?`,
     options: {
@@ -1986,7 +1986,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q166',
-    topic: `Newton's Laws of Motion (B.2.1)`,
+    topic: 'Newton's Laws of Motion (B.2.1)',
     level: 'HL',
     question: `Angle for maximum projectile range?`,
     options: {
@@ -1998,7 +1998,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q167',
-    topic: `Fluid Mechanics (B.2.2)`,
+    topic: 'Fluid Mechanics (B.2.2)',
     level: 'SL',
     question: `What is drag?`,
     options: {
@@ -2010,7 +2010,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q168',
-    topic: `Fluid Mechanics (B.2.2)`,
+    topic: 'Fluid Mechanics (B.2.2)',
     level: 'SL',
     question: `Which position minimizes drag?`,
     options: {
@@ -2022,7 +2022,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q169',
-    topic: `Fluid Mechanics (B.2.2)`,
+    topic: 'Fluid Mechanics (B.2.2)',
     level: 'SL',
     question: `What are two main drag types?`,
     options: {
@@ -2034,7 +2034,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q170',
-    topic: `Fluid Mechanics (B.2.2)`,
+    topic: 'Fluid Mechanics (B.2.2)',
     level: 'SL',
     question: `How does velocity affect drag?`,
     options: {
@@ -2046,7 +2046,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q171',
-    topic: `Fluid Mechanics (B.2.2)`,
+    topic: 'Fluid Mechanics (B.2.2)',
     level: 'HL',
     question: `What is lift in fluid mechanics?`,
     options: {
@@ -2058,7 +2058,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q172',
-    topic: `Fluid Mechanics (B.2.2)`,
+    topic: 'Fluid Mechanics (B.2.2)',
     level: 'HL',
     question: `What is Magnus effect?`,
     options: {
@@ -2070,7 +2070,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q173',
-    topic: `Fluid Mechanics (B.2.2)`,
+    topic: 'Fluid Mechanics (B.2.2)',
     level: 'HL',
     question: `Which direction does topspin ball curve?`,
     options: {
@@ -2082,7 +2082,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q174',
-    topic: `Fluid Mechanics (B.2.2)`,
+    topic: 'Fluid Mechanics (B.2.2)',
     level: 'HL',
     question: `What is Bernoulli's principle?`,
     options: {
@@ -2094,7 +2094,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q175',
-    topic: `Fluid Mechanics (B.2.2)`,
+    topic: 'Fluid Mechanics (B.2.2)',
     level: 'HL',
     question: `What is boundary layer?`,
     options: {
@@ -2106,7 +2106,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q176',
-    topic: `Fluid Mechanics (B.2.2)`,
+    topic: 'Fluid Mechanics (B.2.2)',
     level: 'HL',
     question: `What is laminar flow?`,
     options: {
@@ -2118,7 +2118,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q177',
-    topic: `Fluid Mechanics (B.2.2)`,
+    topic: 'Fluid Mechanics (B.2.2)',
     level: 'HL',
     question: `What is turbulent flow?`,
     options: {
@@ -2130,7 +2130,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q178',
-    topic: `Fluid Mechanics (B.2.2)`,
+    topic: 'Fluid Mechanics (B.2.2)',
     level: 'HL',
     question: `How do golf ball dimples affect flight?`,
     options: {
@@ -2142,7 +2142,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q179',
-    topic: `Fluid Mechanics (B.2.2)`,
+    topic: 'Fluid Mechanics (B.2.2)',
     level: 'HL',
     question: `What creates lift on discus?`,
     options: {
@@ -2154,7 +2154,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q180',
-    topic: `Fluid Mechanics (B.2.2)`,
+    topic: 'Fluid Mechanics (B.2.2)',
     level: 'HL',
     question: `Which sport benefits most from drafting?`,
     options: {
@@ -2166,7 +2166,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q181',
-    topic: `Movement Analysis (B.2.3)`,
+    topic: 'Movement Analysis (B.2.3)',
     level: 'SL',
     question: `What are force diagrams used for?`,
     options: {
@@ -2178,7 +2178,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q182',
-    topic: `Movement Analysis (B.2.3)`,
+    topic: 'Movement Analysis (B.2.3)',
     level: 'SL',
     question: `Vertical velocity at projectile peak?`,
     options: {
@@ -2190,7 +2190,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q183',
-    topic: `Movement Analysis (B.2.3)`,
+    topic: 'Movement Analysis (B.2.3)',
     level: 'SL',
     question: `What remains constant in projectile motion?`,
     options: {
@@ -2202,7 +2202,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q184',
-    topic: `Movement Analysis (B.2.3)`,
+    topic: 'Movement Analysis (B.2.3)',
     level: 'SL',
     question: `Runner's center of mass motion during sprint?`,
     options: {
@@ -2214,7 +2214,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q185',
-    topic: `Movement Analysis (B.2.3)`,
+    topic: 'Movement Analysis (B.2.3)',
     level: 'SL',
     question: `What forces act on swimmer?`,
     options: {
@@ -2226,7 +2226,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q186',
-    topic: `Movement Analysis (B.2.3)`,
+    topic: 'Movement Analysis (B.2.3)',
     level: 'SL',
     question: `What can athlete control during flight?`,
     options: {
@@ -2238,7 +2238,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q187',
-    topic: `Movement Analysis (B.2.3)`,
+    topic: 'Movement Analysis (B.2.3)',
     level: 'SL',
     question: `Net force at constant velocity?`,
     options: {
@@ -2250,7 +2250,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q188',
-    topic: `Movement Analysis (B.2.3)`,
+    topic: 'Movement Analysis (B.2.3)',
     level: 'SL',
     question: `What doesn't affect projectile range?`,
     options: {
@@ -2262,7 +2262,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q189',
-    topic: `Causes of Injury (B.3.1)`,
+    topic: 'Causes of Injury (B.3.1)',
     level: 'SL',
     question: `Which is internal risk factor?`,
     options: {
@@ -2274,7 +2274,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q190',
-    topic: `Causes of Injury (B.3.1)`,
+    topic: 'Causes of Injury (B.3.1)',
     level: 'SL',
     question: `Which is external risk factor?`,
     options: {
@@ -2286,7 +2286,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q191',
-    topic: `Causes of Injury (B.3.1)`,
+    topic: 'Causes of Injury (B.3.1)',
     level: 'SL',
     question: `What type of injury is strain?`,
     options: {
@@ -2298,7 +2298,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q192',
-    topic: `Causes of Injury (B.3.1)`,
+    topic: 'Causes of Injury (B.3.1)',
     level: 'SL',
     question: `Common mechanism for ACL tears?`,
     options: {
@@ -2310,7 +2310,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q193',
-    topic: `Causes of Injury (B.3.1)`,
+    topic: 'Causes of Injury (B.3.1)',
     level: 'SL',
     question: `What is overuse injury?`,
     options: {
@@ -2322,7 +2322,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q194',
-    topic: `Causes of Injury (B.3.1)`,
+    topic: 'Causes of Injury (B.3.1)',
     level: 'SL',
     question: `What increases concussion risk?`,
     options: {
@@ -2334,7 +2334,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q195',
-    topic: `Causes of Injury (B.3.1)`,
+    topic: 'Causes of Injury (B.3.1)',
     level: 'HL',
     question: `Biomechanical factor increasing female knee injury?`,
     options: {
@@ -2346,7 +2346,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q196',
-    topic: `Causes of Injury (B.3.1)`,
+    topic: 'Causes of Injury (B.3.1)',
     level: 'HL',
     question: `Training load and injury relationship?`,
     options: {
@@ -2358,7 +2358,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q197',
-    topic: `Injury Interventions (B.3.2)`,
+    topic: 'Injury Interventions (B.3.2)',
     level: 'SL',
     question: `Primary purpose of protective equipment?`,
     options: {
@@ -2370,7 +2370,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q198',
-    topic: `Injury Interventions (B.3.2)`,
+    topic: 'Injury Interventions (B.3.2)',
     level: 'SL',
     question: `What does neuromuscular training improve?`,
     options: {
@@ -2382,7 +2382,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q199',
-    topic: `Injury Interventions (B.3.2)`,
+    topic: 'Injury Interventions (B.3.2)',
     level: 'SL',
     question: `Most effective warm-up for injury prevention?`,
     options: {
@@ -2394,7 +2394,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q200',
-    topic: `Injury Interventions (B.3.2)`,
+    topic: 'Injury Interventions (B.3.2)',
     level: 'SL',
     question: `Proper technique's role in prevention?`,
     options: {
@@ -2406,7 +2406,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q201',
-    topic: `Individual Differences in Sport (C.1.1)`,
+    topic: 'Individual Differences in Sport (C.1.1)',
     level: 'SL',
     question: `What is personality in psychology?`,
     options: {
@@ -2418,7 +2418,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q202',
-    topic: `Individual Differences in Sport (C.1.1)`,
+    topic: 'Individual Differences in Sport (C.1.1)',
     level: 'SL',
     question: `Which personality approach emphasizes traits?`,
     options: {
@@ -2430,7 +2430,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q203',
-    topic: `Individual Differences in Sport (C.1.1)`,
+    topic: 'Individual Differences in Sport (C.1.1)',
     level: 'SL',
     question: `What does interactional approach emphasize?`,
     options: {
@@ -2442,7 +2442,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q204',
-    topic: `Individual Differences in Sport (C.1.1)`,
+    topic: 'Individual Differences in Sport (C.1.1)',
     level: 'SL',
     question: `What is mental toughness?`,
     options: {
@@ -2454,7 +2454,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q205',
-    topic: `Individual Differences in Sport (C.1.1)`,
+    topic: 'Individual Differences in Sport (C.1.1)',
     level: 'SL',
     question: `What is self-confidence in sport?`,
     options: {
@@ -2466,7 +2466,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q206',
-    topic: `Individual Differences in Sport (C.1.1)`,
+    topic: 'Individual Differences in Sport (C.1.1)',
     level: 'SL',
     question: `Which is NOT a Big Five personality trait?`,
     options: {
@@ -2478,7 +2478,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q207',
-    topic: `Individual Differences in Sport (C.1.1)`,
+    topic: 'Individual Differences in Sport (C.1.1)',
     level: 'HL',
     question: `What is self-efficacy?`,
     options: {
@@ -2490,7 +2490,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q208',
-    topic: `Individual Differences in Sport (C.1.1)`,
+    topic: 'Individual Differences in Sport (C.1.1)',
     level: 'HL',
     question: `Which source builds self-efficacy most?`,
     options: {
@@ -2502,7 +2502,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q209',
-    topic: `Individual Differences in Sport (C.1.1)`,
+    topic: 'Individual Differences in Sport (C.1.1)',
     level: 'HL',
     question: `What is attribution theory about?`,
     options: {
@@ -2514,7 +2514,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q210',
-    topic: `Individual Differences in Sport (C.1.1)`,
+    topic: 'Individual Differences in Sport (C.1.1)',
     level: 'HL',
     question: `Optimal attribution pattern after failure?`,
     options: {
@@ -2526,7 +2526,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q211',
-    topic: `Individual Differences in Sport (C.1.1)`,
+    topic: 'Individual Differences in Sport (C.1.1)',
     level: 'HL',
     question: `What is learned helplessness?`,
     options: {
@@ -2538,7 +2538,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q212',
-    topic: `Individual Differences in Sport (C.1.1)`,
+    topic: 'Individual Differences in Sport (C.1.1)',
     level: 'HL',
     question: `What does locus of control measure?`,
     options: {
@@ -2550,7 +2550,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q213',
-    topic: `Group Dynamics and Leadership (C.1.2)`,
+    topic: 'Group Dynamics and Leadership (C.1.2)',
     level: 'SL',
     question: `What is group cohesion?`,
     options: {
@@ -2562,7 +2562,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q214',
-    topic: `Group Dynamics and Leadership (C.1.2)`,
+    topic: 'Group Dynamics and Leadership (C.1.2)',
     level: 'SL',
     question: `What is task cohesion?`,
     options: {
@@ -2574,7 +2574,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q215',
-    topic: `Group Dynamics and Leadership (C.1.2)`,
+    topic: 'Group Dynamics and Leadership (C.1.2)',
     level: 'SL',
     question: `What is social cohesion?`,
     options: {
@@ -2586,7 +2586,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q216',
-    topic: `Group Dynamics and Leadership (C.1.2)`,
+    topic: 'Group Dynamics and Leadership (C.1.2)',
     level: 'SL',
     question: `What is social loafing?`,
     options: {
@@ -2598,7 +2598,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q217',
-    topic: `Group Dynamics and Leadership (C.1.2)`,
+    topic: 'Group Dynamics and Leadership (C.1.2)',
     level: 'SL',
     question: `Which leadership style is most democratic?`,
     options: {
@@ -2610,7 +2610,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q218',
-    topic: `Group Dynamics and Leadership (C.1.2)`,
+    topic: 'Group Dynamics and Leadership (C.1.2)',
     level: 'SL',
     question: `What does autocratic leadership involve?`,
     options: {
@@ -2622,7 +2622,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q219',
-    topic: `Group Dynamics and Leadership (C.1.2)`,
+    topic: 'Group Dynamics and Leadership (C.1.2)',
     level: 'HL',
     question: `What is Ringelmann effect?`,
     options: {
@@ -2634,7 +2634,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q220',
-    topic: `Group Dynamics and Leadership (C.1.2)`,
+    topic: 'Group Dynamics and Leadership (C.1.2)',
     level: 'HL',
     question: `How to reduce social loafing?`,
     options: {
@@ -2646,7 +2646,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q221',
-    topic: `Group Dynamics and Leadership (C.1.2)`,
+    topic: 'Group Dynamics and Leadership (C.1.2)',
     level: 'HL',
     question: `What is Carron's cohesion model about?`,
     options: {
@@ -2658,7 +2658,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q222',
-    topic: `Group Dynamics and Leadership (C.1.2)`,
+    topic: 'Group Dynamics and Leadership (C.1.2)',
     level: 'HL',
     question: `What does Chelladurai's model explain?`,
     options: {
@@ -2670,7 +2670,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q223',
-    topic: `Skill Acquisition (C.2.1)`,
+    topic: 'Skill Acquisition (C.2.1)',
     level: 'SL',
     question: `What defines a motor skill?`,
     options: {
@@ -2682,7 +2682,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q224',
-    topic: `Skill Acquisition (C.2.1)`,
+    topic: 'Skill Acquisition (C.2.1)',
     level: 'SL',
     question: `What characterizes open skills?`,
     options: {
@@ -2694,7 +2694,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q225',
-    topic: `Skill Acquisition (C.2.1)`,
+    topic: 'Skill Acquisition (C.2.1)',
     level: 'SL',
     question: `What characterizes closed skills?`,
     options: {
@@ -2706,7 +2706,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q226',
-    topic: `Skill Acquisition (C.2.1)`,
+    topic: 'Skill Acquisition (C.2.1)',
     level: 'SL',
     question: `What are discrete skills?`,
     options: {
@@ -2718,7 +2718,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q227',
-    topic: `Skill Acquisition (C.2.1)`,
+    topic: 'Skill Acquisition (C.2.1)',
     level: 'SL',
     question: `What are continuous skills?`,
     options: {
@@ -2730,7 +2730,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q228',
-    topic: `Skill Acquisition (C.2.1)`,
+    topic: 'Skill Acquisition (C.2.1)',
     level: 'SL',
     question: `What is the cognitive stage?`,
     options: {
@@ -2742,7 +2742,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q229',
-    topic: `Skill Acquisition (C.2.1)`,
+    topic: 'Skill Acquisition (C.2.1)',
     level: 'SL',
     question: `What is the autonomous stage?`,
     options: {
@@ -2754,7 +2754,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q230',
-    topic: `Skill Acquisition (C.2.1)`,
+    topic: 'Skill Acquisition (C.2.1)',
     level: 'SL',
     question: `What is massed practice?`,
     options: {
@@ -2766,7 +2766,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q231',
-    topic: `Skill Acquisition (C.2.1)`,
+    topic: 'Skill Acquisition (C.2.1)',
     level: 'SL',
     question: `What is distributed practice?`,
     options: {
@@ -2778,7 +2778,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q232',
-    topic: `Skill Acquisition (C.2.1)`,
+    topic: 'Skill Acquisition (C.2.1)',
     level: 'HL',
     question: `What is transfer of learning?`,
     options: {
@@ -2790,7 +2790,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q233',
-    topic: `Skill Acquisition (C.2.1)`,
+    topic: 'Skill Acquisition (C.2.1)',
     level: 'HL',
     question: `What is positive transfer?`,
     options: {
@@ -2802,7 +2802,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q234',
-    topic: `Skill Acquisition (C.2.1)`,
+    topic: 'Skill Acquisition (C.2.1)',
     level: 'HL',
     question: `What is negative transfer?`,
     options: {
@@ -2814,7 +2814,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q235',
-    topic: `Information Processing (C.2.2)`,
+    topic: 'Information Processing (C.2.2)',
     level: 'SL',
     question: `What is reaction time?`,
     options: {
@@ -2826,7 +2826,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q236',
-    topic: `Information Processing (C.2.2)`,
+    topic: 'Information Processing (C.2.2)',
     level: 'SL',
     question: `What is response time?`,
     options: {
@@ -2838,7 +2838,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q237',
-    topic: `Information Processing (C.2.2)`,
+    topic: 'Information Processing (C.2.2)',
     level: 'SL',
     question: `What is selective attention?`,
     options: {
@@ -2850,7 +2850,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q238',
-    topic: `Information Processing (C.2.2)`,
+    topic: 'Information Processing (C.2.2)',
     level: 'SL',
     question: `What affects reaction time?`,
     options: {
@@ -2862,7 +2862,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q239',
-    topic: `Information Processing (C.2.2)`,
+    topic: 'Information Processing (C.2.2)',
     level: 'SL',
     question: `What is Hick's Law?`,
     options: {
@@ -2874,7 +2874,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q240',
-    topic: `Information Processing (C.2.2)`,
+    topic: 'Information Processing (C.2.2)',
     level: 'SL',
     question: `What is anticipation?`,
     options: {
@@ -2886,7 +2886,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q241',
-    topic: `Information Processing (C.2.2)`,
+    topic: 'Information Processing (C.2.2)',
     level: 'HL',
     question: `What is the psychological refractory period?`,
     options: {
@@ -2898,7 +2898,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q242',
-    topic: `Information Processing (C.2.2)`,
+    topic: 'Information Processing (C.2.2)',
     level: 'HL',
     question: `What are the information processing stages?`,
     options: {
@@ -2910,7 +2910,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q243',
-    topic: `Information Processing (C.2.2)`,
+    topic: 'Information Processing (C.2.2)',
     level: 'HL',
     question: `What is the speed-accuracy trade-off?`,
     options: {
@@ -2922,7 +2922,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q244',
-    topic: `Information Processing (C.2.2)`,
+    topic: 'Information Processing (C.2.2)',
     level: 'HL',
     question: `What is schema theory?`,
     options: {
@@ -2934,7 +2934,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q245',
-    topic: `Achievement Motivation (C.3.1)`,
+    topic: 'Achievement Motivation (C.3.1)',
     level: 'SL',
     question: `What is achievement motivation?`,
     options: {
@@ -2946,7 +2946,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q246',
-    topic: `Achievement Motivation (C.3.1)`,
+    topic: 'Achievement Motivation (C.3.1)',
     level: 'SL',
     question: `What is task orientation?`,
     options: {
@@ -2958,7 +2958,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q247',
-    topic: `Achievement Motivation (C.3.1)`,
+    topic: 'Achievement Motivation (C.3.1)',
     level: 'SL',
     question: `What is ego orientation?`,
     options: {
@@ -2970,7 +2970,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q248',
-    topic: `Achievement Motivation (C.3.1)`,
+    topic: 'Achievement Motivation (C.3.1)',
     level: 'SL',
     question: `Which orientation promotes long-term motivation?`,
     options: {
@@ -2982,7 +2982,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q249',
-    topic: `Achievement Motivation (C.3.1)`,
+    topic: 'Achievement Motivation (C.3.1)',
     level: 'SL',
     question: `What is intrinsic motivation?`,
     options: {
@@ -2994,7 +2994,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q250',
-    topic: `Achievement Motivation (C.3.1)`,
+    topic: 'Achievement Motivation (C.3.1)',
     level: 'SL',
     question: `What is extrinsic motivation?`,
     options: {
@@ -3006,7 +3006,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q251',
-    topic: `Achievement Motivation (C.3.1)`,
+    topic: 'Achievement Motivation (C.3.1)',
     level: 'HL',
     question: `What is self-determination theory?`,
     options: {
@@ -3018,7 +3018,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q252',
-    topic: `Achievement Motivation (C.3.1)`,
+    topic: 'Achievement Motivation (C.3.1)',
     level: 'HL',
     question: `What is competence in SDT?`,
     options: {
@@ -3030,7 +3030,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q253',
-    topic: `Achievement Motivation (C.3.1)`,
+    topic: 'Achievement Motivation (C.3.1)',
     level: 'HL',
     question: `What is autonomy in SDT?`,
     options: {
@@ -3042,7 +3042,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q254',
-    topic: `Achievement Motivation (C.3.1)`,
+    topic: 'Achievement Motivation (C.3.1)',
     level: 'HL',
     question: `What is relatedness in SDT?`,
     options: {
@@ -3054,7 +3054,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q255',
-    topic: `Goal Setting (C.3.2)`,
+    topic: 'Goal Setting (C.3.2)',
     level: 'SL',
     question: `What are outcome goals?`,
     options: {
@@ -3066,7 +3066,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q256',
-    topic: `Goal Setting (C.3.2)`,
+    topic: 'Goal Setting (C.3.2)',
     level: 'SL',
     question: `What are performance goals?`,
     options: {
@@ -3078,7 +3078,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q257',
-    topic: `Goal Setting (C.3.2)`,
+    topic: 'Goal Setting (C.3.2)',
     level: 'SL',
     question: `What are process goals?`,
     options: {
@@ -3090,7 +3090,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q258',
-    topic: `Goal Setting (C.3.2)`,
+    topic: 'Goal Setting (C.3.2)',
     level: 'SL',
     question: `What does 'S' in SMART goals mean?`,
     options: {
@@ -3102,7 +3102,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q259',
-    topic: `Goal Setting (C.3.2)`,
+    topic: 'Goal Setting (C.3.2)',
     level: 'SL',
     question: `What type of goals are most controllable?`,
     options: {
@@ -3114,7 +3114,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q260',
-    topic: `Goal Setting (C.3.2)`,
+    topic: 'Goal Setting (C.3.2)',
     level: 'SL',
     question: `Why set short-term goals?`,
     options: {
@@ -3126,7 +3126,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q261',
-    topic: `Goal Setting (C.3.2)`,
+    topic: 'Goal Setting (C.3.2)',
     level: 'HL',
     question: `What is goal proximity?`,
     options: {
@@ -3138,7 +3138,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q262',
-    topic: `Goal Setting (C.3.2)`,
+    topic: 'Goal Setting (C.3.2)',
     level: 'HL',
     question: `What is goal commitment?`,
     options: {
@@ -3150,7 +3150,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q263',
-    topic: `Goal Setting (C.3.2)`,
+    topic: 'Goal Setting (C.3.2)',
     level: 'HL',
     question: `How does goal difficulty affect motivation?`,
     options: {
@@ -3162,7 +3162,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q264',
-    topic: `Goal Setting (C.3.2)`,
+    topic: 'Goal Setting (C.3.2)',
     level: 'HL',
     question: `What is a common goal-setting mistake?`,
     options: {
@@ -3174,7 +3174,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q265',
-    topic: `Arousal and Anxiety (C.4.1)`,
+    topic: 'Arousal and Anxiety (C.4.1)',
     level: 'SL',
     question: `What is arousal?`,
     options: {
@@ -3186,7 +3186,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q266',
-    topic: `Arousal and Anxiety (C.4.1)`,
+    topic: 'Arousal and Anxiety (C.4.1)',
     level: 'SL',
     question: `What is anxiety?`,
     options: {
@@ -3198,7 +3198,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q267',
-    topic: `Arousal and Anxiety (C.4.1)`,
+    topic: 'Arousal and Anxiety (C.4.1)',
     level: 'SL',
     question: `What is cognitive anxiety?`,
     options: {
@@ -3210,7 +3210,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q268',
-    topic: `Arousal and Anxiety (C.4.1)`,
+    topic: 'Arousal and Anxiety (C.4.1)',
     level: 'SL',
     question: `What is somatic anxiety?`,
     options: {
@@ -3222,7 +3222,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q269',
-    topic: `Arousal and Anxiety (C.4.1)`,
+    topic: 'Arousal and Anxiety (C.4.1)',
     level: 'SL',
     question: `What does Drive Theory propose?`,
     options: {
@@ -3234,7 +3234,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q270',
-    topic: `Arousal and Anxiety (C.4.1)`,
+    topic: 'Arousal and Anxiety (C.4.1)',
     level: 'SL',
     question: `What does Inverted-U Hypothesis propose?`,
     options: {
@@ -3246,7 +3246,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q271',
-    topic: `Arousal and Anxiety (C.4.1)`,
+    topic: 'Arousal and Anxiety (C.4.1)',
     level: 'SL',
     question: `What is optimal arousal level?`,
     options: {
@@ -3258,7 +3258,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q272',
-    topic: `Arousal and Anxiety (C.4.1)`,
+    topic: 'Arousal and Anxiety (C.4.1)',
     level: 'HL',
     question: `What is catastrophe theory?`,
     options: {
@@ -3270,7 +3270,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q273',
-    topic: `Arousal and Anxiety (C.4.1)`,
+    topic: 'Arousal and Anxiety (C.4.1)',
     level: 'HL',
     question: `What is Zone of Optimal Functioning?`,
     options: {
@@ -3282,7 +3282,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q274',
-    topic: `Arousal and Anxiety (C.4.1)`,
+    topic: 'Arousal and Anxiety (C.4.1)',
     level: 'HL',
     question: `What is state anxiety?`,
     options: {
@@ -3294,7 +3294,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q275',
-    topic: `Arousal and Anxiety (C.4.1)`,
+    topic: 'Arousal and Anxiety (C.4.1)',
     level: 'HL',
     question: `What is trait anxiety?`,
     options: {
@@ -3306,7 +3306,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q276',
-    topic: `Arousal and Anxiety (C.4.1)`,
+    topic: 'Arousal and Anxiety (C.4.1)',
     level: 'HL',
     question: `How does anxiety affect attention?`,
     options: {
@@ -3318,7 +3318,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q277',
-    topic: `Coping Strategies (C.4.2)`,
+    topic: 'Coping Strategies (C.4.2)',
     level: 'SL',
     question: `What is problem-focused coping?`,
     options: {
@@ -3330,7 +3330,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q278',
-    topic: `Coping Strategies (C.4.2)`,
+    topic: 'Coping Strategies (C.4.2)',
     level: 'SL',
     question: `What is emotion-focused coping?`,
     options: {
@@ -3342,7 +3342,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q279',
-    topic: `Coping Strategies (C.4.2)`,
+    topic: 'Coping Strategies (C.4.2)',
     level: 'SL',
     question: `What is progressive muscle relaxation?`,
     options: {
@@ -3354,7 +3354,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q280',
-    topic: `Coping Strategies (C.4.2)`,
+    topic: 'Coping Strategies (C.4.2)',
     level: 'SL',
     question: `What is controlled breathing?`,
     options: {
@@ -3366,7 +3366,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q281',
-    topic: `Coping Strategies (C.4.2)`,
+    topic: 'Coping Strategies (C.4.2)',
     level: 'SL',
     question: `What is cognitive restructuring?`,
     options: {
@@ -3378,7 +3378,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q282',
-    topic: `Coping Strategies (C.4.2)`,
+    topic: 'Coping Strategies (C.4.2)',
     level: 'SL',
     question: `What is positive self-talk?`,
     options: {
@@ -3390,7 +3390,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q283',
-    topic: `Coping Strategies (C.4.2)`,
+    topic: 'Coping Strategies (C.4.2)',
     level: 'HL',
     question: `What is systematic desensitization?`,
     options: {
@@ -3402,7 +3402,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q284',
-    topic: `Coping Strategies (C.4.2)`,
+    topic: 'Coping Strategies (C.4.2)',
     level: 'HL',
     question: `What is stress inoculation training?`,
     options: {
@@ -3414,7 +3414,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q285',
-    topic: `Coping Strategies (C.4.2)`,
+    topic: 'Coping Strategies (C.4.2)',
     level: 'HL',
     question: `What is mindfulness?`,
     options: {
@@ -3426,7 +3426,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q286',
-    topic: `Coping Strategies (C.4.2)`,
+    topic: 'Coping Strategies (C.4.2)',
     level: 'HL',
     question: `What is centering?`,
     options: {
@@ -3438,7 +3438,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q287',
-    topic: `Coping Strategies (C.4.2)`,
+    topic: 'Coping Strategies (C.4.2)',
     level: 'HL',
     question: `When is emotion-focused coping most effective?`,
     options: {
@@ -3450,7 +3450,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q288',
-    topic: `Coping Strategies (C.4.2)`,
+    topic: 'Coping Strategies (C.4.2)',
     level: 'HL',
     question: `What is biofeedback?`,
     options: {
@@ -3462,7 +3462,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q289',
-    topic: `Psychological Skills Training (C.5.1)`,
+    topic: 'Psychological Skills Training (C.5.1)',
     level: 'SL',
     question: `What is imagery?`,
     options: {
@@ -3474,7 +3474,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q290',
-    topic: `Psychological Skills Training (C.5.1)`,
+    topic: 'Psychological Skills Training (C.5.1)',
     level: 'SL',
     question: `What is internal imagery?`,
     options: {
@@ -3486,7 +3486,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q291',
-    topic: `Psychological Skills Training (C.5.1)`,
+    topic: 'Psychological Skills Training (C.5.1)',
     level: 'SL',
     question: `What is external imagery?`,
     options: {
@@ -3498,7 +3498,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q292',
-    topic: `Psychological Skills Training (C.5.1)`,
+    topic: 'Psychological Skills Training (C.5.1)',
     level: 'SL',
     question: `When is imagery most effective?`,
     options: {
@@ -3510,7 +3510,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q293',
-    topic: `Psychological Skills Training (C.5.1)`,
+    topic: 'Psychological Skills Training (C.5.1)',
     level: 'SL',
     question: `What is a pre-performance routine?`,
     options: {
@@ -3522,7 +3522,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q294',
-    topic: `Psychological Skills Training (C.5.1)`,
+    topic: 'Psychological Skills Training (C.5.1)',
     level: 'SL',
     question: `Why use pre-performance routines?`,
     options: {
@@ -3534,7 +3534,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q295',
-    topic: `Psychological Skills Training (C.5.1)`,
+    topic: 'Psychological Skills Training (C.5.1)',
     level: 'HL',
     question: `What is attentional focus?`,
     options: {
@@ -3546,7 +3546,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q296',
-    topic: `Psychological Skills Training (C.5.1)`,
+    topic: 'Psychological Skills Training (C.5.1)',
     level: 'HL',
     question: `What is associative attention?`,
     options: {
@@ -3558,7 +3558,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q297',
-    topic: `Psychological Skills Training (C.5.1)`,
+    topic: 'Psychological Skills Training (C.5.1)',
     level: 'HL',
     question: `What is dissociative attention?`,
     options: {
@@ -3570,7 +3570,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q298',
-    topic: `Psychological Skills Training (C.5.1)`,
+    topic: 'Psychological Skills Training (C.5.1)',
     level: 'HL',
     question: `What does PETTLEP model address?`,
     options: {
@@ -3582,7 +3582,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q299',
-    topic: `Psychological Skills Training (C.5.1)`,
+    topic: 'Psychological Skills Training (C.5.1)',
     level: 'HL',
     question: `What is simulation training?`,
     options: {
@@ -3594,7 +3594,7 @@ const QUESTIONS_DB = [
   },
   {
     id: 'Q300',
-    topic: `Psychological Skills Training (C.5.1)`,
+    topic: 'Psychological Skills Training (C.5.1)',
     level: 'HL',
     question: `What is mental practice?`,
     options: {
@@ -3608,31 +3608,31 @@ const QUESTIONS_DB = [
 
 // All available topics
 const ALL_TOPICS = [
-  `Achievement Motivation (C.3.1)`,
-  `Anatomical Position, Planes and Movement (B.1.1)`,
-  `Arousal and Anxiety (C.4.1)`,
-  `Benefits to Health (A.3.2)`,
-  `Causes of Injury (B.3.1)`,
-  `Coping Strategies (C.4.2)`,
-  `Energy Systems (A.2.3)`,
-  `Fatigue and Recovery (A.3.3)`,
-  `Fluid Mechanics (B.2.2)`,
-  `Fuelling for Health and Performance (A.2.2)`,
-  `Goal Setting (C.3.2)`,
-  `Group Dynamics and Leadership (C.1.2)`,
-  `Individual Differences in Sport (C.1.1)`,
-  `Information Processing (C.2.2)`,
-  `Injury Interventions (B.3.2)`,
-  `Inter-system Communication (A.1.1)`,
-  `Levers (B.1.4)`,
-  `Maintaining Homeostasis (A.1.2)`,
-  `Movement Analysis (B.2.3)`,
-  `Muscular Function (B.1.3)`,
-  `Newton's Laws of Motion (B.2.1)`,
-  `Psychological Skills Training (C.5.1)`,
-  `Qualities of Training (A.3.1)`,
-  `Skill Acquisition (C.2.1)`,
-  `Structure and Function of Connective Tissues (B.1.2)`,
-  `Transport (A.1.3)`,
-  `Water and Electrolyte Balance (A.2.1)`
+  'Achievement Motivation (C.3.1)',
+  'Anatomical Position, Planes and Movement (B.1.1)',
+  'Arousal and Anxiety (C.4.1)',
+  'Benefits to Health (A.3.2)',
+  'Causes of Injury (B.3.1)',
+  'Coping Strategies (C.4.2)',
+  'Energy Systems (A.2.3)',
+  'Fatigue and Recovery (A.3.3)',
+  'Fluid Mechanics (B.2.2)',
+  'Fuelling for Health and Performance (A.2.2)',
+  'Goal Setting (C.3.2)',
+  'Group Dynamics and Leadership (C.1.2)',
+  'Individual Differences in Sport (C.1.1)',
+  'Information Processing (C.2.2)',
+  'Injury Interventions (B.3.2)',
+  'Inter-system Communication (A.1.1)',
+  'Levers (B.1.4)',
+  'Maintaining Homeostasis (A.1.2)',
+  'Movement Analysis (B.2.3)',
+  'Muscular Function (B.1.3)',
+  'Newton's Laws of Motion (B.2.1)',
+  'Psychological Skills Training (C.5.1)',
+  'Qualities of Training (A.3.1)',
+  'Skill Acquisition (C.2.1)',
+  'Structure and Function of Connective Tissues (B.1.2)',
+  'Transport (A.1.3)',
+  'Water and Electrolyte Balance (A.2.1)'
 ];
