@@ -1,5 +1,5 @@
-// SEHS Triangle Quiz - Circle-Based Confidence Scoring
-// Clicking a circle automatically scores the question
+/ SEHS Triangle Quiz - Circle-Based Confidence Scoring
+// ALL circles automatically score when clicked
 
 // ==================== GLOBAL STATE ====================
 let gameState = {
@@ -44,38 +44,45 @@ function getAnswerFromCircle(circleElement) {
         return position; // Returns 'A', 'B', or 'C'
     }
 
-    // Center circle - show answer buttons
+    // Center circle - maximum uncertainty, choose randomly
     if (position === 'center') {
-        return null; // User must pick answer
+        const options = ['A', 'B', 'C'];
+        return options[Math.floor(Math.random() * options.length)];
     }
 
-    // Side circles - determine which answer based on side
+    // Side circles
     if (side && level) {
-        // Circles on AB side closer to A = choosing A
-        if (side === 'AB' && (level === 'close-A' || level === 'equal')) {
-            return 'A';
-        }
-        // Circles on AB side closer to B = choosing B
-        if (side === 'AB' && level === 'close-B') {
-            return 'B';
-        }
-
-        // Circles on AC side closer to A = choosing A
-        if (side === 'AC' && (level === 'close-A' || level === 'equal')) {
-            return 'A';
-        }
-        // Circles on AC side closer to C = choosing C
-        if (side === 'AC' && level === 'close-C') {
-            return 'C';
+        // AB side (between A and B)
+        if (side === 'AB') {
+            if (level === 'close-A' || level === 'equal') {
+                return 'A';
+            } else if (level === 'close-B') {
+                return 'B';
+            }
         }
 
-        // Base circles (BC) - need to choose
-        if (side === 'BC') {
-            return null; // User must pick B or C
+        // AC side (between A and C)
+        if (side === 'AC') {
+            if (level === 'close-A' || level === 'equal') {
+                return 'A';
+            } else if (level === 'close-C') {
+                return 'C';
+            }
+        }
+
+        // BC side (base) - determine by position
+        // Left base circles closer to B, right closer to C
+        if (side === 'BC' && level === 'base') {
+            // Get circle's X position to determine if closer to B or C
+            const cx = parseFloat(circleElement.getAttribute('cx'));
+            // B is at x=120, C is at x=480
+            // If x < 300 (midpoint), choose B; otherwise C
+            return cx < 300 ? 'B' : 'C';
         }
     }
 
-    return null;
+    // Fallback to A if somehow we don't match
+    return 'A';
 }
 
 // ==================== POSITION-BASED SCORING ====================
@@ -151,18 +158,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Confidence circles - NOW TRIGGER SCORING
+    // Confidence circles - ALL AUTO-SCORE NOW
     document.querySelectorAll('.conf-circle').forEach(circle => {
         circle.addEventListener('click', function(e) {
             e.stopPropagation();
             handleCircleClick(this);
-        });
-    });
-
-    // Answer buttons - for center/base circles only
-    document.querySelectorAll('.answer-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            handleAnswerClick(this);
         });
     });
 
@@ -233,7 +233,6 @@ function loadQuestion() {
 }
 
 function prepareOptions(question) {
-    // Start with the 3 main options
     const options = [
         { key: 'i', text: question.options.i, isCorrect: false },
         { key: 'ii', text: question.options.ii, isCorrect: false },
@@ -244,18 +243,13 @@ function prepareOptions(question) {
     const includeFunny = Math.random() < funnyFrequency;
 
     if (includeFunny && question.options.iv) {
-        // Use the funny answer
         options.push({ key: 'iv', text: question.options.iv, isCorrect: false, isFunny: true });
-    } else {
-        // Use ONLY 3 options - no duplicate needed
-        // We only display A, B, C anyway
     }
 
     return options;
 }
 
 function randomlyAssignOptions(options) {
-    // Shuffle and pick first 3
     const shuffled = shuffleArray([...options]).slice(0, 3);
 
     const assignment = {
@@ -264,7 +258,6 @@ function randomlyAssignOptions(options) {
         C: shuffled[2]
     };
 
-    // Find which position has the correct answer
     gameState.correctPosition = null;
     for (const [pos, option] of Object.entries(assignment)) {
         if (option.isCorrect) {
@@ -318,38 +311,14 @@ function handleCircleClick(circle) {
     });
     circle.classList.add('selected');
 
-    // Determine which answer this circle represents
+    // ALL circles now determine an answer automatically
     const chosenAnswer = getAnswerFromCircle(circle);
 
     console.log('Circle represents answer:', chosenAnswer);
     console.log('Correct answer:', gameState.correctPosition);
 
-    // If circle doesn't determine answer (center or base), stop here
-    if (!chosenAnswer) {
-        console.log('Circle requires manual answer selection');
-        return;
-    }
-
-    // Score the question
+    // Score immediately
     processAnswer(chosenAnswer, circle);
-}
-
-// ==================== ANSWER BUTTON CLICK - FOR CENTER/BASE CIRCLES ====================
-function handleAnswerClick(button) {
-    // Only works if a circle is selected but hasn't determined answer yet
-    const selectedCircle = document.querySelector('.conf-circle.selected');
-
-    if (!selectedCircle) {
-        showCustomAlert();
-        return;
-    }
-
-    if (button.classList.contains('disabled')) {
-        return;
-    }
-
-    const chosenAnswer = button.dataset.position;
-    processAnswer(chosenAnswer, selectedCircle);
 }
 
 // ==================== PROCESS ANSWER ====================
@@ -372,7 +341,7 @@ function processAnswer(chosenAnswer, circle) {
     document.getElementById('score').textContent = gameState.score;
     gameState.questionsAnswered++;
 
-    // Update answer buttons
+    // Update answer buttons - highlight correct and chosen
     const chosenBtn = document.getElementById(`btn-${chosenAnswer}`);
     const correctBtn = document.getElementById(`btn-${gameState.correctPosition}`);
 
@@ -381,7 +350,9 @@ function processAnswer(chosenAnswer, circle) {
         chosenBtn.classList.add('correct');
     } else {
         gameState.wrongAnswers++;
-        chosenBtn.classList.add('wrong');
+        if (chosenBtn !== correctBtn) {
+            chosenBtn.classList.add('wrong');
+        }
         correctBtn.classList.add('correct');
     }
 
@@ -474,5 +445,5 @@ function shuffleArray(array) {
     return shuffled;
 }
 
-console.log('Circle-Based Scoring initialized!');
-console.log('Click a circle to automatically score!');
+console.log('ALL Circles Auto-Score initialized!');
+console.log('Click any circle to score immediately!');
