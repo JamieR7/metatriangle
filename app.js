@@ -1,23 +1,26 @@
-// SEHS Triangle Quiz — triangle-only answering
+// app.js — SEHS Triangle Quiz (triangle-only input, correct reveal)
 
 let state = {
   difficulty: null,          // rookie | varsity | pro
   questionCount: 10,         // number | "all"
   currentQuestionIndex: 0,
-  score: 10,
 
+  score: 10,
   questions: [],
+
   correctSlot: null,         // 'A' | 'B' | 'C'
   locked: false,
 
-  correctCount: 0,           // "positive picks" (pts > 0)
-  wrongCount: 0              // "non-positive picks" (pts <= 0)
+  correctCount: 0,           // pts > 0
+  wrongCount: 0              // pts <= 0
 };
 
 function getQuestionsDB() {
-  return window.questionsDB || window.questions || window.QUESTIONS_DB || [];
+  // questions-db.js should do: window.questionsDB = QUESTIONS_DB;
+  return window.questionsDB || window.QUESTIONS_DB || window.questions || [];
 }
 
+// Score table: SCORE[circleKey][correctSlot]
 const SCORE = {
   A: { A: 3, B: -2, C: -2 },
   B: { A: -2, B: 3, C: -2 },
@@ -38,6 +41,7 @@ const SCORE = {
   center:    { A: 0, B: 0, C: 0 }
 };
 
+// ----- DOM -----
 const difficultyScreen = document.getElementById('difficulty-screen');
 const quizScreen = document.getElementById('quiz-screen');
 const resultsScreen = document.getElementById('results-screen');
@@ -49,12 +53,17 @@ const nextBtn = document.getElementById('next-btn');
 const restartBtn = document.getElementById('restart-btn');
 const changeDifficultyBtn = document.getElementById('change-difficulty-btn');
 
-function shuffleArray(array) {
-  for (let i = array.length - 1; i > 0; i--) {
+const pointsDisplay = document.getElementById('points-display');
+const pointsTextEl = document.getElementById('points-text');
+
+// ----- Utilities -----
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
+    [a[i], a[j]] = [a[j], a[i]];
   }
-  return array;
+  return a;
 }
 
 function showScreen(which) {
@@ -62,13 +71,12 @@ function showScreen(which) {
   which.classList.add('active');
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-  const db = getQuestionsDB();
-  console.log('SEHS Triangle Quiz loaded!');
-  console.log('Questions available:', db.length);
-});
+function setText(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value;
+}
 
-// Difficulty selection
+// ----- Difficulty + count selection -----
 document.querySelectorAll('.difficulty-card').forEach(card => {
   card.addEventListener('click', () => {
     document.querySelectorAll('.difficulty-card').forEach(c => c.classList.remove('selected'));
@@ -77,16 +85,16 @@ document.querySelectorAll('.difficulty-card').forEach(card => {
   });
 });
 
-// Question count selection
 document.querySelectorAll('.count-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.count-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     const count = btn.dataset.count;
-    state.questionCount = count === 'all' ? 'all' : parseInt(count, 10);
+    state.questionCount = (count === 'all') ? 'all' : parseInt(count, 10);
   });
 });
 
+// ----- Start -----
 startBtn.addEventListener('click', () => {
   if (!state.difficulty) {
     alert('Please select a difficulty level!');
@@ -103,36 +111,38 @@ startBtn.addEventListener('click', () => {
 function startQuiz() {
   const db = getQuestionsDB();
 
-  // Simple difficulty mapping using level field (SL/HL)
-  let filtered = db.filter(q => {
-    if (state.difficulty === 'rookie') return String(q.level).toUpperCase() === 'SL';
-    if (state.difficulty === 'pro') return String(q.level).toUpperCase() === 'HL';
-    return true; // varsity = SL + HL
+  const filtered = db.filter(q => {
+    const lvl = String(q.level || '').toUpperCase();
+    if (state.difficulty === 'rookie') return lvl === 'SL';
+    if (state.difficulty === 'pro') return lvl === 'HL';
+    return true; // varsity
   });
 
   if (filtered.length === 0) {
-    alert('No questions match this mode (check level fields).');
+    alert('No questions match this mode (check question.level fields).');
     return;
   }
 
-  const shuffled = shuffleArray([...filtered]);
-  state.questions = (state.questionCount === 'all') ? shuffled : shuffled.slice(0, Math.min(state.questionCount, shuffled.length));
+  const shuffled = shuffleArray(filtered);
+  state.questions = (state.questionCount === 'all')
+    ? shuffled
+    : shuffled.slice(0, Math.min(state.questionCount, shuffled.length));
 
   state.currentQuestionIndex = 0;
   state.score = 10;
   state.correctCount = 0;
   state.wrongCount = 0;
 
-  document.getElementById('difficulty-display').textContent =
-    state.difficulty.charAt(0).toUpperCase() + state.difficulty.slice(1);
-  document.getElementById('total-q').textContent = state.questions.length;
+  setText('difficulty-display', state.difficulty.charAt(0).toUpperCase() + state.difficulty.slice(1));
+  setText('total-q', state.questions.length);
+  setText('score', state.score);
 
   showScreen(quizScreen);
   loadQuestion();
 }
 
+// ----- Question prep (3 options A/B/C with correct included) -----
 function pickThreeOptions(question) {
-  // expects question.options = { i, ii, iii, iv } and question.correct = "iii" etc.
   const entries = Object.entries(question.options || {})
     .filter(([k, v]) => typeof v === 'string' && v.trim().length > 0)
     .map(([k, v]) => ({ key: String(k), text: v }));
@@ -147,17 +157,20 @@ function pickThreeOptions(question) {
     chosen = entries.slice(0, 3);
   } else {
     const distractors = entries.filter(e => !correctEntry || e.key !== correctEntry.key);
-    const pickedDistractors = shuffleArray([...distractors]).slice(0, 2);
-    chosen = correctEntry ? [correctEntry, ...pickedDistractors] : shuffleArray([...entries]).slice(0, 3);
+    const pickedDistractors = shuffleArray(distractors).slice(0, 2);
+    chosen = correctEntry ? [correctEntry, ...pickedDistractors] : shuffleArray(entries).slice(0, 3);
   }
 
-  while (chosen.length < 3) chosen.push({ key: `missing-${chosen.length}`, text: `Option ${chosen.length + 1}` });
+  while (chosen.length < 3) {
+    chosen.push({ key: `missing-${chosen.length}`, text: `Option ${chosen.length + 1}` });
+  }
+
   return { chosen, correctEntry };
 }
 
 function assignToSlots(chosen, correctEntry) {
   const slots = ['A', 'B', 'C'];
-  const shuffled = shuffleArray([...chosen]);
+  const shuffled = shuffleArray(chosen);
 
   const slotMap = {};
   let correctSlot = null;
@@ -172,6 +185,15 @@ function assignToSlots(chosen, correctEntry) {
   return { slotMap, correctSlot };
 }
 
+// ----- UI reset helpers -----
+function resetAnswerBoxes() {
+  ['A', 'B', 'C'].forEach(s => {
+    const btn = document.getElementById(`btn-${s}`);
+    if (!btn) return;
+    btn.classList.remove('correct', 'wrong', 'neutral', 'disabled');
+  });
+}
+
 function resetTriangle() {
   state.locked = false;
   document.querySelectorAll('.conf-circle').forEach(c => {
@@ -181,52 +203,73 @@ function resetTriangle() {
   nextBtn.classList.remove('show');
 }
 
+function revealCorrectAnswer() {
+  resetAnswerBoxes();
+  if (state.correctSlot) {
+    const btn = document.getElementById(`btn-${state.correctSlot}`);
+    if (btn) btn.classList.add('correct');
+  }
+}
+
+// ----- Load question -----
 function loadQuestion() {
   const question = state.questions[state.currentQuestionIndex];
 
-  document.getElementById('question-topic').textContent = question.topic ?? '—';
-  document.getElementById('question-level').textContent = question.level ?? '—';
-  document.getElementById('question-text').textContent = question.question ?? '—';
-  document.getElementById('current-q').textContent = state.currentQuestionIndex + 1;
-  document.getElementById('score').textContent = state.score;
+  setText('question-topic', question?.topic ?? '—');
+  setText('question-level', question?.level ?? '—');
+  setText('question-text', question?.question ?? '—');
+  setText('current-q', state.currentQuestionIndex + 1);
+  setText('score', state.score);
+
+  // Clear any previous correct highlight
+  resetAnswerBoxes();
 
   const { chosen, correctEntry } = pickThreeOptions(question);
   const { slotMap, correctSlot } = assignToSlots(chosen, correctEntry);
 
   state.correctSlot = correctSlot;
 
-  document.querySelector('#btn-A .answer-text').textContent = slotMap.A.text;
-  document.querySelector('#btn-B .answer-text').textContent = slotMap.B.text;
-  document.querySelector('#btn-C .answer-text').textContent = slotMap.C.text;
+  const aText = document.querySelector('#btn-A .answer-text');
+  const bText = document.querySelector('#btn-B .answer-text');
+  const cText = document.querySelector('#btn-C .answer-text');
+
+  if (aText) aText.textContent = slotMap.A.text;
+  if (bText) bText.textContent = slotMap.B.text;
+  if (cText) cText.textContent = slotMap.C.text;
 
   resetTriangle();
 }
 
+// ----- Points overlay -----
 function showPoints(points) {
-  const pointsDisplay = document.getElementById('points-display');
-  const pointsText = points > 0 ? `+${points} points` : points < 0 ? `${points} points` : '0 points';
-  const pointsClass = points > 0 ? 'positive' : points < 0 ? 'negative' : 'neutral';
+  const txt = points > 0 ? `+${points} points` : points < 0 ? `${points} points` : '0 points';
+  const cls = points > 0 ? 'positive' : points < 0 ? 'negative' : 'neutral';
 
-  document.getElementById('points-text').textContent = pointsText;
-  pointsDisplay.className = `points-display show ${pointsClass}`;
-  setTimeout(() => pointsDisplay.classList.remove('show'), 2000);
+  pointsTextEl.textContent = txt;
+  pointsDisplay.className = `points-display show ${cls}`;
+  setTimeout(() => pointsDisplay.classList.remove('show'), 1600);
 }
 
+// ----- Answering via triangle -----
 function applyAnswer(circleKey) {
   if (state.locked) return;
   if (!circleKey || !SCORE[circleKey] || !state.correctSlot) return;
 
   state.locked = true;
 
+  // Lock triangle
   document.querySelectorAll('.conf-circle').forEach(c => {
     c.classList.add('disabled');
     c.style.pointerEvents = 'none';
   });
 
   const points = SCORE[circleKey][state.correctSlot];
+
   state.score += points;
-  document.getElementById('score').textContent = state.score;
+  setText('score', state.score);
+
   showPoints(points);
+  revealCorrectAnswer(); // <-- makes correct option obvious before Next
 
   if (points > 0) state.correctCount++;
   else state.wrongCount++;
@@ -234,6 +277,7 @@ function applyAnswer(circleKey) {
   nextBtn.classList.add('show');
 }
 
+// Bind circles
 document.querySelectorAll('.conf-circle').forEach(circle => {
   circle.addEventListener('click', () => {
     if (state.locked) return;
@@ -242,31 +286,32 @@ document.querySelectorAll('.conf-circle').forEach(circle => {
   });
 });
 
+// ----- Next -----
 nextBtn.addEventListener('click', () => {
   state.currentQuestionIndex++;
   if (state.currentQuestionIndex >= state.questions.length) showResults();
   else loadQuestion();
 });
 
+// ----- Results -----
 function showResults() {
   showScreen(resultsScreen);
 
-  document.getElementById('final-score').textContent = state.score;
-  document.getElementById('correct-count').textContent = state.correctCount;
-  document.getElementById('wrong-count').textContent = state.wrongCount;
+  setText('final-score', state.score);
+  setText('correct-count', state.correctCount);
+  setText('wrong-count', state.wrongCount);
 
   const total = state.questions.length || 1;
   const accuracy = Math.round((state.correctCount / total) * 100);
-  document.getElementById('accuracy').textContent = accuracy + '%';
+  setText('accuracy', accuracy + '%');
 
-  let message = '';
-  if (accuracy >= 90) message = 'Outstanding!';
-  else if (accuracy >= 80) message = 'Great job!';
-  else if (accuracy >= 70) message = 'Well done!';
-  else if (accuracy >= 60) message = 'Keep practicing!';
-  else message = 'Review and try again!';
+  let msg = 'Review and try again!';
+  if (accuracy >= 90) msg = 'Outstanding!';
+  else if (accuracy >= 80) msg = 'Great job!';
+  else if (accuracy >= 70) msg = 'Well done!';
+  else if (accuracy >= 60) msg = 'Keep practicing!';
 
-  document.getElementById('performance-message').textContent = message;
+  setText('performance-message', msg);
 }
 
 restartBtn.addEventListener('click', () => {
