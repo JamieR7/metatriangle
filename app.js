@@ -1,4 +1,4 @@
-// SEHS Triangle Quiz - Fixed Scoring Logic
+// SEHS Triangle Quiz - Fixed Database Loading
 // Load questions from questions-db.js (assume it's already loaded)
 
 // State Management
@@ -23,6 +23,22 @@ const quitBtn = document.getElementById('quit-btn');
 const nextBtn = document.getElementById('next-btn');
 const restartBtn = document.getElementById('restart-btn');
 const changeDifficultyBtn = document.getElementById('change-difficulty-btn');
+
+// Get questions database - try multiple possible variable names
+function getQuestionsDB() {
+    return window.questionsDB || window.questions || window.QUESTIONS_DB || [];
+}
+
+// Check if questions are loaded
+window.addEventListener('DOMContentLoaded', () => {
+    const db = getQuestionsDB();
+    console.log('SEHS Triangle Quiz loaded!');
+    console.log('Questions available:', db.length);
+
+    if (db.length === 0) {
+        console.error('⚠️ No questions loaded! Check that questions-db.js is included before app.js');
+    }
+});
 
 // Difficulty Selection
 const difficultyCards = document.querySelectorAll('.difficulty-card');
@@ -51,12 +67,21 @@ startBtn.addEventListener('click', () => {
         alert('Please select a difficulty level!');
         return;
     }
+
+    const db = getQuestionsDB();
+    if (db.length === 0) {
+        alert('Error: No questions loaded! Make sure questions-db.js is loaded.');
+        return;
+    }
+
     startQuiz();
 });
 
 function startQuiz() {
+    const db = getQuestionsDB();
+
     // Filter questions by difficulty
-    let filteredQuestions = window.questionsDB.filter(q => {
+    let filteredQuestions = db.filter(q => {
         if (state.difficulty === 'pro') return q.style === 'serious';
         if (state.difficulty === 'varsity') return q.style === 'serious' || q.style === 'mixed';
         return true; // rookie includes all
@@ -334,6 +359,3 @@ function shuffleArray(array) {
     }
     return array;
 }
-
-console.log('SEHS Triangle Quiz loaded!');
-console.log('Questions available:', window.questionsDB ? window.questionsDB.length : 0);
