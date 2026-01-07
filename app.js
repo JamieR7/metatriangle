@@ -1,406 +1,339 @@
-// SEHS Triangle Quiz - Simplified (No Topic Selection)
+// SEHS Triangle Quiz - Fixed Scoring Logic
+// Load questions from questions-db.js (assume it's already loaded)
 
-// ==================== GLOBAL STATE ====================
-let gameState = {
-    difficulty: 'rookie',
+// State Management
+let state = {
+    difficulty: null,
+    questionCount: 10,
     currentQuestionIndex: 0,
     score: 10,
-    questionsAnswered: 0,
-    correctAnswers: 0,
-    wrongAnswers: 0,
-    selectedQuestions: [],
-    currentQuestion: null,
-    correctPosition: null,
-    currentAssignment: null,
-    questionReady: false,
-    questionCount: 10
+    questions: [],
+    selectedAnswer: null,
+    selectedConfidence: null,
+    correctCount: 0,
+    wrongCount: 0
 };
 
-// Difficulty settings
-const DIFFICULTY_SETTINGS = {
-    pro: { funnyFrequency: 0, displayName: 'Pro' },
-    varsity: { funnyFrequency: 0.2, displayName: 'Varsity' },
-    rookie: { funnyFrequency: 0.5, displayName: 'Rookie' }
-};
+// DOM Elements
+const difficultyScreen = document.getElementById('difficulty-screen');
+const quizScreen = document.getElementById('quiz-screen');
+const resultsScreen = document.getElementById('results-screen');
+const startBtn = document.getElementById('start-quiz-btn');
+const quitBtn = document.getElementById('quit-btn');
+const nextBtn = document.getElementById('next-btn');
+const restartBtn = document.getElementById('restart-btn');
+const changeDifficultyBtn = document.getElementById('change-difficulty-btn');
 
-// ==================== INITIALIZATION ====================
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('SEHS Triangle Quiz loaded!');
-    console.log('Questions available:', QUESTIONS_DB.length);
-    showScreen('difficulty-screen');
-
-    // Difficulty selection
-    document.querySelectorAll('.difficulty-card').forEach(card => {
-        card.addEventListener('click', function() {
-            document.querySelectorAll('.difficulty-card').forEach(c => c.classList.remove('selected'));
-            this.classList.add('selected');
-            gameState.difficulty = this.dataset.difficulty;
-        });
+// Difficulty Selection
+const difficultyCards = document.querySelectorAll('.difficulty-card');
+difficultyCards.forEach(card => {
+    card.addEventListener('click', () => {
+        difficultyCards.forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        state.difficulty = card.dataset.difficulty;
     });
-
-    // Question count selection
-    document.querySelectorAll('.count-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.count-btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            const count = this.dataset.count;
-            gameState.questionCount = count === 'all' ? 999 : parseInt(count);
-        });
-    });
-
-    // Start quiz button
-    document.getElementById('start-quiz-btn').addEventListener('click', startQuiz);
-
-    // Circle clicks
-    document.querySelectorAll('.conf-circle').forEach(circle => {
-        circle.addEventListener('click', function(e) {
-            e.stopPropagation();
-            handleCircleClick(this);
-        });
-    });
-
-    // Navigation
-    document.getElementById('next-btn').addEventListener('click', nextQuestion);
-    document.getElementById('quit-btn').addEventListener('click', quitQuiz);
-    document.getElementById('restart-btn').addEventListener('click', restartQuiz);
-    document.getElementById('change-difficulty-btn').addEventListener('click', changeDifficulty);
 });
 
-// ==================== SCREEN MANAGEMENT ====================
-function showScreen(screenId) {
-    document.querySelectorAll('.screen').forEach(screen => {
-        screen.classList.remove('active');
+// Question Count Selection
+const countBtns = document.querySelectorAll('.count-btn');
+countBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        countBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const count = btn.dataset.count;
+        state.questionCount = count === 'all' ? 'all' : parseInt(count);
     });
-    document.getElementById(screenId).classList.add('active');
-}
+});
 
-// ==================== QUIZ START ====================
+// Start Quiz
+startBtn.addEventListener('click', () => {
+    if (!state.difficulty) {
+        alert('Please select a difficulty level!');
+        return;
+    }
+    startQuiz();
+});
+
 function startQuiz() {
-    gameState.score = 10;
-    gameState.questionsAnswered = 0;
-    gameState.correctAnswers = 0;
-    gameState.wrongAnswers = 0;
-    gameState.currentQuestionIndex = 0;
+    // Filter questions by difficulty
+    let filteredQuestions = window.questionsDB.filter(q => {
+        if (state.difficulty === 'pro') return q.style === 'serious';
+        if (state.difficulty === 'varsity') return q.style === 'serious' || q.style === 'mixed';
+        return true; // rookie includes all
+    });
 
-    // Use ALL questions from database
-    const numQuestions = Math.min(gameState.questionCount, QUESTIONS_DB.length);
-    gameState.selectedQuestions = shuffleArray([...QUESTIONS_DB]).slice(0, numQuestions);
+    // Select random questions
+    if (state.questionCount === 'all') {
+        state.questions = shuffleArray([...filteredQuestions]);
+    } else {
+        state.questions = shuffleArray([...filteredQuestions]).slice(0, state.questionCount);
+    }
 
-    console.log(`Starting quiz with ${numQuestions} questions`);
+    // Reset state
+    state.currentQuestionIndex = 0;
+    state.score = 10;
+    state.correctCount = 0;
+    state.wrongCount = 0;
 
-    document.getElementById('difficulty-display').textContent = DIFFICULTY_SETTINGS[gameState.difficulty].displayName;
-    document.getElementById('total-q').textContent = numQuestions;
+    // Show quiz screen
+    difficultyScreen.classList.remove('active');
+    quizScreen.classList.add('active');
 
-    showScreen('quiz-screen');
+    document.getElementById('difficulty-display').textContent = 
+        state.difficulty.charAt(0).toUpperCase() + state.difficulty.slice(1);
+    document.getElementById('total-q').textContent = state.questions.length;
+
     loadQuestion();
 }
 
-// ==================== QUESTION LOADING ====================
 function loadQuestion() {
-    if (gameState.currentQuestionIndex >= gameState.selectedQuestions.length) {
-        showResults();
-        return;
-    }
+    const question = state.questions[state.currentQuestionIndex];
 
-    gameState.questionReady = false;
-
-    const question = gameState.selectedQuestions[gameState.currentQuestionIndex];
-    gameState.currentQuestion = question;
-
+    // Update question info
     document.getElementById('question-topic').textContent = question.topic;
     document.getElementById('question-level').textContent = question.level;
     document.getElementById('question-text').textContent = question.question;
-    document.getElementById('current-q').textContent = gameState.currentQuestionIndex + 1;
-    document.getElementById('score').textContent = gameState.score;
+    document.getElementById('current-q').textContent = state.currentQuestionIndex + 1;
+    document.getElementById('score').textContent = state.score;
 
-    const options = prepareOptions(question);
-    const assignment = randomlyAssignOptions(options);
-    gameState.currentAssignment = assignment;
+    // Shuffle answers
+    const answers = shuffleArray([
+        { letter: 'A', text: question.A, correct: question.correct === 'A' },
+        { letter: 'B', text: question.B, correct: question.correct === 'B' },
+        { letter: 'C', text: question.C, correct: question.correct === 'C' }
+    ]);
 
-    displayOptions(assignment);
-    resetUI();
-
-    gameState.questionReady = true;
-    console.log('Question ready. Correct answer at position:', gameState.correctPosition);
-}
-
-function prepareOptions(question) {
-    // Option 'iii' is ALWAYS the correct answer
-    const options = [
-        { key: 'i', text: question.options.i, isCorrect: false },
-        { key: 'ii', text: question.options.ii, isCorrect: false },
-        { key: 'iii', text: question.options.iii, isCorrect: true }
-    ];
-
-    const funnyFrequency = DIFFICULTY_SETTINGS[gameState.difficulty].funnyFrequency;
-    const includeFunny = Math.random() < funnyFrequency;
-
-    if (includeFunny && question.options.iv) {
-        options.push({ key: 'iv', text: question.options.iv, isCorrect: false, isFunny: true });
-    }
-
-    return options;
-}
-
-function randomlyAssignOptions(options) {
-    const correctOption = options.find(opt => opt.isCorrect);
-    const wrongOptions = options.filter(opt => !opt.isCorrect);
-
-    const shuffledWrong = shuffleArray([...wrongOptions]).slice(0, 2);
-    const finalOptions = shuffleArray([correctOption, ...shuffledWrong]);
-
-    const assignment = {
-        A: finalOptions[0],
-        B: finalOptions[1],
-        C: finalOptions[2]
-    };
-
-    gameState.correctPosition = null;
-    for (const [pos, option] of Object.entries(assignment)) {
-        if (option.isCorrect) {
-            gameState.correctPosition = pos;
-            break;
-        }
-    }
-
-    return assignment;
-}
-
-function displayOptions(assignment) {
-    ['A', 'B', 'C'].forEach(position => {
-        const btn = document.getElementById('btn-' + position);
-        const text = btn.querySelector('.answer-text');
-        text.textContent = assignment[position].text;
-        btn.className = 'answer-btn';
-        btn.disabled = false;
-    });
-}
-
-function resetUI() {
-    document.querySelectorAll('.answer-btn').forEach(btn => {
+    // Set answer buttons
+    answers.forEach(answer => {
+        const btn = document.getElementById(`btn-${answer.letter}`);
+        btn.querySelector('.answer-text').textContent = answer.text;
+        btn.dataset.correct = answer.correct;
         btn.classList.remove('correct', 'wrong', 'disabled');
-        btn.disabled = false;
+        btn.onclick = () => selectAnswer(answer.letter);
     });
 
+    // Reset triangle
     document.querySelectorAll('.conf-circle').forEach(circle => {
         circle.classList.remove('selected', 'disabled');
     });
 
-    document.getElementById('points-display').classList.remove('show', 'positive', 'negative', 'neutral');
-    document.getElementById('next-btn').classList.remove('show');
+    // Reset state
+    state.selectedAnswer = null;
+    state.selectedConfidence = null;
+    nextBtn.classList.remove('show');
 }
 
-// ==================== CIRCLE CLICK HANDLING ====================
-function getAnswerFromCircle(circleElement) {
-    const position = circleElement.dataset.position;
-    const side = circleElement.dataset.side;
-    const level = circleElement.dataset.level;
+function selectAnswer(letter) {
+    if (state.selectedAnswer) return; // Already answered
 
-    if (position && position !== 'center') {
-        return position;
-    }
+    state.selectedAnswer = letter;
 
-    if (position === 'center') {
-        const options = ['A', 'B', 'C'];
-        return options[Math.floor(Math.random() * options.length)];
-    }
+    // Disable answer buttons
+    ['A', 'B', 'C'].forEach(l => {
+        const btn = document.getElementById(`btn-${l}`);
+        btn.classList.add('disabled');
 
-    if (side && level) {
-        if (side === 'AB') {
-            if (level === 'close-A' || level === 'equal') return 'A';
-            if (level === 'close-B') return 'B';
+        // Show correct answer with GREEN background
+        if (btn.dataset.correct === 'true') {
+            btn.classList.add('correct');
         }
-
-        if (side === 'AC') {
-            if (level === 'close-A' || level === 'equal') return 'A';
-            if (level === 'close-C') return 'C';
+        // Show wrong answer if selected
+        if (l === letter && btn.dataset.correct !== 'true') {
+            btn.classList.add('wrong');
         }
-
-        if (side === 'BC' && level === 'base') {
-            const cx = parseFloat(circleElement.getAttribute('cx'));
-            return cx < 300 ? 'B' : 'C';
-        }
-    }
-
-    return 'A';
-}
-
-function calculatePoints(circleElement, correctAnswer) {
-    const position = circleElement.dataset.position;
-    const side = circleElement.dataset.side;
-    const level = circleElement.dataset.level;
-
-    if (position === 'center') return 0;
-
-    if (position) {
-        return position === correctAnswer ? 3 : -2;
-    }
-
-    if (side && level) {
-        if (level === 'base') return -2;
-
-        if (side === 'AB') {
-            if (correctAnswer === 'A') {
-                if (level === 'close-A') return 2;
-                if (level === 'equal') return 1;
-                if (level === 'close-B') return -1;
-            } else if (correctAnswer === 'B') {
-                if (level === 'close-B') return 2;
-                if (level === 'equal') return 1;
-                if (level === 'close-A') return -1;
-            } else {
-                return -2;
-            }
-        }
-
-        if (side === 'AC') {
-            if (correctAnswer === 'A') {
-                if (level === 'close-A') return 2;
-                if (level === 'equal') return 1;
-                if (level === 'close-C') return -1;
-            } else if (correctAnswer === 'C') {
-                if (level === 'close-C') return 2;
-                if (level === 'equal') return 1;
-                if (level === 'close-A') return -1;
-            } else {
-                return -2;
-            }
-        }
-
-        if (side === 'BC') return -2;
-    }
-
-    return 0;
-}
-
-function handleCircleClick(circle) {
-    if (!gameState.questionReady || circle.classList.contains('disabled')) {
-        return;
-    }
-
-    document.querySelectorAll('.conf-circle').forEach(c => {
-        c.classList.remove('selected');
     });
-    circle.classList.add('selected');
 
-    const chosenAnswer = getAnswerFromCircle(circle);
-    processAnswer(chosenAnswer, circle);
+    // Enable triangle
+    document.querySelectorAll('.conf-circle').forEach(circle => {
+        circle.style.cursor = 'pointer';
+    });
 }
 
-function processAnswer(chosenAnswer, circle) {
-    if (!gameState.correctPosition) {
-        console.error('ERROR: correctPosition is null');
-        return;
-    }
+// Triangle Confidence Selection
+document.querySelectorAll('.conf-circle').forEach(circle => {
+    circle.addEventListener('click', () => {
+        if (!state.selectedAnswer || state.selectedConfidence) return;
 
-    const isCorrect = chosenAnswer === gameState.correctPosition;
-    const points = calculatePoints(circle, gameState.correctPosition);
+        state.selectedConfidence = circle;
+        circle.classList.add('selected');
 
-    gameState.score += points;
-    document.getElementById('score').textContent = gameState.score;
-    gameState.questionsAnswered++;
+        // Disable all circles
+        document.querySelectorAll('.conf-circle').forEach(c => {
+            c.classList.add('disabled');
+        });
 
-    const chosenBtn = document.getElementById('btn-' + chosenAnswer);
-    const correctBtn = document.getElementById('btn-' + gameState.correctPosition);
+        calculateScore(circle);
+    });
+});
+
+function calculateScore(circle) {
+    const isCorrect = document.getElementById(`btn-${state.selectedAnswer}`).dataset.correct === 'true';
+    const position = circle.dataset.position;
+    const side = circle.dataset.side;
+    const level = circle.dataset.level;
+
+    let points = 0;
+    let pointsText = '';
+    let pointsClass = 'neutral';
 
     if (isCorrect) {
-        gameState.correctAnswers++;
-        chosenBtn.classList.add('correct');
-    } else {
-        gameState.wrongAnswers++;
-        if (chosenBtn !== correctBtn) {
-            chosenBtn.classList.add('wrong');
+        // CORRECT ANSWER
+        if (position === state.selectedAnswer) {
+            // Perfect! On correct corner
+            points = 3;
+            pointsText = '+3 points';
+            pointsClass = 'positive';
+        } else if (position === 'center') {
+            // Center = no confidence
+            points = 0;
+            pointsText = '0 points';
+            pointsClass = 'neutral';
+        } else if (side && side.includes(state.selectedAnswer)) {
+            // On a side connected to correct answer
+            if (level === 'close-A' && state.selectedAnswer === 'A') {
+                points = 2;
+            } else if (level === 'close-B' && state.selectedAnswer === 'B') {
+                points = 2;
+            } else if (level === 'close-C' && state.selectedAnswer === 'C') {
+                points = 2;
+            } else if (level === 'equal') {
+                points = 1;
+            } else if (level === 'base') {
+                points = 1;
+            } else {
+                points = 1; // Close to other answer
+            }
+            pointsText = `+${points} ${points === 1 ? 'point' : 'points'}`;
+            pointsClass = 'positive';
+        } else {
+            // Wrong corner when correct
+            points = -1;
+            pointsText = '-1 point';
+            pointsClass = 'negative';
         }
-        correctBtn.classList.add('correct');
-    }
-
-    document.querySelectorAll('.answer-btn').forEach(btn => {
-        btn.disabled = true;
-        btn.classList.add('disabled');
-    });
-
-    document.querySelectorAll('.conf-circle').forEach(c => {
-        c.classList.add('disabled');
-    });
-
-    showPoints(points);
-    document.getElementById('next-btn').classList.add('show');
-}
-
-function showPoints(points) {
-    const display = document.getElementById('points-display');
-    const text = document.getElementById('points-text');
-
-    const sign = points > 0 ? '+' : '';
-    text.textContent = sign + points + ' points';
-
-    display.classList.remove('positive', 'negative', 'neutral');
-    if (points > 0) {
-        display.classList.add('positive');
-    } else if (points < 0) {
-        display.classList.add('negative');
+        state.correctCount++;
     } else {
-        display.classList.add('neutral');
+        // WRONG ANSWER
+        if (position === state.selectedAnswer) {
+            // Confidently wrong
+            points = -2;
+            pointsText = '-2 points';
+            pointsClass = 'negative';
+        } else if (position === 'center') {
+            // No confidence, good!
+            points = 0;
+            pointsText = '0 points';
+            pointsClass = 'neutral';
+        } else {
+            // Away from wrong answer = good doubt!
+            // Find correct answer
+            let correctAnswer = null;
+            ['A', 'B', 'C'].forEach(l => {
+                if (document.getElementById(`btn-${l}`).dataset.correct === 'true') {
+                    correctAnswer = l;
+                }
+            });
+
+            if (position === correctAnswer) {
+                // Picked wrong answer but confidence on right one
+                points = 2;
+                pointsText = '+2 points (good instinct!)';
+                pointsClass = 'positive';
+            } else if (side && side.includes(correctAnswer)) {
+                // Leaning toward correct
+                points = 1;
+                pointsText = '+1 point';
+                pointsClass = 'positive';
+            } else {
+                // Away from your wrong answer
+                points = 1;
+                pointsText = '+1 point (showing doubt)';
+                pointsClass = 'positive';
+            }
+        }
+        state.wrongCount++;
     }
 
-    display.classList.add('show');
+    state.score += points;
+
+    // Display points
+    const pointsDisplay = document.getElementById('points-display');
+    pointsDisplay.querySelector('#points-text').textContent = pointsText;
+    pointsDisplay.className = `points-display show ${pointsClass}`;
 
     setTimeout(() => {
-        display.classList.remove('show');
-    }, 1500);
+        pointsDisplay.classList.remove('show');
+    }, 2000);
+
+    // Update score display
+    document.getElementById('score').textContent = state.score;
+
+    // Show next button
+    nextBtn.classList.add('show');
 }
 
-function nextQuestion() {
-    gameState.currentQuestionIndex++;
-    loadQuestion();
-}
+// Next Question
+nextBtn.addEventListener('click', () => {
+    state.currentQuestionIndex++;
 
-// ==================== RESULTS ====================
+    if (state.currentQuestionIndex >= state.questions.length) {
+        showResults();
+    } else {
+        loadQuestion();
+    }
+});
+
+// Show Results
 function showResults() {
-    const totalQuestions = gameState.questionsAnswered;
-    const accuracy = totalQuestions > 0 ? Math.round((gameState.correctAnswers / totalQuestions) * 100) : 0;
+    quizScreen.classList.remove('active');
+    resultsScreen.classList.add('active');
 
-    document.getElementById('final-score').textContent = gameState.score;
-    document.getElementById('correct-count').textContent = gameState.correctAnswers;
-    document.getElementById('wrong-count').textContent = gameState.wrongAnswers;
+    document.getElementById('final-score').textContent = state.score;
+    document.getElementById('correct-count').textContent = state.correctCount;
+    document.getElementById('wrong-count').textContent = state.wrongCount;
+
+    const accuracy = Math.round((state.correctCount / state.questions.length) * 100);
     document.getElementById('accuracy').textContent = accuracy + '%';
 
+    // Performance message
     let message = '';
-    if (accuracy >= 90) {
-        message = '🌟 Outstanding! SEHS Expert! 🌟';
-    } else if (accuracy >= 70) {
-        message = '💪 Great Job! Strong knowledge! 💪';
-    } else if (accuracy >= 50) {
-        message = '👍 Good Effort! Keep studying! 👍';
-    } else {
-        message = '📚 Keep Practicing! 📚';
-    }
+    if (accuracy >= 90) message = '🏆 Outstanding!';
+    else if (accuracy >= 80) message = '💪 Great Job!';
+    else if (accuracy >= 70) message = '👍 Well Done!';
+    else if (accuracy >= 60) message = '📚 Keep Practicing!';
+    else message = '💡 Review and Try Again!';
 
     document.getElementById('performance-message').textContent = message;
-    showScreen('results-screen');
 }
 
-function restartQuiz() {
+// Restart Quiz
+restartBtn.addEventListener('click', () => {
+    resultsScreen.classList.remove('active');
     startQuiz();
-}
+});
 
-function changeDifficulty() {
-    showScreen('difficulty-screen');
-}
+// Change Difficulty
+changeDifficultyBtn.addEventListener('click', () => {
+    resultsScreen.classList.remove('active');
+    difficultyScreen.classList.add('active');
+});
 
-function quitQuiz() {
-    if (confirm('Quit? Your progress will be lost.')) {
-        showScreen('difficulty-screen');
+// Quit Quiz
+quitBtn.addEventListener('click', () => {
+    if (confirm('Are you sure you want to quit?')) {
+        quizScreen.classList.remove('active');
+        difficultyScreen.classList.add('active');
     }
-}
+});
 
+// Utility Functions
 function shuffleArray(array) {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
+    for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        [array[i], array[j]] = [array[j], array[i]];
     }
-    return shuffled;
+    return array;
 }
 
-console.log('SEHS Triangle Quiz - Simplified version loaded!');
+console.log('SEHS Triangle Quiz loaded!');
+console.log('Questions available:', window.questionsDB ? window.questionsDB.length : 0);
