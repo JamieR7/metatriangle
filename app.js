@@ -1,4 +1,4 @@
-// SEHS Triangle Quiz - Fixed Undefined Values
+// SEHS Triangle Quiz - Fixed to use question.options
 // Load questions from questions-db.js (assume it's already loaded)
 
 // State Management
@@ -115,7 +115,7 @@ function startQuiz() {
 function loadQuestion() {
     const question = state.questions[state.currentQuestionIndex];
 
-    console.log('Loading question:', question); // Debug
+    console.log('Loading question:', question);
 
     // Update question info
     document.getElementById('question-topic').textContent = question.topic;
@@ -124,19 +124,19 @@ function loadQuestion() {
     document.getElementById('current-q').textContent = state.currentQuestionIndex + 1;
     document.getElementById('score').textContent = state.score;
 
-    // Create answers array with actual text from question
+    // FIX: Access options from question.options object
     const allAnswers = [
-        { id: 'A', text: question.A, isCorrect: question.correct === 'A' },
-        { id: 'B', text: question.B, isCorrect: question.correct === 'B' },
-        { id: 'C', text: question.C, isCorrect: question.correct === 'C' }
+        { id: 'A', text: question.options.A, isCorrect: question.correct === 'A' },
+        { id: 'B', text: question.options.B, isCorrect: question.correct === 'B' },
+        { id: 'C', text: question.options.C, isCorrect: question.correct === 'C' }
     ];
 
-    console.log('All answers before shuffle:', allAnswers); // Debug
+    console.log('All answers:', allAnswers);
 
     // Shuffle the answers
     const shuffledAnswers = shuffleArray([...allAnswers]);
 
-    console.log('Shuffled answers:', shuffledAnswers); // Debug
+    console.log('Shuffled answers:', shuffledAnswers);
 
     // Assign shuffled answers to buttons A, B, C
     const buttonIds = ['A', 'B', 'C'];
@@ -147,15 +147,15 @@ function loadQuestion() {
         const btn = document.getElementById(`btn-${btnId}`);
         const textSpan = btn.querySelector('.answer-text');
 
-        // Store mapping: which button shows which answer
+        // Store mapping: which button shows which original answer
         state.answerMapping[btnId] = answer.id;
 
         // Set text
         if (textSpan && answer.text) {
             textSpan.textContent = answer.text;
-            console.log(`Button ${btnId} shows answer ${answer.id}: "${answer.text}"`); // Debug
+            console.log(`✓ Button ${btnId} displays answer ${answer.id}: "${answer.text}"`);
         } else {
-            console.error(`Problem with button ${btnId}:`, { textSpan, answer });
+            console.error(`✗ Problem with button ${btnId}:`, { textSpan, answer });
         }
 
         // Store whether THIS button's answer is correct
