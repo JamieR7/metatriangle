@@ -413,7 +413,7 @@ body{
 .confidence-triangle{
   width:100%;
   max-width:420px;   /* smaller */
-  max-height:260px;  /* prevents tall SVG dominating */
+  max-height:210px;  /* prevents tall SVG dominating */
   height:auto;
   display:block;
   margin:0 auto;
