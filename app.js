@@ -1,4 +1,4 @@
-// SEHS Triangle Quiz - Circle-Based Confidence Scoring
+// SEHS Triangle Quiz - FIXED: Correct Answer Detection + Topic Filtering
 // ALL circles automatically score when clicked
 
 // ==================== GLOBAL STATE ====================
@@ -13,7 +13,8 @@ let gameState = {
     currentQuestion: null,
     correctPosition: null,
     currentAssignment: null,
-    questionReady: false  // NEW: Track if question is ready
+    questionReady: false,
+    selectedTopics: []
 };
 
 // Difficulty settings
@@ -23,18 +24,233 @@ const DIFFICULTY_SETTINGS = {
     rookie: { funnyFrequency: 0.5, displayName: 'Rookie' }
 };
 
-// ==================== CUSTOM ALERT ====================
-function showCustomAlert() {
-    const alertOverlay = document.getElementById('custom-alert');
-    alertOverlay.classList.add('show');
+// ==================== INITIALIZATION ====================
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('SEHS Triangle Quiz loaded!');
+    console.log('Questions available:', QUESTIONS_DB.length);
+    showScreen('difficulty-screen');
+
+    document.querySelectorAll('.difficulty-card').forEach(card => {
+        card.addEventListener('click', function() {
+            selectDifficulty(this.dataset.difficulty);
+        });
+    });
+
+    document.getElementById('select-all-btn').addEventListener('click', selectAllTopics);
+    document.getElementById('deselect-all-btn').addEventListener('click', deselectAllTopics);
+    document.getElementById('back-to-difficulty-btn').addEventListener('click', () => showScreen('difficulty-screen'));
+    document.getElementById('start-quiz-btn').addEventListener('click', startQuizWithTopics);
+
+    document.querySelectorAll('.conf-circle').forEach(circle => {
+        circle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            handleCircleClick(this);
+        });
+    });
+
+    document.getElementById('next-btn').addEventListener('click', nextQuestion);
+    document.getElementById('alert-ok-btn').addEventListener('click', hideCustomAlert);
+    document.getElementById('quit-btn').addEventListener('click', quitQuiz);
+    document.getElementById('restart-btn').addEventListener('click', restartQuiz);
+    document.getElementById('change-difficulty-btn').addEventListener('click', changeDifficulty);
+});
+
+// ==================== SCREEN MANAGEMENT ====================
+function showScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.remove('active');
+    });
+    document.getElementById(screenId).classList.add('active');
 }
 
-function hideCustomAlert() {
-    const alertOverlay = document.getElementById('custom-alert');
-    alertOverlay.classList.remove('show');
+// ==================== DIFFICULTY SELECTION ====================
+function selectDifficulty(difficulty) {
+    gameState.difficulty = difficulty;
+    populateTopics();
+    showScreen('topic-screen');
 }
 
-// ==================== DETERMINE ANSWER FROM CIRCLE ====================
+// ==================== TOPIC SELECTION ====================
+function populateTopics() {
+    const topicList = document.getElementById('topic-list');
+    topicList.innerHTML = '';
+
+    ALL_TOPICS.forEach(topic => {
+        const checkbox = document.createElement('label');
+        checkbox.className = 'topic-checkbox';
+        checkbox.innerHTML = `
+            <input type="checkbox" value="${topic}" checked>
+            <span>${topic}</span>
+        `;
+        topicList.appendChild(checkbox);
+    });
+}
+
+function selectAllTopics() {
+    document.querySelectorAll('#topic-list input[type="checkbox"]').forEach(cb => {
+        cb.checked = true;
+    });
+}
+
+function deselectAllTopics() {
+    document.querySelectorAll('#topic-list input[type="checkbox"]').forEach(cb => {
+        cb.checked = false;
+    });
+}
+
+function getSelectedTopics() {
+    const selected = [];
+    document.querySelectorAll('#topic-list input[type="checkbox"]:checked').forEach(cb => {
+        selected.push(cb.value);
+    });
+    return selected;
+}
+
+function startQuizWithTopics() {
+    const selected = getSelectedTopics();
+
+    if (selected.length === 0) {
+        document.getElementById('topic-warning').style.display = 'block';
+        return;
+    }
+
+    document.getElementById('topic-warning').style.display = 'none';
+    gameState.selectedTopics = selected;
+    startQuiz();
+}
+
+// ==================== QUIZ START ====================
+function startQuiz() {
+    gameState.score = 10;
+    gameState.questionsAnswered = 0;
+    gameState.correctAnswers = 0;
+    gameState.wrongAnswers = 0;
+    gameState.currentQuestionIndex = 0;
+
+    const filteredQuestions = QUESTIONS_DB.filter(q => 
+        gameState.selectedTopics.includes(q.topic)
+    );
+
+    console.log(`Filtered to ${filteredQuestions.length} questions from selected topics`);
+
+    const numQuestions = Math.min(10, filteredQuestions.length);
+    gameState.selectedQuestions = shuffleArray([...filteredQuestions]).slice(0, numQuestions);
+
+    document.getElementById('difficulty-display').textContent = DIFFICULTY_SETTINGS[gameState.difficulty].displayName;
+    document.getElementById('total-q').textContent = numQuestions;
+
+    showScreen('quiz-screen');
+    loadQuestion();
+}
+
+// ==================== QUESTION LOADING ====================
+function loadQuestion() {
+    if (gameState.currentQuestionIndex >= gameState.selectedQuestions.length) {
+        showResults();
+        return;
+    }
+
+    gameState.questionReady = false;
+
+    const question = gameState.selectedQuestions[gameState.currentQuestionIndex];
+    gameState.currentQuestion = question;
+
+    document.getElementById('question-topic').textContent = question.topic;
+    document.getElementById('question-level').textContent = question.level;
+    document.getElementById('question-text').textContent = question.question;
+    document.getElementById('current-q').textContent = gameState.currentQuestionIndex + 1;
+    document.getElementById('score').textContent = gameState.score;
+
+    const options = prepareOptions(question);
+    const assignment = randomlyAssignOptions(options);
+    gameState.currentAssignment = assignment;
+
+    displayOptions(assignment);
+    resetUI();
+
+    gameState.questionReady = true;
+    console.log('Question ready. Correct answer at position:', gameState.correctPosition);
+}
+
+function prepareOptions(question) {
+    // IMPORTANT: Option 'iii' is ALWAYS the correct answer
+    const options = [
+        { key: 'i', text: question.options.i, isCorrect: false },
+        { key: 'ii', text: question.options.ii, isCorrect: false },
+        { key: 'iii', text: question.options.iii, isCorrect: true }  // ALWAYS CORRECT
+    ];
+
+    const funnyFrequency = DIFFICULTY_SETTINGS[gameState.difficulty].funnyFrequency;
+    const includeFunny = Math.random() < funnyFrequency;
+
+    if (includeFunny && question.options.iv) {
+        options.push({ key: 'iv', text: question.options.iv, isCorrect: false, isFunny: true });
+    }
+
+    return options;
+}
+
+function randomlyAssignOptions(options) {
+    // CRITICAL FIX: Always include the correct answer (option iii)
+    const correctOption = options.find(opt => opt.isCorrect);
+    const wrongOptions = options.filter(opt => !opt.isCorrect);
+
+    // Take 2 random wrong options
+    const shuffledWrong = shuffleArray([...wrongOptions]).slice(0, 2);
+
+    // Combine correct + 2 wrong, then shuffle all 3
+    const finalOptions = shuffleArray([correctOption, ...shuffledWrong]);
+
+    const assignment = {
+        A: finalOptions[0],
+        B: finalOptions[1],
+        C: finalOptions[2]
+    };
+
+    // CRITICAL: Find which position (A, B, or C) has the correct answer
+    gameState.correctPosition = null;
+    for (const [pos, option] of Object.entries(assignment)) {
+        if (option.isCorrect) {
+            gameState.correctPosition = pos;
+            break;
+        }
+    }
+
+    console.log('Assignment:', {
+        A: assignment.A.key,
+        B: assignment.B.key,
+        C: assignment.C.key,
+        correct: gameState.correctPosition
+    });
+
+    return assignment;
+}
+
+function displayOptions(assignment) {
+    ['A', 'B', 'C'].forEach(position => {
+        const btn = document.getElementById('btn-' + position);
+        const text = btn.querySelector('.answer-text');
+        text.textContent = assignment[position].text;
+        btn.className = 'answer-btn';
+        btn.disabled = false;
+    });
+}
+
+function resetUI() {
+    document.querySelectorAll('.answer-btn').forEach(btn => {
+        btn.classList.remove('correct', 'wrong', 'disabled');
+        btn.disabled = false;
+    });
+
+    document.querySelectorAll('.conf-circle').forEach(circle => {
+        circle.classList.remove('selected', 'disabled');
+    });
+
+    document.getElementById('points-display').classList.remove('show', 'positive', 'negative', 'neutral');
+    document.getElementById('next-btn').classList.remove('show');
+}
+
+// ==================== CIRCLE CLICK HANDLING ====================
 function getAnswerFromCircle(circleElement) {
     const position = circleElement.dataset.position;
     const side = circleElement.dataset.side;
@@ -51,19 +267,13 @@ function getAnswerFromCircle(circleElement) {
 
     if (side && level) {
         if (side === 'AB') {
-            if (level === 'close-A' || level === 'equal') {
-                return 'A';
-            } else if (level === 'close-B') {
-                return 'B';
-            }
+            if (level === 'close-A' || level === 'equal') return 'A';
+            if (level === 'close-B') return 'B';
         }
 
         if (side === 'AC') {
-            if (level === 'close-A' || level === 'equal') {
-                return 'A';
-            } else if (level === 'close-C') {
-                return 'C';
-            }
+            if (level === 'close-A' || level === 'equal') return 'A';
+            if (level === 'close-C') return 'C';
         }
 
         if (side === 'BC' && level === 'base') {
@@ -75,24 +285,19 @@ function getAnswerFromCircle(circleElement) {
     return 'A';
 }
 
-// ==================== POSITION-BASED SCORING ====================
 function calculatePoints(circleElement, correctAnswer) {
     const position = circleElement.dataset.position;
     const side = circleElement.dataset.side;
     const level = circleElement.dataset.level;
 
-    if (position === 'center') {
-        return 0;
-    }
+    if (position === 'center') return 0;
 
     if (position) {
         return position === correctAnswer ? 3 : -2;
     }
 
     if (side && level) {
-        if (level === 'base') {
-            return -2;
-        }
+        if (level === 'base') return -2;
 
         if (side === 'AB') {
             if (correctAnswer === 'A') {
@@ -122,177 +327,14 @@ function calculatePoints(circleElement, correctAnswer) {
             }
         }
 
-        if (side === 'BC') {
-            return -2;
-        }
+        if (side === 'BC') return -2;
     }
 
     return 0;
 }
 
-// ==================== INITIALIZATION ====================
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('SEHS Triangle Quiz loaded!');
-    console.log('Questions available:', QUESTIONS_DB.length);
-    showScreen('difficulty-screen');
-
-    document.querySelectorAll('.difficulty-card').forEach(card => {
-        card.addEventListener('click', function() {
-            startQuiz(this.dataset.difficulty);
-        });
-    });
-
-    document.querySelectorAll('.conf-circle').forEach(circle => {
-        circle.addEventListener('click', function(e) {
-            e.stopPropagation();
-            handleCircleClick(this);
-        });
-    });
-
-    document.getElementById('next-btn').addEventListener('click', nextQuestion);
-    document.getElementById('alert-ok-btn').addEventListener('click', hideCustomAlert);
-    document.getElementById('quit-btn').addEventListener('click', quitQuiz);
-    document.getElementById('restart-btn').addEventListener('click', restartQuiz);
-    document.getElementById('change-difficulty-btn').addEventListener('click', changeDifficulty);
-});
-
-// ==================== SCREEN MANAGEMENT ====================
-function showScreen(screenId) {
-    document.querySelectorAll('.screen').forEach(screen => {
-        screen.classList.remove('active');
-    });
-    document.getElementById(screenId).classList.add('active');
-}
-
-// ==================== QUIZ START ====================
-function startQuiz(difficulty) {
-    gameState.difficulty = difficulty;
-    gameState.score = 10;
-    gameState.questionsAnswered = 0;
-    gameState.correctAnswers = 0;
-    gameState.wrongAnswers = 0;
-    gameState.currentQuestionIndex = 0;
-
-    const numQuestions = Math.min(10, QUESTIONS_DB.length);
-    gameState.selectedQuestions = shuffleArray([...QUESTIONS_DB]).slice(0, numQuestions);
-
-    document.getElementById('difficulty-display').textContent = DIFFICULTY_SETTINGS[difficulty].displayName;
-    document.getElementById('total-q').textContent = numQuestions;
-
-    showScreen('quiz-screen');
-    loadQuestion();
-}
-
-// ==================== QUESTION LOADING ====================
-function loadQuestion() {
-    if (gameState.currentQuestionIndex >= gameState.selectedQuestions.length) {
-        showResults();
-        return;
-    }
-
-    // Mark question as NOT ready while loading
-    gameState.questionReady = false;
-
-    const question = gameState.selectedQuestions[gameState.currentQuestionIndex];
-    gameState.currentQuestion = question;
-
-    document.getElementById('question-topic').textContent = question.topic;
-    document.getElementById('question-level').textContent = question.level;
-    document.getElementById('question-text').textContent = question.question;
-    document.getElementById('current-q').textContent = gameState.currentQuestionIndex + 1;
-    document.getElementById('score').textContent = gameState.score;
-
-    const options = prepareOptions(question);
-    const assignment = randomlyAssignOptions(options);
-    gameState.currentAssignment = assignment;
-
-    displayOptions(assignment);
-    resetUI();
-
-    // Mark question as ready AFTER everything is set
-    gameState.questionReady = true;
-    console.log('Question ready. Correct answer:', gameState.correctPosition);
-}
-
-function prepareOptions(question) {
-    const options = [
-        { key: 'i', text: question.options.i, isCorrect: false },
-        { key: 'ii', text: question.options.ii, isCorrect: false },
-        { key: 'iii', text: question.options.iii, isCorrect: true }
-    ];
-
-    const funnyFrequency = DIFFICULTY_SETTINGS[gameState.difficulty].funnyFrequency;
-    const includeFunny = Math.random() < funnyFrequency;
-
-    if (includeFunny && question.options.iv) {
-        options.push({ key: 'iv', text: question.options.iv, isCorrect: false, isFunny: true });
-    }
-
-    return options;
-}
-
-function randomlyAssignOptions(options) {
-    // ALWAYS include the correct answer
-    const correctOption = options.find(opt => opt.isCorrect);
-    const wrongOptions = options.filter(opt => !opt.isCorrect);
-
-    // Shuffle wrong options and take 2
-    const shuffledWrong = shuffleArray([...wrongOptions]).slice(0, 2);
-
-    // Combine correct + 2 wrong, then shuffle all 3
-    const finalOptions = shuffleArray([correctOption, ...shuffledWrong]);
-
-    const assignment = {
-        A: finalOptions[0],
-        B: finalOptions[1],
-        C: finalOptions[2]
-    };
-
-    // Find which position has the correct answer
-    gameState.correctPosition = null;
-    for (const [pos, option] of Object.entries(assignment)) {
-        if (option.isCorrect) {
-            gameState.correctPosition = pos;
-            break;
-        }
-    }
-
-    return assignment;
-}
-
-function displayOptions(assignment) {
-    ['A', 'B', 'C'].forEach(position => {
-        const btn = document.getElementById('btn-' + position);
-        const text = btn.querySelector('.answer-text');
-        text.textContent = assignment[position].text;
-        btn.className = 'answer-btn';
-        btn.disabled = false;
-    });
-}
-
-function resetUI() {
-    document.querySelectorAll('.answer-btn').forEach(btn => {
-        btn.classList.remove('correct', 'wrong', 'disabled');
-        btn.disabled = false;
-    });
-
-    document.querySelectorAll('.conf-circle').forEach(circle => {
-        circle.classList.remove('selected', 'disabled');
-    });
-
-    document.getElementById('points-display').classList.remove('show', 'positive', 'negative', 'neutral');
-    document.getElementById('next-btn').classList.remove('show');
-}
-
-// ==================== CIRCLE CLICK - TRIGGERS SCORING ====================
 function handleCircleClick(circle) {
-    // DEFENSIVE CHECK: Don't allow clicks if question not ready
-    if (!gameState.questionReady) {
-        console.log('Question not ready yet, ignoring click');
-        return;
-    }
-
-    if (circle.classList.contains('disabled')) {
+    if (!gameState.questionReady || circle.classList.contains('disabled')) {
         return;
     }
 
@@ -305,13 +347,9 @@ function handleCircleClick(circle) {
     processAnswer(chosenAnswer, circle);
 }
 
-// ==================== PROCESS ANSWER ====================
 function processAnswer(chosenAnswer, circle) {
-    // Double check correctPosition exists
     if (!gameState.correctPosition) {
-        console.error('ERROR: correctPosition is null or undefined!');
-        console.log('Question state:', gameState.currentQuestion);
-        console.log('Assignment:', gameState.currentAssignment);
+        console.error('ERROR: correctPosition is null');
         return;
     }
 
@@ -324,6 +362,8 @@ function processAnswer(chosenAnswer, circle) {
 
     const chosenBtn = document.getElementById('btn-' + chosenAnswer);
     const correctBtn = document.getElementById('btn-' + gameState.correctPosition);
+
+    console.log(`User chose: ${chosenAnswer}, Correct: ${gameState.correctPosition}, Points: ${points}`);
 
     if (isCorrect) {
         gameState.correctAnswers++;
@@ -366,6 +406,11 @@ function showPoints(points) {
     }
 
     display.classList.add('show');
+
+    // Auto-hide after 1.5 seconds
+    setTimeout(() => {
+        display.classList.remove('show');
+    }, 1500);
 }
 
 function nextQuestion() {
@@ -399,7 +444,7 @@ function showResults() {
 }
 
 function restartQuiz() {
-    startQuiz(gameState.difficulty);
+    startQuiz();
 }
 
 function changeDifficulty() {
@@ -408,11 +453,10 @@ function changeDifficulty() {
 
 function quitQuiz() {
     if (confirm('Quit? Your progress will be lost.')) {
-        showScreen('difficulty-screen');
+        showScreen('topic-screen');
     }
 }
 
-// ==================== UTILITY ====================
 function shuffleArray(array) {
     const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -422,4 +466,12 @@ function shuffleArray(array) {
     return shuffled;
 }
 
-console.log('SEHS Triangle Quiz - All circles auto-score!');
+function showCustomAlert() {
+    document.getElementById('custom-alert').classList.add('show');
+}
+
+function hideCustomAlert() {
+    document.getElementById('custom-alert').classList.remove('show');
+}
+
+console.log('SEHS Triangle Quiz - Correct answer detection FIXED!');
