@@ -1,4 +1,4 @@
-// SEHS Triangle Quiz - Fixed Answer Text Display
+// SEHS Triangle Quiz - Fixed Answer Text with querySelector
 // Load questions from questions-db.js (assume it's already loaded)
 
 // State Management
@@ -128,14 +128,17 @@ function loadQuestion() {
         { letter: 'C', text: question.C, correct: question.correct === 'C' }
     ]);
 
-    // Set answer buttons - IMPORTANT: Set text content properly
+    // Set answer buttons - USE QUERYSELECTOR to find the .answer-text span
     answers.forEach(answer => {
         const btn = document.getElementById(`btn-${answer.letter}`);
-        const textSpan = document.getElementById(`answer-text-${answer.letter}`);
+        const textSpan = btn.querySelector('.answer-text');
 
-        // Set the text content
+        // CRITICAL: Set the text content directly
         if (textSpan) {
             textSpan.textContent = answer.text;
+            console.log(`Set ${answer.letter}: ${answer.text}`); // Debug log
+        } else {
+            console.error(`Could not find .answer-text span in btn-${answer.letter}`);
         }
 
         btn.dataset.correct = answer.correct;
@@ -210,17 +213,14 @@ function calculateScore(circle) {
     if (isCorrect) {
         // CORRECT ANSWER
         if (position === state.selectedAnswer) {
-            // Perfect! On correct corner
             points = 3;
             pointsText = '+3 points';
             pointsClass = 'positive';
         } else if (position === 'center') {
-            // Center = no confidence
             points = 0;
             pointsText = '0 points';
             pointsClass = 'neutral';
         } else if (side && side.includes(state.selectedAnswer)) {
-            // On a side connected to correct answer
             if (level === 'close-A' && state.selectedAnswer === 'A') {
                 points = 2;
             } else if (level === 'close-B' && state.selectedAnswer === 'B') {
@@ -232,12 +232,11 @@ function calculateScore(circle) {
             } else if (level === 'base') {
                 points = 1;
             } else {
-                points = 1; // Close to other answer
+                points = 1;
             }
             pointsText = `+${points} ${points === 1 ? 'point' : 'points'}`;
             pointsClass = 'positive';
         } else {
-            // Wrong corner when correct
             points = -1;
             pointsText = '-1 point';
             pointsClass = 'negative';
@@ -246,18 +245,14 @@ function calculateScore(circle) {
     } else {
         // WRONG ANSWER
         if (position === state.selectedAnswer) {
-            // Confidently wrong
             points = -2;
             pointsText = '-2 points';
             pointsClass = 'negative';
         } else if (position === 'center') {
-            // No confidence, good!
             points = 0;
             pointsText = '0 points';
             pointsClass = 'neutral';
         } else {
-            // Away from wrong answer = good doubt!
-            // Find correct answer
             let correctAnswer = null;
             ['A', 'B', 'C'].forEach(l => {
                 if (document.getElementById(`btn-${l}`).dataset.correct === 'true') {
@@ -266,17 +261,14 @@ function calculateScore(circle) {
             });
 
             if (position === correctAnswer) {
-                // Picked wrong answer but confidence on right one
                 points = 2;
                 pointsText = '+2 points (good instinct!)';
                 pointsClass = 'positive';
             } else if (side && side.includes(correctAnswer)) {
-                // Leaning toward correct
                 points = 1;
                 pointsText = '+1 point';
                 pointsClass = 'positive';
             } else {
-                // Away from your wrong answer
                 points = 1;
                 pointsText = '+1 point (showing doubt)';
                 pointsClass = 'positive';
