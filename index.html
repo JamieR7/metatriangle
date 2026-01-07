@@ -38,16 +38,43 @@
     <!-- TOPIC SELECTION SCREEN -->
     <div class="screen" id="topic-screen">
         <div class="screen-content">
-            <h1>📚 Select Topics</h1>
-            <p class="subtitle">Choose which topics to practice</p>
+            <h1>📚 Quiz Settings</h1>
+            <p class="subtitle">Customize your practice session</p>
 
-            <div class="topic-controls">
-                <button id="select-all-btn" class="control-btn">Select All</button>
-                <button id="deselect-all-btn" class="control-btn">Deselect All</button>
+            <!-- Theme Filter -->
+            <div class="filter-section">
+                <h3>Select Theme</h3>
+                <div class="theme-buttons">
+                    <button class="theme-btn active" data-theme="all">All Themes</button>
+                    <button class="theme-btn" data-theme="A">Theme A: Exercise Physiology</button>
+                    <button class="theme-btn" data-theme="B">Theme B: Biomechanics</button>
+                    <button class="theme-btn" data-theme="C">Theme C: Sports Psychology</button>
+                </div>
             </div>
 
-            <div id="topic-list" class="topic-list">
-                <!-- Topics will be populated by JavaScript -->
+            <!-- Number of Questions -->
+            <div class="filter-section">
+                <h3>Number of Questions</h3>
+                <div class="question-count-buttons">
+                    <button class="count-btn" data-count="5">5</button>
+                    <button class="count-btn active" data-count="10">10</button>
+                    <button class="count-btn" data-count="15">15</button>
+                    <button class="count-btn" data-count="20">20</button>
+                    <button class="count-btn" data-count="all">All</button>
+                </div>
+            </div>
+
+            <!-- Topic Selection -->
+            <div class="filter-section">
+                <h3>Select Specific Topics (Optional)</h3>
+                <div class="topic-controls">
+                    <button id="select-all-btn" class="control-btn">Select All</button>
+                    <button id="deselect-all-btn" class="control-btn">Deselect All</button>
+                </div>
+
+                <div id="topic-list" class="topic-list">
+                    <!-- Topics will be populated by JavaScript -->
+                </div>
             </div>
 
             <div class="topic-actions">
