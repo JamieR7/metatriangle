@@ -3,180 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SEHS Triangle Quiz - Confidence Assessment</title>
+    <title>SEHS Triangle Quiz - IB Practice</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- DIFFICULTY SELECTION SCREEN -->
-    <div id="difficulty-screen" class="screen active">
-        <div class="container">
-            <h1>SEHS Triangle Quiz</h1>
-            <p class="subtitle">Confidence-Based Assessment</p>
+    <!-- DIFFICULTY SCREEN -->
+    <div class="screen active" id="difficulty-screen">
+        <div class="screen-content">
+            <h1>🎯 SEHS Triangle Quiz</h1>
+            <p class="subtitle">Choose your difficulty level</p>
 
-            <div class="difficulty-options">
+            <div class="difficulty-grid">
                 <div class="difficulty-card" data-difficulty="pro">
-                    <div class="difficulty-icon">🏆</div>
+                    <div class="difficulty-icon">🔥</div>
                     <h2>Pro</h2>
-                    <p class="difficulty-desc">Serious business only</p>
-                    <p class="difficulty-detail">No funny answers • Maximum challenge</p>
-                    <button class="btn btn-pro">Start as Pro</button>
+                    <p>4 options, no hints</p>
                 </div>
 
                 <div class="difficulty-card" data-difficulty="varsity">
-                    <div class="difficulty-icon">⚡</div>
+                    <div class="difficulty-icon">💪</div>
                     <h2>Varsity</h2>
-                    <p class="difficulty-desc">Balanced challenge</p>
-                    <p class="difficulty-detail">20% chance of funny answers</p>
-                    <button class="btn btn-varsity">Start as Varsity</button>
+                    <p>Occasional funny answers</p>
                 </div>
 
                 <div class="difficulty-card" data-difficulty="rookie">
                     <div class="difficulty-icon">🎓</div>
                     <h2>Rookie</h2>
-                    <p class="difficulty-desc">Learning mode</p>
-                    <p class="difficulty-detail">50% chance of funny answers</p>
-                    <button class="btn btn-rookie">Start as Rookie</button>
+                    <p>Funny answers included</p>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW: TOPIC SELECTION SCREEN -->
+    <div class="screen" id="topic-screen">
+        <div class="screen-content">
+            <h1>📚 Select Topics</h1>
+            <p class="subtitle">Choose which topics to practice</p>
+
+            <div class="topic-controls">
+                <button id="select-all-btn" class="control-btn">Select All</button>
+                <button id="deselect-all-btn" class="control-btn">Deselect All</button>
+            </div>
+
+            <div id="topic-list" class="topic-list">
+                <!-- Topics will be populated by JavaScript -->
+            </div>
+
+            <div class="topic-actions">
+                <button id="back-to-difficulty-btn" class="secondary-btn">← Back</button>
+                <button id="start-quiz-btn" class="primary-btn">Start Quiz →</button>
+            </div>
+
+            <div id="topic-warning" class="warning-message" style="display: none;">
+                Please select at least one topic
             </div>
         </div>
     </div>
 
     <!-- QUIZ SCREEN -->
-    <div id="quiz-screen" class="screen">
-        <div class="quiz-container">
-            <!-- Header -->
-            <div class="header">
-                <div class="stats">
-                    <div class="stat-item">
-                        <span class="stat-label">Score</span>
-                        <span class="stat-value" id="score">10</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Question</span>
-                        <span class="stat-value"><span id="current-q">1</span>/<span id="total-q">10</span></span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Level</span>
-                        <span class="stat-value" id="difficulty-display">Rookie</span>
-                    </div>
-                </div>
-                <button class="btn-quit" id="quit-btn">Quit</button>
+    <div class="screen" id="quiz-screen">
+        <div class="quiz-header">
+            <div class="quiz-info">
+                <span id="difficulty-display">Pro</span>
+                <span class="divider">|</span>
+                <span>Q <span id="current-q">1</span>/<span id="total-q">10</span></span>
+                <span class="divider">|</span>
+                <span>Score: <span id="score">10</span></span>
+            </div>
+            <button id="quit-btn" class="quit-btn">✕</button>
+        </div>
+
+        <div class="question-container">
+            <div class="question-meta">
+                <span class="question-topic" id="question-topic">Topic Name</span>
+                <span class="question-level" id="question-level">SL</span>
             </div>
 
-            <!-- Question Box -->
-            <div class="question-box">
-                <div class="question-header">
-                    <span class="question-topic" id="question-topic">Loading...</span>
-                    <span class="question-level" id="question-level">SL</span>
-                </div>
-                <p class="question-text" id="question-text">Which muscle fiber type is most resistant to fatigue?</p>
+            <div class="question-text" id="question-text">
+                Which division of the nervous system controls involuntary functions?
             </div>
+        </div>
 
-            <!-- Answer A (Top) -->
-            <button class="answer-btn" id="btn-A" data-position="A">
-                <div class="answer-label">A</div>
-                <div class="answer-text">Type IIa fast-twitch</div>
+        <div class="answers-grid">
+            <button class="answer-btn" id="btn-A">
+                <span class="answer-label">A</span>
+                <span class="answer-text">Central nervous system</span>
             </button>
 
-            <!-- Triangle with 13 Confidence Circles - NO LABELS -->
-            <div class="triangle-box">
-                <p class="triangle-instruction">Click a circle on the triangle to indicate your confidence level</p>
-                <svg viewBox="0 0 600 450" class="triangle-svg">
-                    <!-- Triangle outline -->
-                    <polygon points="300,80 120,380 480,380" class="triangle-outline"/>
+            <button class="answer-btn" id="btn-B">
+                <span class="answer-label">B</span>
+                <span class="answer-text">Somatic nervous system</span>
+            </button>
 
-                    <!-- 3 CORNER circles -->
-                    <circle cx="300" cy="80"  r="20" class="conf-circle" data-position="A"/>
-                    <circle cx="120" cy="380" r="20" class="conf-circle" data-position="B"/>
-                    <circle cx="480" cy="380" r="20" class="conf-circle" data-position="C"/>
-
-                    <!-- LEFT SIDE (A→B) -->
-                    <circle cx="255" cy="155" r="20" class="conf-circle" data-side="AB" data-level="close-A"/>
-                    <circle cx="210" cy="230" r="20" class="conf-circle" data-side="AB" data-level="equal"/>
-                    <circle cx="165" cy="305" r="20" class="conf-circle" data-side="AB" data-level="close-B"/>
-
-                    <!-- RIGHT SIDE (A→C) -->
-                    <circle cx="345" cy="155" r="20" class="conf-circle" data-side="AC" data-level="close-A"/>
-                    <circle cx="390" cy="230" r="20" class="conf-circle" data-side="AC" data-level="equal"/>
-                    <circle cx="435" cy="305" r="20" class="conf-circle" data-side="AC" data-level="close-C"/>
-
-                    <!-- BASE (B→C) -->
-                    <circle cx="210" cy="380" r="20" class="conf-circle" data-side="BC" data-level="base"/>
-                    <circle cx="300" cy="380" r="20" class="conf-circle" data-side="BC" data-level="base"/>
-                    <circle cx="390" cy="380" r="20" class="conf-circle" data-side="BC" data-level="base"/>
-
-                    <!-- CENTER circle -->
-                    <circle cx="300" cy="280" r="20" class="conf-circle" data-position="center"/>
-                </svg>
-            </div>
-
-            <!-- Bottom Answers -->
-            <div class="answers-bottom">
-                <button class="answer-btn" id="btn-B" data-position="B">
-                    <div class="answer-label">B</div>
-                    <div class="answer-text">Type I slow-twitch</div>
-                </button>
-                <button class="answer-btn" id="btn-C" data-position="C">
-                    <div class="answer-label">C</div>
-                    <div class="answer-text">Type IIx fast-twitch</div>
-                </button>
-            </div>
-
-            <!-- Points Earned Display -->
-            <div class="points-display" id="points-display">
-                <p class="points-text" id="points-text">+3 points</p>
-            </div>
-
-            <!-- Next Question Button -->
-            <button class="btn-next" id="next-btn">Next Question</button>
+            <button class="answer-btn" id="btn-C">
+                <span class="answer-label">C</span>
+                <span class="answer-text">Autonomic nervous system</span>
+            </button>
         </div>
+
+        <div class="triangle-container">
+            <p class="triangle-instruction">Click a circle on the triangle to indicate your confidence level</p>
+
+            <svg viewBox="0 0 600 550" class="confidence-triangle">
+                <!-- Triangle outline -->
+                <line x1="300" y1="50" x2="100" y2="450" stroke="#fbbf24" stroke-width="3"/>
+                <line x1="300" y1="50" x2="500" y2="450" stroke="#fbbf24" stroke-width="3"/>
+                <line x1="100" y1="450" x2="500" y2="450" stroke="#fbbf24" stroke-width="3"/>
+
+                <!-- Corner circles (3 points) -->
+                <circle cx="300" cy="50" r="15" class="conf-circle" data-position="A"/>
+                <circle cx="100" cy="450" r="15" class="conf-circle" data-position="B"/>
+                <circle cx="500" cy="450" r="15" class="conf-circle" data-position="C"/>
+
+                <!-- Side AB circles -->
+                <circle cx="250" cy="150" r="12" class="conf-circle" data-side="AB" data-level="close-A"/>
+                <circle cx="200" cy="250" r="12" class="conf-circle" data-side="AB" data-level="equal"/>
+                <circle cx="150" cy="350" r="12" class="conf-circle" data-side="AB" data-level="close-B"/>
+
+                <!-- Side AC circles -->
+                <circle cx="350" cy="150" r="12" class="conf-circle" data-side="AC" data-level="close-A"/>
+                <circle cx="400" cy="250" r="12" class="conf-circle" data-side="AC" data-level="equal"/>
+                <circle cx="450" cy="350" r="12" class="conf-circle" data-side="AC" data-level="close-C"/>
+
+                <!-- Base BC circles -->
+                <circle cx="200" cy="450" r="12" class="conf-circle" data-side="BC" data-level="base"/>
+                <circle cx="300" cy="450" r="12" class="conf-circle" data-side="BC" data-level="base"/>
+                <circle cx="400" cy="450" r="12" class="conf-circle" data-side="BC" data-level="base"/>
+
+                <!-- Center circle (0 points) -->
+                <circle cx="300" cy="300" r="12" class="conf-circle" data-position="center"/>
+            </svg>
+        </div>
+
+        <div id="points-display" class="points-display">
+            <span id="points-text">+3 points</span>
+        </div>
+
+        <button id="next-btn" class="next-btn">Next Question →</button>
     </div>
 
     <!-- RESULTS SCREEN -->
-    <div id="results-screen" class="screen">
-        <div class="container">
-            <h1>Quiz Complete! 🎉</h1>
+    <div class="screen" id="results-screen">
+        <div class="screen-content">
+            <h1>🎊 Quiz Complete!</h1>
 
-            <div class="results-card">
-                <div class="final-score">
-                    <p class="score-label">Your Final Score</p>
-                    <p class="score-number" id="final-score">10</p>
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="result-value" id="final-score">25</div>
+                    <div class="result-label">Final Score</div>
                 </div>
 
-                <div class="results-stats">
-                    <div class="result-stat">
-                        <div class="result-icon">✅</div>
-                        <p class="result-label">Correct</p>
-                        <p class="result-value" id="correct-count">0</p>
-                    </div>
-                    <div class="result-stat">
-                        <div class="result-icon">❌</div>
-                        <p class="result-label">Wrong</p>
-                        <p class="result-value" id="wrong-count">0</p>
-                    </div>
-                    <div class="result-stat">
-                        <div class="result-icon">📊</div>
-                        <p class="result-label">Accuracy</p>
-                        <p class="result-value" id="accuracy">0%</p>
-                    </div>
+                <div class="result-card">
+                    <div class="result-value" id="correct-count">8</div>
+                    <div class="result-label">Correct</div>
                 </div>
 
-                <p class="performance-message" id="performance-message">Great job!</p>
-
-                <div class="action-buttons">
-                    <button class="btn btn-primary" id="restart-btn">Try Again</button>
-                    <button class="btn btn-secondary" id="change-difficulty-btn">Change Difficulty</button>
+                <div class="result-card">
+                    <div class="result-value" id="wrong-count">2</div>
+                    <div class="result-label">Wrong</div>
                 </div>
+
+                <div class="result-card">
+                    <div class="result-value" id="accuracy">80%</div>
+                    <div class="result-label">Accuracy</div>
+                </div>
+            </div>
+
+            <p id="performance-message" class="performance-message">💪 Great Job!</p>
+
+            <div class="result-actions">
+                <button id="restart-btn" class="primary-btn">Try Again</button>
+                <button id="change-difficulty-btn" class="secondary-btn">Change Settings</button>
             </div>
         </div>
     </div>
 
-    <!-- CUSTOM ALERT MODAL -->
-    <div class="custom-alert-overlay" id="custom-alert">
-        <div class="custom-alert-box">
-            <div class="custom-alert-icon">⚠️</div>
-            <p class="custom-alert-text">Please use the triangle to show how confident you are.<br><strong>If you are sure you know the answer, click the corner!</strong></p>
-            <button class="custom-alert-btn" id="alert-ok-btn">Got it!</button>
+    <!-- Custom Alert -->
+    <div id="custom-alert" class="alert-overlay">
+        <div class="alert-box">
+            <p id="alert-message">Alert message</p>
+            <button id="alert-ok-btn" class="alert-btn">OK</button>
         </div>
     </div>
 
