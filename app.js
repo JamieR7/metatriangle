@@ -1,11 +1,10 @@
 // SEHS Triangle Quiz - Position-Based Confidence Scoring
-// User must select confidence circle THEN answer button
 
 // ==================== GLOBAL STATE ====================
 let gameState = {
     difficulty: 'rookie',
     currentQuestionIndex: 0,
-    score: 10,  // START AT 10 POINTS
+    score: 10,
     questionsAnswered: 0,
     correctAnswers: 0,
     wrongAnswers: 0,
@@ -13,7 +12,7 @@ let gameState = {
     currentQuestion: null,
     correctPosition: null,
     currentAssignment: null,
-    selectedCircle: null  // Store selected circle element
+    selectedCircle: null
 };
 
 // Difficulty settings
@@ -25,73 +24,67 @@ const DIFFICULTY_SETTINGS = {
 
 // ==================== POSITION-BASED SCORING ====================
 function calculatePoints(circleElement, correctAnswer) {
-    // Get circle's position data
     const position = circleElement.dataset.position;
     const side = circleElement.dataset.side;
     const level = circleElement.dataset.level;
 
-    // CENTER - always 0 points
+    console.log('Calculating points:', { position, side, level, correctAnswer });
+
+    // CENTER - always 0
     if (position === 'center') {
         return 0;
     }
 
-    // CORNERS - +3 if correct corner, -2 if wrong corner
+    // CORNERS
     if (position) {
         return position === correctAnswer ? 3 : -2;
     }
 
-    // SIDE CIRCLES - depends on correct answer and position on side
+    // SIDE CIRCLES
     if (side && level) {
-        // Base circles (between B and C) - always -2
         if (level === 'base') {
             return -2;
         }
 
-        // Determine if circle is closer to correct answer
         if (side === 'AB') {
-            // On A-B side
             if (correctAnswer === 'A') {
-                if (level === 'close-A') return 2;  // Closer to A
-                if (level === 'equal') return 1;     // Middle
-                if (level === 'close-B') return -1;  // Closer to B (wrong)
+                if (level === 'close-A') return 2;
+                if (level === 'equal') return 1;
+                if (level === 'close-B') return -1;
             } else if (correctAnswer === 'B') {
-                if (level === 'close-B') return 2;   // Closer to B
-                if (level === 'equal') return 1;     // Middle
-                if (level === 'close-A') return -1;  // Closer to A (wrong)
+                if (level === 'close-B') return 2;
+                if (level === 'equal') return 1;
+                if (level === 'close-A') return -1;
             } else {
-                // C is correct, both A and B are wrong
                 return -2;
             }
         }
 
         if (side === 'AC') {
-            // On A-C side
             if (correctAnswer === 'A') {
-                if (level === 'close-A') return 2;   // Closer to A
-                if (level === 'equal') return 1;     // Middle
-                if (level === 'close-C') return -1;  // Closer to C (wrong)
+                if (level === 'close-A') return 2;
+                if (level === 'equal') return 1;
+                if (level === 'close-C') return -1;
             } else if (correctAnswer === 'C') {
-                if (level === 'close-C') return 2;   // Closer to C
-                if (level === 'equal') return 1;     // Middle
-                if (level === 'close-A') return -1;  // Closer to A (wrong)
+                if (level === 'close-C') return 2;
+                if (level === 'equal') return 1;
+                if (level === 'close-A') return -1;
             } else {
-                // B is correct, both A and C are wrong
                 return -2;
             }
         }
 
         if (side === 'BC') {
-            // Base - always -2 (between two answers, one of which is wrong)
             return -2;
         }
     }
 
-    return 0; // Fallback
+    return 0;
 }
 
 // ==================== INITIALIZATION ====================
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('SEHS Triangle Quiz - Position-Based Scoring loaded!');
+    console.log('SEHS Triangle Quiz loaded!');
     console.log('Questions available:', QUESTIONS_DB.length);
     showScreen('difficulty-screen');
 
@@ -102,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Confidence circle click handlers
+    // Confidence circles
     document.querySelectorAll('.conf-circle').forEach(circle => {
         circle.addEventListener('click', function(e) {
             e.stopPropagation();
@@ -110,14 +103,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Answer button handlers
+    // Answer buttons
     document.querySelectorAll('.answer-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function(e) {
+            console.log('Answer button clicked:', this.dataset.position);
             handleAnswerClick(this);
         });
     });
 
-    // Next question button
+    // Next button
     document.getElementById('next-btn').addEventListener('click', nextQuestion);
 
     // Other buttons
@@ -137,7 +131,7 @@ function showScreen(screenId) {
 // ==================== QUIZ START ====================
 function startQuiz(difficulty) {
     gameState.difficulty = difficulty;
-    gameState.score = 10;  // START AT 10
+    gameState.score = 10;
     gameState.questionsAnswered = 0;
     gameState.correctAnswers = 0;
     gameState.wrongAnswers = 0;
@@ -165,20 +159,20 @@ function loadQuestion() {
     gameState.currentQuestion = question;
     gameState.selectedCircle = null;
 
-    // Update UI
     document.getElementById('question-topic').textContent = question.topic;
     document.getElementById('question-level').textContent = question.level;
     document.getElementById('question-text').textContent = question.question;
     document.getElementById('current-q').textContent = gameState.currentQuestionIndex + 1;
     document.getElementById('score').textContent = gameState.score;
 
-    // Prepare options
     const options = prepareOptions(question);
     const assignment = randomlyAssignOptions(options);
     gameState.currentAssignment = assignment;
 
     displayOptions(assignment);
     resetUI();
+
+    console.log('Question loaded. Correct answer:', gameState.correctPosition);
 }
 
 function prepareOptions(question) {
@@ -222,34 +216,30 @@ function displayOptions(assignment) {
         const text = btn.querySelector('.answer-text');
         text.textContent = assignment[position].text;
         btn.className = 'answer-btn';
+        btn.disabled = false;
     });
 }
 
 function resetUI() {
-    // Reset answer buttons
     document.querySelectorAll('.answer-btn').forEach(btn => {
         btn.classList.remove('correct', 'wrong', 'disabled');
         btn.disabled = false;
     });
 
-    // Reset confidence circles
     document.querySelectorAll('.conf-circle').forEach(circle => {
         circle.classList.remove('selected', 'disabled');
     });
 
-    // Hide points display and next button
     document.getElementById('points-display').classList.remove('show', 'positive', 'negative', 'neutral');
     document.getElementById('next-btn').classList.remove('show');
 }
 
 // ==================== CIRCLE SELECTION ====================
 function selectCircle(circle) {
-    // Remove previous selection
     document.querySelectorAll('.conf-circle').forEach(c => {
         c.classList.remove('selected');
     });
 
-    // Mark this circle as selected
     circle.classList.add('selected');
     gameState.selectedCircle = circle;
 
@@ -258,17 +248,28 @@ function selectCircle(circle) {
 
 // ==================== ANSWER SELECTION ====================
 function handleAnswerClick(button) {
-    // Check if circle was selected
+    console.log('handleAnswerClick called');
+    console.log('Selected circle:', gameState.selectedCircle);
+
     if (!gameState.selectedCircle) {
         alert('⚠️ Please select your confidence level on the triangle first!');
+        return;
+    }
+
+    // Check if already answered
+    if (button.classList.contains('disabled')) {
+        console.log('Button already disabled');
         return;
     }
 
     const position = button.dataset.position;
     const isCorrect = position === gameState.correctPosition;
 
-    // Calculate points based on circle position and correct answer
+    console.log('Answer:', position, 'Correct:', gameState.correctPosition, 'Is correct:', isCorrect);
+
+    // Calculate points
     const points = calculatePoints(gameState.selectedCircle, gameState.correctPosition);
+    console.log('Points earned:', points);
 
     // Update score
     gameState.score += points;
@@ -282,12 +283,11 @@ function handleAnswerClick(button) {
         gameState.wrongAnswers++;
         button.classList.add('wrong');
 
-        // Highlight correct answer
         const correctBtn = document.getElementById(`btn-${gameState.correctPosition}`);
         correctBtn.classList.add('correct');
     }
 
-    // Disable all buttons and circles
+    // Disable all
     document.querySelectorAll('.answer-btn').forEach(btn => {
         btn.disabled = true;
         btn.classList.add('disabled');
@@ -297,10 +297,7 @@ function handleAnswerClick(button) {
         circle.classList.add('disabled');
     });
 
-    // Show points earned
     showPoints(points);
-
-    // Show next button
     document.getElementById('next-btn').classList.add('show');
 }
 
@@ -308,11 +305,9 @@ function showPoints(points) {
     const display = document.getElementById('points-display');
     const text = document.getElementById('points-text');
 
-    // Format points text
     const sign = points > 0 ? '+' : '';
     text.textContent = `${sign}${points} points`;
 
-    // Apply color class
     display.classList.remove('positive', 'negative', 'neutral');
     if (points > 0) {
         display.classList.add('positive');
@@ -383,4 +378,3 @@ function shuffleArray(array) {
 
 console.log('Position-Based Scoring initialized!');
 console.log('Starting score: 10 points');
-console.log('Scoring: Corner(+3/-2), Close(+2/-1), Equal(+1), Base(-2), Center(0)');
