@@ -1,4 +1,4 @@
-// SEHS Triangle Quiz - Fixed Answer Text with querySelector
+// SEHS Triangle Quiz - Fixed Undefined Values
 // Load questions from questions-db.js (assume it's already loaded)
 
 // State Management
@@ -11,7 +11,8 @@ let state = {
     selectedAnswer: null,
     selectedConfidence: null,
     correctCount: 0,
-    wrongCount: 0
+    wrongCount: 0,
+    answerMapping: {} // Track which button has which answer
 };
 
 // DOM Elements
@@ -24,7 +25,7 @@ const nextBtn = document.getElementById('next-btn');
 const restartBtn = document.getElementById('restart-btn');
 const changeDifficultyBtn = document.getElementById('change-difficulty-btn');
 
-// Get questions database - try multiple possible variable names
+// Get questions database
 function getQuestionsDB() {
     return window.questionsDB || window.questions || window.QUESTIONS_DB || [];
 }
@@ -114,6 +115,8 @@ function startQuiz() {
 function loadQuestion() {
     const question = state.questions[state.currentQuestionIndex];
 
+    console.log('Loading question:', question); // Debug
+
     // Update question info
     document.getElementById('question-topic').textContent = question.topic;
     document.getElementById('question-level').textContent = question.level;
@@ -121,29 +124,44 @@ function loadQuestion() {
     document.getElementById('current-q').textContent = state.currentQuestionIndex + 1;
     document.getElementById('score').textContent = state.score;
 
-    // Shuffle answers
-    const answers = shuffleArray([
-        { letter: 'A', text: question.A, correct: question.correct === 'A' },
-        { letter: 'B', text: question.B, correct: question.correct === 'B' },
-        { letter: 'C', text: question.C, correct: question.correct === 'C' }
-    ]);
+    // Create answers array with actual text from question
+    const allAnswers = [
+        { id: 'A', text: question.A, isCorrect: question.correct === 'A' },
+        { id: 'B', text: question.B, isCorrect: question.correct === 'B' },
+        { id: 'C', text: question.C, isCorrect: question.correct === 'C' }
+    ];
 
-    // Set answer buttons - USE QUERYSELECTOR to find the .answer-text span
-    answers.forEach(answer => {
-        const btn = document.getElementById(`btn-${answer.letter}`);
+    console.log('All answers before shuffle:', allAnswers); // Debug
+
+    // Shuffle the answers
+    const shuffledAnswers = shuffleArray([...allAnswers]);
+
+    console.log('Shuffled answers:', shuffledAnswers); // Debug
+
+    // Assign shuffled answers to buttons A, B, C
+    const buttonIds = ['A', 'B', 'C'];
+    state.answerMapping = {}; // Reset mapping
+
+    buttonIds.forEach((btnId, index) => {
+        const answer = shuffledAnswers[index];
+        const btn = document.getElementById(`btn-${btnId}`);
         const textSpan = btn.querySelector('.answer-text');
 
-        // CRITICAL: Set the text content directly
-        if (textSpan) {
+        // Store mapping: which button shows which answer
+        state.answerMapping[btnId] = answer.id;
+
+        // Set text
+        if (textSpan && answer.text) {
             textSpan.textContent = answer.text;
-            console.log(`Set ${answer.letter}: ${answer.text}`); // Debug log
+            console.log(`Button ${btnId} shows answer ${answer.id}: "${answer.text}"`); // Debug
         } else {
-            console.error(`Could not find .answer-text span in btn-${answer.letter}`);
+            console.error(`Problem with button ${btnId}:`, { textSpan, answer });
         }
 
-        btn.dataset.correct = answer.correct;
+        // Store whether THIS button's answer is correct
+        btn.dataset.correct = answer.isCorrect;
         btn.classList.remove('correct', 'wrong', 'disabled');
-        btn.onclick = () => selectAnswer(answer.letter);
+        btn.onclick = () => selectAnswer(btnId);
     });
 
     // Reset triangle
@@ -157,14 +175,14 @@ function loadQuestion() {
     nextBtn.classList.remove('show');
 }
 
-function selectAnswer(letter) {
+function selectAnswer(buttonId) {
     if (state.selectedAnswer) return; // Already answered
 
-    state.selectedAnswer = letter;
+    state.selectedAnswer = buttonId;
 
-    // Disable answer buttons
-    ['A', 'B', 'C'].forEach(l => {
-        const btn = document.getElementById(`btn-${l}`);
+    // Disable answer buttons and show which is correct
+    ['A', 'B', 'C'].forEach(btnId => {
+        const btn = document.getElementById(`btn-${btnId}`);
         btn.classList.add('disabled');
 
         // Show correct answer with GREEN background
@@ -172,7 +190,7 @@ function selectAnswer(letter) {
             btn.classList.add('correct');
         }
         // Show wrong answer if selected
-        if (l === letter && btn.dataset.correct !== 'true') {
+        if (btnId === buttonId && btn.dataset.correct !== 'true') {
             btn.classList.add('wrong');
         }
     });
@@ -201,7 +219,17 @@ document.querySelectorAll('.conf-circle').forEach(circle => {
 });
 
 function calculateScore(circle) {
-    const isCorrect = document.getElementById(`btn-${state.selectedAnswer}`).dataset.correct === 'true';
+    const selectedBtn = document.getElementById(`btn-${state.selectedAnswer}`);
+    const isCorrect = selectedBtn.dataset.correct === 'true';
+
+    // Find which triangle position corresponds to the correct answer
+    let correctAnswerId = null;
+    ['A', 'B', 'C'].forEach(btnId => {
+        if (document.getElementById(`btn-${btnId}`).dataset.correct === 'true') {
+            correctAnswerId = state.answerMapping[btnId]; // Get original answer ID
+        }
+    });
+
     const position = circle.dataset.position;
     const side = circle.dataset.side;
     const level = circle.dataset.level;
@@ -212,7 +240,7 @@ function calculateScore(circle) {
 
     if (isCorrect) {
         // CORRECT ANSWER
-        if (position === state.selectedAnswer) {
+        if (position === correctAnswerId) {
             points = 3;
             pointsText = '+3 points';
             pointsClass = 'positive';
@@ -220,12 +248,12 @@ function calculateScore(circle) {
             points = 0;
             pointsText = '0 points';
             pointsClass = 'neutral';
-        } else if (side && side.includes(state.selectedAnswer)) {
-            if (level === 'close-A' && state.selectedAnswer === 'A') {
+        } else if (side && side.includes(correctAnswerId)) {
+            if (level === 'close-A' && correctAnswerId === 'A') {
                 points = 2;
-            } else if (level === 'close-B' && state.selectedAnswer === 'B') {
+            } else if (level === 'close-B' && correctAnswerId === 'B') {
                 points = 2;
-            } else if (level === 'close-C' && state.selectedAnswer === 'C') {
+            } else if (level === 'close-C' && correctAnswerId === 'C') {
                 points = 2;
             } else if (level === 'equal') {
                 points = 1;
@@ -244,7 +272,9 @@ function calculateScore(circle) {
         state.correctCount++;
     } else {
         // WRONG ANSWER
-        if (position === state.selectedAnswer) {
+        const selectedAnswerId = state.answerMapping[state.selectedAnswer];
+
+        if (position === selectedAnswerId) {
             points = -2;
             pointsText = '-2 points';
             pointsClass = 'negative';
@@ -253,18 +283,11 @@ function calculateScore(circle) {
             pointsText = '0 points';
             pointsClass = 'neutral';
         } else {
-            let correctAnswer = null;
-            ['A', 'B', 'C'].forEach(l => {
-                if (document.getElementById(`btn-${l}`).dataset.correct === 'true') {
-                    correctAnswer = l;
-                }
-            });
-
-            if (position === correctAnswer) {
+            if (position === correctAnswerId) {
                 points = 2;
                 pointsText = '+2 points (good instinct!)';
                 pointsClass = 'positive';
-            } else if (side && side.includes(correctAnswer)) {
+            } else if (side && side.includes(correctAnswerId)) {
                 points = 1;
                 pointsText = '+1 point';
                 pointsClass = 'positive';
