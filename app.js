@@ -39,18 +39,15 @@ function getAnswerFromCircle(circleElement) {
     const side = circleElement.dataset.side;
     const level = circleElement.dataset.level;
 
-    // Corner circles - clear choice
     if (position && position !== 'center') {
         return position;
     }
 
-    // Center circle - maximum uncertainty, choose randomly
     if (position === 'center') {
         const options = ['A', 'B', 'C'];
         return options[Math.floor(Math.random() * options.length)];
     }
 
-    // Side circles
     if (side && level) {
         if (side === 'AB') {
             if (level === 'close-A' || level === 'equal') {
@@ -227,14 +224,23 @@ function prepareOptions(question) {
 }
 
 function randomlyAssignOptions(options) {
-    const shuffled = shuffleArray([...options]).slice(0, 3);
+    // ALWAYS include the correct answer
+    const correctOption = options.find(opt => opt.isCorrect);
+    const wrongOptions = options.filter(opt => !opt.isCorrect);
+
+    // Shuffle wrong options and take 2
+    const shuffledWrong = shuffleArray([...wrongOptions]).slice(0, 2);
+
+    // Combine correct + 2 wrong, then shuffle all 3
+    const finalOptions = shuffleArray([correctOption, ...shuffledWrong]);
 
     const assignment = {
-        A: shuffled[0],
-        B: shuffled[1],
-        C: shuffled[2]
+        A: finalOptions[0],
+        B: finalOptions[1],
+        C: finalOptions[2]
     };
 
+    // Find which position has the correct answer
     gameState.correctPosition = null;
     for (const [pos, option] of Object.entries(assignment)) {
         if (option.isCorrect) {
@@ -242,6 +248,8 @@ function randomlyAssignOptions(options) {
             break;
         }
     }
+
+    console.log('Correct answer at position:', gameState.correctPosition);
 
     return assignment;
 }
