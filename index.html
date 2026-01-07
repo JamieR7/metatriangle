@@ -49,7 +49,10 @@
                 </div>
             </div>
 
-            <button id="start-quiz-btn" class="primary-btn">Start Quiz →</button>
+            <!-- START BUTTON -->
+            <div class="start-button-container">
+                <button id="start-quiz-btn" class="start-btn">Start Quiz →</button>
+            </div>
         </div>
     </div>
 
@@ -77,6 +80,42 @@
             </div>
         </div>
 
+        <!-- TRIANGLE FIRST, THEN BUTTONS BELOW -->
+        <div class="triangle-container">
+            <p class="triangle-instruction">Click a circle on the triangle to indicate your confidence level</p>
+
+            <svg viewBox="0 0 600 450" class="confidence-triangle">
+                <!-- Triangle outline -->
+                <line x1="300" y1="40" x2="100" y2="400" stroke="#fbbf24" stroke-width="3"/>
+                <line x1="300" y1="40" x2="500" y2="400" stroke="#fbbf24" stroke-width="3"/>
+                <line x1="100" y1="400" x2="500" y2="400" stroke="#fbbf24" stroke-width="3"/>
+
+                <!-- Corner circles (3 points) -->
+                <circle cx="300" cy="40" r="15" class="conf-circle" data-position="A"/>
+                <circle cx="100" cy="400" r="15" class="conf-circle" data-position="B"/>
+                <circle cx="500" cy="400" r="15" class="conf-circle" data-position="C"/>
+
+                <!-- Side AB circles -->
+                <circle cx="250" cy="130" r="12" class="conf-circle" data-side="AB" data-level="close-A"/>
+                <circle cx="200" cy="220" r="12" class="conf-circle" data-side="AB" data-level="equal"/>
+                <circle cx="150" cy="310" r="12" class="conf-circle" data-side="AB" data-level="close-B"/>
+
+                <!-- Side AC circles -->
+                <circle cx="350" cy="130" r="12" class="conf-circle" data-side="AC" data-level="close-A"/>
+                <circle cx="400" cy="220" r="12" class="conf-circle" data-side="AC" data-level="equal"/>
+                <circle cx="450" cy="310" r="12" class="conf-circle" data-side="AC" data-level="close-C"/>
+
+                <!-- Base BC circles -->
+                <circle cx="200" cy="400" r="12" class="conf-circle" data-side="BC" data-level="base"/>
+                <circle cx="300" cy="400" r="12" class="conf-circle" data-side="BC" data-level="base"/>
+                <circle cx="400" cy="400" r="12" class="conf-circle" data-side="BC" data-level="base"/>
+
+                <!-- Center circle (0 points) -->
+                <circle cx="300" cy="260" r="12" class="conf-circle" data-position="center"/>
+            </svg>
+        </div>
+
+        <!-- ANSWER BUTTONS BELOW TRIANGLE -->
         <div class="answers-grid">
             <button class="answer-btn" id="btn-A">
                 <span class="answer-label">A</span>
@@ -92,40 +131,6 @@
                 <span class="answer-label">C</span>
                 <span class="answer-text">Autonomic nervous system</span>
             </button>
-        </div>
-
-        <div class="triangle-container">
-            <p class="triangle-instruction">Click a circle on the triangle to indicate your confidence level</p>
-
-            <svg viewBox="0 0 600 550" class="confidence-triangle">
-                <!-- Triangle outline -->
-                <line x1="300" y1="50" x2="100" y2="450" stroke="#fbbf24" stroke-width="3"/>
-                <line x1="300" y1="50" x2="500" y2="450" stroke="#fbbf24" stroke-width="3"/>
-                <line x1="100" y1="450" x2="500" y2="450" stroke="#fbbf24" stroke-width="3"/>
-
-                <!-- Corner circles (3 points) -->
-                <circle cx="300" cy="50" r="15" class="conf-circle" data-position="A"/>
-                <circle cx="100" cy="450" r="15" class="conf-circle" data-position="B"/>
-                <circle cx="500" cy="450" r="15" class="conf-circle" data-position="C"/>
-
-                <!-- Side AB circles -->
-                <circle cx="250" cy="150" r="12" class="conf-circle" data-side="AB" data-level="close-A"/>
-                <circle cx="200" cy="250" r="12" class="conf-circle" data-side="AB" data-level="equal"/>
-                <circle cx="150" cy="350" r="12" class="conf-circle" data-side="AB" data-level="close-B"/>
-
-                <!-- Side AC circles -->
-                <circle cx="350" cy="150" r="12" class="conf-circle" data-side="AC" data-level="close-A"/>
-                <circle cx="400" cy="250" r="12" class="conf-circle" data-side="AC" data-level="equal"/>
-                <circle cx="450" cy="350" r="12" class="conf-circle" data-side="AC" data-level="close-C"/>
-
-                <!-- Base BC circles -->
-                <circle cx="200" cy="450" r="12" class="conf-circle" data-side="BC" data-level="base"/>
-                <circle cx="300" cy="450" r="12" class="conf-circle" data-side="BC" data-level="base"/>
-                <circle cx="400" cy="450" r="12" class="conf-circle" data-side="BC" data-level="base"/>
-
-                <!-- Center circle (0 points) -->
-                <circle cx="300" cy="300" r="12" class="conf-circle" data-position="center"/>
-            </svg>
         </div>
 
         <div id="points-display" class="points-display">
