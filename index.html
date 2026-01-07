@@ -1,182 +1,186 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SEHS Triangle Quiz - IB Practice</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SEHS Triangle Quiz</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <!-- DIFFICULTY SCREEN -->
-    <div class="screen active" id="difficulty-screen">
-        <div class="screen-content">
-            <h1>🎯 SEHS Triangle Quiz</h1>
-            <p class="subtitle">Choose your settings</p>
 
-            <!-- Difficulty Selection -->
-            <div class="filter-section">
-                <h3>Select Difficulty Level</h3>
-                <div class="difficulty-grid">
-                    <div class="difficulty-card" data-difficulty="pro">
-                        <div class="difficulty-icon">🔥</div>
-                        <h2>Pro</h2>
-                        <p>3 serious options only</p>
-                    </div>
+  <!-- ==================== DIFFICULTY SCREEN ==================== -->
+  <section id="difficulty-screen" class="screen active">
+    <div class="screen-content">
+      <h1>SEHS Triangle Quiz</h1>
+      <p class="subtitle">Choose a mode and question count.</p>
 
-                    <div class="difficulty-card" data-difficulty="varsity">
-                        <div class="difficulty-icon">💪</div>
-                        <h2>Varsity</h2>
-                        <p>Occasional funny answers</p>
-                    </div>
-
-                    <div class="difficulty-card" data-difficulty="rookie">
-                        <div class="difficulty-icon">🎓</div>
-                        <h2>Rookie</h2>
-                        <p>Funny answers included</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Number of Questions -->
-            <div class="filter-section">
-                <h3>Number of Questions</h3>
-                <div class="question-count-buttons">
-                    <button class="count-btn" data-count="5">5</button>
-                    <button class="count-btn active" data-count="10">10</button>
-                    <button class="count-btn" data-count="15">15</button>
-                    <button class="count-btn" data-count="20">20</button>
-                    <button class="count-btn" data-count="all">All</button>
-                </div>
-            </div>
-
-            <!-- START BUTTON -->
-            <div class="start-button-container">
-                <button id="start-quiz-btn" class="start-btn">Start Quiz →</button>
-            </div>
+      <div class="filter-section">
+        <h3>Difficulty</h3>
+        <div class="difficulty-grid">
+          <div class="difficulty-card" data-difficulty="rookie">
+            <div class="difficulty-icon">🎓</div>
+            <h2>Rookie</h2>
+            <p>SL focus</p>
+          </div>
+          <div class="difficulty-card" data-difficulty="varsity">
+            <div class="difficulty-icon">🏃</div>
+            <h2>Varsity</h2>
+            <p>SL + HL mix</p>
+          </div>
+          <div class="difficulty-card" data-difficulty="pro">
+            <div class="difficulty-icon">🏆</div>
+            <h2>Pro</h2>
+            <p>HL focus</p>
+          </div>
         </div>
+      </div>
+
+      <div class="filter-section">
+        <h3>Questions</h3>
+        <div class="question-count-buttons">
+          <button class="count-btn active" data-count="10" type="button">10</button>
+          <button class="count-btn" data-count="20" type="button">20</button>
+          <button class="count-btn" data-count="30" type="button">30</button>
+          <button class="count-btn" data-count="all" type="button">All</button>
+        </div>
+      </div>
+
+      <div class="start-button-container">
+        <button id="start-quiz-btn" class="start-btn" type="button">Start</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== QUIZ SCREEN ==================== -->
+  <section id="quiz-screen" class="screen">
+    <div class="screen-content">
+      <div class="quiz-header">
+        <div class="quiz-info">
+          <span>Mode: <span id="difficulty-display">—</span></span>
+          <span class="divider">|</span>
+          <span>Q: <span id="current-q">1</span>/<span id="total-q">10</span></span>
+          <span class="divider">|</span>
+          <span>Score: <span id="score">10</span></span>
+        </div>
+        <button id="quit-btn" class="quit-btn" type="button">Quit</button>
+      </div>
+
+      <div class="question-container">
+        <div class="question-meta">
+          <div id="question-topic" class="question-topic">—</div>
+          <div id="question-level" class="question-level">—</div>
+        </div>
+        <div id="question-text" class="question-text">—</div>
+      </div>
+
+      <!-- Option text display (NOT clickable) -->
+      <div class="answers-grid" aria-label="Answer options (read-only)">
+        <button id="btn-A" class="answer-btn" type="button" tabindex="-1" aria-disabled="true">
+          <span class="answer-label">A</span>
+          <span class="answer-text"></span>
+        </button>
+
+        <button id="btn-B" class="answer-btn" type="button" tabindex="-1" aria-disabled="true">
+          <span class="answer-label">B</span>
+          <span class="answer-text"></span>
+        </button>
+
+        <button id="btn-C" class="answer-btn" type="button" tabindex="-1" aria-disabled="true">
+          <span class="answer-label">C</span>
+          <span class="answer-text"></span>
+        </button>
+      </div>
+
+      <!-- Triangle input -->
+      <div class="triangle-container">
+        <div class="triangle-instruction">Click the circle that best matches your confidence</div>
+
+        <svg class="confidence-triangle" viewBox="0 0 500 450" role="img" aria-label="Confidence triangle">
+          <!-- Triangle -->
+          <polygon points="250,40 70,390 430,390"
+                   fill="#d9d9d9" stroke="#111" stroke-width="6" stroke-linejoin="round"/>
+
+          <!-- Edges -->
+          <line x1="250" y1="40" x2="70" y2="390" stroke="#111" stroke-width="6" />
+          <line x1="250" y1="40" x2="430" y2="390" stroke="#111" stroke-width="6" />
+          <line x1="70" y1="390" x2="430" y2="390" stroke="#111" stroke-width="6" />
+
+          <!-- Corner circles -->
+          <circle class="conf-circle" data-key="A" cx="250" cy="40" r="28"></circle>
+          <circle class="conf-circle" data-key="B" cx="70" cy="390" r="28"></circle>
+          <circle class="conf-circle" data-key="C" cx="430" cy="390" r="28"></circle>
+
+          <!-- AB side circles -->
+          <circle class="conf-circle" data-key="AB_closeA" cx="205" cy="130" r="22"></circle>
+          <circle class="conf-circle" data-key="AB_equal"  cx="160" cy="220" r="22"></circle>
+          <circle class="conf-circle" data-key="AB_closeB" cx="115" cy="310" r="22"></circle>
+
+          <!-- AC side circles -->
+          <circle class="conf-circle" data-key="AC_closeA" cx="295" cy="130" r="22"></circle>
+          <circle class="conf-circle" data-key="AC_equal"  cx="340" cy="220" r="22"></circle>
+          <circle class="conf-circle" data-key="AC_closeC" cx="385" cy="310" r="22"></circle>
+
+          <!-- BC base circles (must be distinct) -->
+          <circle class="conf-circle" data-key="BC_closeB" cx="180" cy="390" r="22"></circle>
+          <circle class="conf-circle" data-key="BC_equal"  cx="250" cy="390" r="22"></circle>
+          <circle class="conf-circle" data-key="BC_closeC" cx="320" cy="390" r="22"></circle>
+
+          <!-- Center -->
+          <circle class="conf-circle" data-key="center" cx="250" cy="245" r="26"></circle>
+
+          <!-- Labels (optional, helps students) -->
+          <text x="250" y="50" text-anchor="middle" font-size="20" font-weight="800" fill="#111">A</text>
+          <text x="70" y="398" text-anchor="middle" font-size="20" font-weight="800" fill="#111">B</text>
+          <text x="430" y="398" text-anchor="middle" font-size="20" font-weight="800" fill="#111">C</text>
+          <text x="250" y="252" text-anchor="middle" font-size="22" font-weight="900" fill="#111">?</text>
+        </svg>
+      </div>
+
+      <button id="next-btn" class="next-btn" type="button">Next</button>
     </div>
 
-    <!-- QUIZ SCREEN -->
-    <div class="screen" id="quiz-screen">
-        <div class="quiz-header">
-            <div class="quiz-info">
-                <span id="difficulty-display">Pro</span>
-                <span class="divider">|</span>
-                <span>Q <span id="current-q">1</span>/<span id="total-q">10</span></span>
-                <span class="divider">|</span>
-                <span>Score: <span id="score">10</span></span>
-            </div>
-            <button id="quit-btn" class="quit-btn">✕</button>
-        </div>
-
-        <div class="question-container">
-            <div class="question-meta">
-                <span class="question-topic" id="question-topic">Topic Name</span>
-                <span class="question-level" id="question-level">SL</span>
-            </div>
-
-            <div class="question-text" id="question-text">
-                Which division of the nervous system controls involuntary functions?
-            </div>
-        </div>
-
-        <!-- ANSWER BUTTONS: A above, B and C side by side -->
-        <div class="answers-grid">
-            <button class="answer-btn" id="btn-A">
-                <span class="answer-label">A</span>
-                <span class="answer-text"></span>
-            </button>
-
-            <button class="answer-btn" id="btn-B">
-                <span class="answer-label">B</span>
-                <span class="answer-text"></span>
-            </button>
-
-            <button class="answer-btn" id="btn-C">
-                <span class="answer-label">C</span>
-                <span class="answer-text"></span>
-            </button>
-        </div>
-
-        <!-- TRIANGLE BELOW BUTTONS -->
-        <div class="triangle-container">
-            <p class="triangle-instruction">Click a circle on the triangle to indicate your confidence level</p>
-
-            <svg viewBox="0 0 600 450" class="confidence-triangle">
-                <!-- Triangle outline -->
-                <line x1="300" y1="40" x2="100" y2="400" stroke="#fbbf24" stroke-width="3"/>
-                <line x1="300" y1="40" x2="500" y2="400" stroke="#fbbf24" stroke-width="3"/>
-                <line x1="100" y1="400" x2="500" y2="400" stroke="#fbbf24" stroke-width="3"/>
-
-                <!-- Corner circles (3 points) -->
-                <circle cx="300" cy="40" r="15" class="conf-circle" data-position="A"/>
-                <circle cx="100" cy="400" r="15" class="conf-circle" data-position="B"/>
-                <circle cx="500" cy="400" r="15" class="conf-circle" data-position="C"/>
-
-                <!-- Side AB circles -->
-                <circle cx="250" cy="130" r="12" class="conf-circle" data-side="AB" data-level="close-A"/>
-                <circle cx="200" cy="220" r="12" class="conf-circle" data-side="AB" data-level="equal"/>
-                <circle cx="150" cy="310" r="12" class="conf-circle" data-side="AB" data-level="close-B"/>
-
-                <!-- Side AC circles -->
-                <circle cx="350" cy="130" r="12" class="conf-circle" data-side="AC" data-level="close-A"/>
-                <circle cx="400" cy="220" r="12" class="conf-circle" data-side="AC" data-level="equal"/>
-                <circle cx="450" cy="310" r="12" class="conf-circle" data-side="AC" data-level="close-C"/>
-
-                <!-- Base BC circles -->
-                <circle cx="200" cy="400" r="12" class="conf-circle" data-side="BC" data-level="base"/>
-                <circle cx="300" cy="400" r="12" class="conf-circle" data-side="BC" data-level="base"/>
-                <circle cx="400" cy="400" r="12" class="conf-circle" data-side="BC" data-level="base"/>
-
-                <!-- Center circle (0 points) -->
-                <circle cx="300" cy="260" r="12" class="conf-circle" data-position="center"/>
-            </svg>
-        </div>
-
-        <div id="points-display" class="points-display">
-            <span id="points-text">+3 points</span>
-        </div>
-
-        <button id="next-btn" class="next-btn">Next Question →</button>
+    <!-- Points overlay -->
+    <div id="points-display" class="points-display" aria-live="polite">
+      <span id="points-text">+1 point</span>
     </div>
+  </section>
 
-    <!-- RESULTS SCREEN -->
-    <div class="screen" id="results-screen">
-        <div class="screen-content">
-            <h1>🎊 Quiz Complete!</h1>
+  <!-- ==================== RESULTS SCREEN ==================== -->
+  <section id="results-screen" class="screen">
+    <div class="screen-content">
+      <h1>Results</h1>
 
-            <div class="results-grid">
-                <div class="result-card">
-                    <div class="result-value" id="final-score">25</div>
-                    <div class="result-label">Final Score</div>
-                </div>
-
-                <div class="result-card">
-                    <div class="result-value" id="correct-count">8</div>
-                    <div class="result-label">Correct</div>
-                </div>
-
-                <div class="result-card">
-                    <div class="result-value" id="wrong-count">2</div>
-                    <div class="result-label">Wrong</div>
-                </div>
-
-                <div class="result-card">
-                    <div class="result-value" id="accuracy">80%</div>
-                    <div class="result-label">Accuracy</div>
-                </div>
-            </div>
-
-            <p id="performance-message" class="performance-message">💪 Great Job!</p>
-
-            <div class="result-actions">
-                <button id="restart-btn" class="primary-btn">Try Again</button>
-                <button id="change-difficulty-btn" class="secondary-btn">Change Settings</button>
-            </div>
+      <div class="results-grid">
+        <div class="result-card">
+          <div id="final-score" class="result-value">0</div>
+          <div class="result-label">Final score</div>
         </div>
-    </div>
+        <div class="result-card">
+          <div id="correct-count" class="result-value">0</div>
+          <div class="result-label">Positive picks</div>
+        </div>
+        <div class="result-card">
+          <div id="wrong-count" class="result-value">0</div>
+          <div class="result-label">Non-positive picks</div>
+        </div>
+        <div class="result-card">
+          <div id="accuracy" class="result-value">0%</div>
+          <div class="result-label">Accuracy</div>
+        </div>
+      </div>
 
-    <script src="questions-db.js"></script>
-    <script src="app.js"></script>
+      <div id="performance-message" class="performance-message">—</div>
+
+      <div class="result-actions">
+        <button id="restart-btn" class="primary-btn" type="button">Restart</button>
+        <button id="change-difficulty-btn" class="secondary-btn" type="button">Change mode</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Load question bank FIRST -->
+  <script src="questions-db.js"></script>
+  <!-- Then app -->
+  <script src="app.js"></script>
 </body>
 </html>
