@@ -1,19 +1,39 @@
-// app.js — SEHS Triangle Quiz (triangle-only input, correct reveal)
+// app.js — SEHS Triangle Quiz (triangle-only input)
+// Difficulty controls funny distractor frequency.
+// Separate "Question level" control chooses SL only vs SL+HL.
 
 let state = {
   difficulty: null,          // rookie | varsity | pro
   questionCount: 10,         // number | "all"
-  currentQuestionIndex: 0,
+  levelSelect: 'sl',         // 'sl' | 'slhl'  (SL only vs SL+HL)
 
+  currentQuestionIndex: 0,
   score: 10,
+
   questions: [],
 
   correctSlot: null,         // 'A' | 'B' | 'C'
   locked: false,
 
-  correctCount: 0,           // pts > 0
-  wrongCount: 0              // pts <= 0
+  correctCount: 0,           // points > 0
+  wrongCount: 0              // points <= 0
 };
+
+const DIFFICULTY_DISPLAY = {
+  rookie: 'Rookie',
+  varsity: 'Varsity',
+  pro: 'Pro'
+};
+
+const FUNNY_PROB = {
+  pro: 0.0,
+  varsity: 0.2,
+  rookie: 0.5
+};
+
+function includeHL() {
+  return state.levelSelect === 'slhl';
+}
 
 function getQuestionsDB() {
   // questions-db.js should do: window.questionsDB = QUESTIONS_DB;
@@ -76,7 +96,11 @@ function setText(id, value) {
   if (el) el.textContent = value;
 }
 
-// ----- Difficulty + count selection -----
+function normLevel(level) {
+  return String(level || '').trim().toUpperCase();
+}
+
+// ----- Difficulty selection -----
 document.querySelectorAll('.difficulty-card').forEach(card => {
   card.addEventListener('click', () => {
     document.querySelectorAll('.difficulty-card').forEach(c => c.classList.remove('selected'));
@@ -85,19 +109,29 @@ document.querySelectorAll('.difficulty-card').forEach(card => {
   });
 });
 
-document.querySelectorAll('.count-btn').forEach(btn => {
+// ----- Count selection (buttons with data-count) -----
+document.querySelectorAll('.count-btn[data-count]').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.count-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.count-btn[data-count]').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     const count = btn.dataset.count;
     state.questionCount = (count === 'all') ? 'all' : parseInt(count, 10);
   });
 });
 
+// ----- Level selection (buttons with data-level-select) -----
+document.querySelectorAll('.count-btn[data-level-select]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.count-btn[data-level-select]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.levelSelect = btn.dataset.levelSelect; // 'sl' or 'slhl'
+  });
+});
+
 // ----- Start -----
 startBtn.addEventListener('click', () => {
   if (!state.difficulty) {
-    alert('Please select a difficulty level!');
+    alert('Please select a difficulty mode.');
     return;
   }
   const db = getQuestionsDB();
@@ -111,15 +145,15 @@ startBtn.addEventListener('click', () => {
 function startQuiz() {
   const db = getQuestionsDB();
 
+  // Filter by SL-only vs SL+HL
   const filtered = db.filter(q => {
-    const lvl = String(q.level || '').toUpperCase();
-    if (state.difficulty === 'rookie') return lvl === 'SL';
-    if (state.difficulty === 'pro') return lvl === 'HL';
-    return true; // varsity
+    const lvl = normLevel(q.level);
+    if (includeHL()) return lvl === 'SL' || lvl === 'HL';
+    return lvl === 'SL';
   });
 
   if (filtered.length === 0) {
-    alert('No questions match this mode (check question.level fields).');
+    alert('No questions match your level selection.');
     return;
   }
 
@@ -133,7 +167,7 @@ function startQuiz() {
   state.correctCount = 0;
   state.wrongCount = 0;
 
-  setText('difficulty-display', state.difficulty.charAt(0).toUpperCase() + state.difficulty.slice(1));
+  setText('difficulty-display', DIFFICULTY_DISPLAY[state.difficulty] || '—');
   setText('total-q', state.questions.length);
   setText('score', state.score);
 
@@ -141,31 +175,52 @@ function startQuiz() {
   loadQuestion();
 }
 
-// ----- Question prep (3 options A/B/C with correct included) -----
+// ----- Build 3 options (correct + 2 distractors) with funny frequency -----
 function pickThreeOptions(question) {
-  const entries = Object.entries(question.options || {})
+  const opts = question.options || {};
+  const correctKey = question.correct != null ? String(question.correct) : null;
+
+  const entries = Object.entries(opts)
     .filter(([k, v]) => typeof v === 'string' && v.trim().length > 0)
     .map(([k, v]) => ({ key: String(k), text: v }));
 
-  const correctKey = question.correct != null ? String(question.correct) : null;
   const correctEntry = correctKey
     ? entries.find(e => e.key.toLowerCase() === correctKey.toLowerCase())
     : null;
 
-  let chosen;
-  if (entries.length <= 3) {
-    chosen = entries.slice(0, 3);
+  // Treat "iv" as funny distractor
+  const funny = entries.find(e => e.key.toLowerCase() === 'iv');
+  const seriousPool = entries.filter(e => e.key.toLowerCase() !== 'iv');
+
+  const seriousDistractors = correctEntry
+    ? seriousPool.filter(e => e.key !== correctEntry.key)
+    : seriousPool.slice();
+
+  const pFunny = FUNNY_PROB[state.difficulty] ?? 0;
+  const includeFunny =
+    !!funny &&
+    (!correctEntry || funny.key !== correctEntry.key) &&
+    (Math.random() < pFunny);
+
+  let distractors = [];
+  if (includeFunny && seriousDistractors.length > 0) {
+    distractors = [funny, shuffleArray(seriousDistractors)[0]];
   } else {
-    const distractors = entries.filter(e => !correctEntry || e.key !== correctEntry.key);
-    const pickedDistractors = shuffleArray(distractors).slice(0, 2);
-    chosen = correctEntry ? [correctEntry, ...pickedDistractors] : shuffleArray(entries).slice(0, 3);
+    distractors = shuffleArray(seriousDistractors).slice(0, 2);
   }
 
+  let chosen = correctEntry ? [correctEntry, ...distractors] : shuffleArray(entries).slice(0, 3);
+
+  // Safety: ensure 3 unique-ish options
+  chosen = chosen.filter(Boolean);
+  chosen = Array.from(new Map(chosen.map(x => [x.key, x])).values());
   while (chosen.length < 3) {
-    chosen.push({ key: `missing-${chosen.length}`, text: `Option ${chosen.length + 1}` });
+    const fallback = shuffleArray(entries)[0];
+    if (fallback) chosen.push(fallback);
+    chosen = Array.from(new Map(chosen.map(x => [x.key, x])).values());
   }
 
-  return { chosen, correctEntry };
+  return { chosen: chosen.slice(0, 3), correctEntry };
 }
 
 function assignToSlots(chosen, correctEntry) {
@@ -185,7 +240,7 @@ function assignToSlots(chosen, correctEntry) {
   return { slotMap, correctSlot };
 }
 
-// ----- UI reset helpers -----
+// ----- UI helpers -----
 function resetAnswerBoxes() {
   ['A', 'B', 'C'].forEach(s => {
     const btn = document.getElementById(`btn-${s}`);
@@ -196,10 +251,12 @@ function resetAnswerBoxes() {
 
 function resetTriangle() {
   state.locked = false;
+
   document.querySelectorAll('.conf-circle').forEach(c => {
     c.classList.remove('selected', 'disabled');
     c.style.pointerEvents = 'auto';
   });
+
   nextBtn.classList.remove('show');
 }
 
@@ -221,7 +278,6 @@ function loadQuestion() {
   setText('current-q', state.currentQuestionIndex + 1);
   setText('score', state.score);
 
-  // Clear any previous correct highlight
   resetAnswerBoxes();
 
   const { chosen, correctEntry } = pickThreeOptions(question);
@@ -269,7 +325,7 @@ function applyAnswer(circleKey) {
   setText('score', state.score);
 
   showPoints(points);
-  revealCorrectAnswer(); // <-- makes correct option obvious before Next
+  revealCorrectAnswer();
 
   if (points > 0) state.correctCount++;
   else state.wrongCount++;
@@ -281,7 +337,11 @@ function applyAnswer(circleKey) {
 document.querySelectorAll('.conf-circle').forEach(circle => {
   circle.addEventListener('click', () => {
     if (state.locked) return;
+
+    // Visual: only one selected ring
+    document.querySelectorAll('.conf-circle').forEach(c => c.classList.remove('selected'));
     circle.classList.add('selected');
+
     applyAnswer(circle.dataset.key);
   });
 });
