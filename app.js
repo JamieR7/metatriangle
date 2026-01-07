@@ -1,4 +1,4 @@
-// SEHS Triangle Quiz - Fixed Database Loading
+// SEHS Triangle Quiz - Fixed Answer Text Display
 // Load questions from questions-db.js (assume it's already loaded)
 
 // State Management
@@ -128,10 +128,16 @@ function loadQuestion() {
         { letter: 'C', text: question.C, correct: question.correct === 'C' }
     ]);
 
-    // Set answer buttons
+    // Set answer buttons - IMPORTANT: Set text content properly
     answers.forEach(answer => {
         const btn = document.getElementById(`btn-${answer.letter}`);
-        btn.querySelector('.answer-text').textContent = answer.text;
+        const textSpan = document.getElementById(`answer-text-${answer.letter}`);
+
+        // Set the text content
+        if (textSpan) {
+            textSpan.textContent = answer.text;
+        }
+
         btn.dataset.correct = answer.correct;
         btn.classList.remove('correct', 'wrong', 'disabled');
         btn.onclick = () => selectAnswer(answer.letter);
