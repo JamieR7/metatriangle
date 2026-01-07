@@ -1,4 +1,4 @@
-/* SEHS Triangle Quiz - Styles */
+/* SEHS Triangle Quiz - Complete Styles */
 
 * {
     margin: 0;
@@ -42,7 +42,7 @@ body {
 }
 
 .screen-content {
-    max-width: 600px;
+    max-width: 900px;
     width: 100%;
 }
 
@@ -123,6 +123,91 @@ body {
     font-weight: 700;
 }
 
+/* Filter Sections */
+.filter-section {
+    margin-bottom: 2rem;
+}
+
+.filter-section h3 {
+    color: var(--primary-blue);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-weight: 700;
+}
+
+/* Theme Buttons */
+.theme-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.theme-btn {
+    padding: 0.75rem 1rem;
+    background: var(--white);
+    border: 3px solid var(--accent-yellow);
+    border-radius: 10px;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.theme-btn:hover {
+    background: var(--bg-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.theme-btn.active {
+    background: var(--primary-blue);
+    color: var(--white);
+    border-color: var(--primary-blue);
+}
+
+/* Question Count Buttons */
+.question-count-buttons {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.count-btn {
+    padding: 0.75rem 1.5rem;
+    background: var(--white);
+    border: 3px solid var(--accent-yellow);
+    border-radius: 10px;
+    color: var(--text-dark);
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-width: 60px;
+}
+
+.count-btn:hover {
+    background: var(--bg-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.count-btn.active {
+    background: var(--primary-blue);
+    color: var(--white);
+    border-color: var(--primary-blue);
+}
+
+/* Topic section spacing */
+.filter-section:last-of-type {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--bg-light);
+}
+
 .topic-controls {
     display: flex;
     gap: 1rem;
@@ -149,10 +234,10 @@ body {
 }
 
 .topic-list {
-    max-height: 400px;
+    max-height: 300px;
     overflow-y: auto;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 0.75rem;
     padding: 1rem;
     background: var(--bg-light);
@@ -351,7 +436,7 @@ body {
     font-weight: 500;
 }
 
-/* ==================== ANSWER BUTTONS - FIXED TRIANGLE LAYOUT ==================== */
+/* ==================== ANSWER BUTTONS ==================== */
 .answers-grid {
     display: flex;
     flex-direction: column;
@@ -386,21 +471,6 @@ body {
     transform: translateY(-1px);
 }
 
-/* Button A at top */
-#btn-A {
-    align-self: center;
-}
-
-/* Buttons B and C in a row at bottom */
-.answers-grid::after {
-    content: '';
-    display: flex;
-    gap: 1rem;
-    width: 100%;
-    justify-content: space-between;
-}
-
-/* Create triangle shape on larger screens */
 @media (min-width: 600px) {
     .answers-grid {
         position: relative;
@@ -424,17 +494,6 @@ body {
         position: absolute;
         bottom: 0;
         right: 0;
-    }
-}
-
-/* Mobile layout - stack vertically */
-@media (max-width: 599px) {
-    .answers-grid {
-        gap: 0.75rem;
-    }
-
-    .answer-btn {
-        width: 100%;
     }
 }
 
@@ -529,7 +588,6 @@ body {
     fill: var(--accent-yellow);
     stroke: var(--primary-blue);
     stroke-width: 4;
-    transform: scale(1.1);
 }
 
 .conf-circle.selected {
@@ -724,8 +782,23 @@ body {
         font-size: 1rem;
     }
 
+    .theme-buttons {
+        grid-template-columns: 1fr;
+    }
+
+    .question-count-buttons {
+        gap: 0.5rem;
+    }
+
+    .count-btn {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        min-width: 50px;
+    }
+
     .topic-list {
         grid-template-columns: 1fr;
+        max-height: 250px;
     }
 
     .topic-actions, .result-actions {
