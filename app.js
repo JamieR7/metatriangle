@@ -233,6 +233,7 @@ function loadQuestion() {
 }
 
 function prepareOptions(question) {
+    // Start with the 3 main options
     const options = [
         { key: 'i', text: question.options.i, isCorrect: false },
         { key: 'ii', text: question.options.ii, isCorrect: false },
@@ -242,17 +243,20 @@ function prepareOptions(question) {
     const funnyFrequency = DIFFICULTY_SETTINGS[gameState.difficulty].funnyFrequency;
     const includeFunny = Math.random() < funnyFrequency;
 
-    if (includeFunny) {
+    if (includeFunny && question.options.iv) {
+        // Use the funny answer
         options.push({ key: 'iv', text: question.options.iv, isCorrect: false, isFunny: true });
     } else {
-        options.push({ ...options[0] });
+        // Use ONLY 3 options - no duplicate needed
+        // We only display A, B, C anyway
     }
 
     return options;
 }
 
 function randomlyAssignOptions(options) {
-    const shuffled = shuffleArray([...options]);
+    // Shuffle and pick first 3
+    const shuffled = shuffleArray([...options]).slice(0, 3);
 
     const assignment = {
         A: shuffled[0],
@@ -260,9 +264,14 @@ function randomlyAssignOptions(options) {
         C: shuffled[2]
     };
 
-    gameState.correctPosition = Object.keys(assignment).find(
-        key => assignment[key].isCorrect
-    );
+    // Find which position has the correct answer
+    gameState.correctPosition = null;
+    for (const [pos, option] of Object.entries(assignment)) {
+        if (option.isCorrect) {
+            gameState.correctPosition = pos;
+            break;
+        }
+    }
 
     console.log('Assignment:', assignment);
     console.log('Correct position:', gameState.correctPosition);
@@ -345,6 +354,11 @@ function handleAnswerClick(button) {
 
 // ==================== PROCESS ANSWER ====================
 function processAnswer(chosenAnswer, circle) {
+    if (!gameState.correctPosition) {
+        console.error('ERROR: correctPosition is null/undefined!');
+        return;
+    }
+
     const isCorrect = chosenAnswer === gameState.correctPosition;
 
     console.log('Processing answer:', { chosenAnswer, correct: gameState.correctPosition, isCorrect });
