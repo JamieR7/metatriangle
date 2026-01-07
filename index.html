@@ -49,7 +49,7 @@
                 <div class="stats">
                     <div class="stat-item">
                         <span class="stat-label">Score</span>
-                        <span class="stat-value" id="score">0</span>
+                        <span class="stat-value" id="score">10</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-label">Question</span>
@@ -78,35 +78,35 @@
                 <div class="answer-text">Type IIa fast-twitch</div>
             </button>
 
-            <!-- Triangle with 13 EVENLY SPACED Confidence Circles -->
+            <!-- Triangle with 13 Confidence Circles -->
             <div class="triangle-box">
                 <p class="triangle-instruction">Click a circle on the triangle to indicate your confidence level</p>
                 <svg viewBox="0 0 600 450" class="triangle-svg">
                     <!-- Triangle outline -->
                     <polygon points="300,80 120,380 480,380" class="triangle-outline"/>
 
-                    <!-- 3 CORNER circles (A, B, C) -->
-                    <circle cx="300" cy="80"  r="22" class="conf-circle" data-conf="5"/>
-                    <circle cx="120" cy="380" r="22" class="conf-circle" data-conf="1"/>
-                    <circle cx="480" cy="380" r="22" class="conf-circle" data-conf="1"/>
+                    <!-- 3 CORNER circles (data-position tells us which corner) -->
+                    <circle cx="300" cy="80"  r="20" class="conf-circle" data-position="A"/>
+                    <circle cx="120" cy="380" r="20" class="conf-circle" data-position="B"/>
+                    <circle cx="480" cy="380" r="20" class="conf-circle" data-position="C"/>
 
-                    <!-- LEFT SIDE (A→B): 3 evenly spaced circles -->
-                    <circle cx="255" cy="155" r="22" class="conf-circle" data-conf="4"/>
-                    <circle cx="210" cy="230" r="22" class="conf-circle" data-conf="3"/>
-                    <circle cx="165" cy="305" r="22" class="conf-circle" data-conf="2"/>
+                    <!-- LEFT SIDE (A→B): closer to A (+2), middle (+1), closer to B (-1) -->
+                    <circle cx="255" cy="155" r="20" class="conf-circle" data-side="AB" data-level="close-A"/>
+                    <circle cx="210" cy="230" r="20" class="conf-circle" data-side="AB" data-level="equal"/>
+                    <circle cx="165" cy="305" r="20" class="conf-circle" data-side="AB" data-level="close-B"/>
 
-                    <!-- RIGHT SIDE (A→C): 3 evenly spaced circles -->
-                    <circle cx="345" cy="155" r="22" class="conf-circle" data-conf="4"/>
-                    <circle cx="390" cy="230" r="22" class="conf-circle" data-conf="3"/>
-                    <circle cx="435" cy="305" r="22" class="conf-circle" data-conf="2"/>
+                    <!-- RIGHT SIDE (A→C): closer to A (+2), middle (+1), closer to C (-1) -->
+                    <circle cx="345" cy="155" r="20" class="conf-circle" data-side="AC" data-level="close-A"/>
+                    <circle cx="390" cy="230" r="20" class="conf-circle" data-side="AC" data-level="equal"/>
+                    <circle cx="435" cy="305" r="20" class="conf-circle" data-side="AC" data-level="close-C"/>
 
-                    <!-- BASE (B→C): 3 evenly spaced circles -->
-                    <circle cx="210" cy="380" r="22" class="conf-circle" data-conf="1"/>
-                    <circle cx="300" cy="380" r="22" class="conf-circle" data-conf="1"/>
-                    <circle cx="390" cy="380" r="22" class="conf-circle" data-conf="1"/>
+                    <!-- BASE (B→C): all -2 points -->
+                    <circle cx="210" cy="380" r="20" class="conf-circle" data-side="BC" data-level="base"/>
+                    <circle cx="300" cy="380" r="20" class="conf-circle" data-side="BC" data-level="base"/>
+                    <circle cx="390" cy="380" r="20" class="conf-circle" data-side="BC" data-level="base"/>
 
-                    <!-- CENTER circle (D) -->
-                    <circle cx="300" cy="280" r="22" class="conf-circle" data-conf="3"/>
+                    <!-- CENTER circle (0 points always) -->
+                    <circle cx="300" cy="280" r="20" class="conf-circle" data-position="center"/>
 
                     <!-- Corner Labels -->
                     <text x="300" y="60" class="corner-label" text-anchor="middle">A</text>
@@ -130,8 +130,13 @@
                 </button>
             </div>
 
-            <!-- Feedback -->
-            <div class="feedback" id="feedback"></div>
+            <!-- Points Earned Display -->
+            <div class="points-display" id="points-display">
+                <p class="points-text" id="points-text">+3 points</p>
+            </div>
+
+            <!-- Next Question Button -->
+            <button class="btn-next" id="next-btn">Next Question</button>
         </div>
     </div>
 
@@ -143,7 +148,7 @@
             <div class="results-card">
                 <div class="final-score">
                     <p class="score-label">Your Final Score</p>
-                    <p class="score-number" id="final-score">0</p>
+                    <p class="score-number" id="final-score">10</p>
                 </div>
 
                 <div class="results-stats">
