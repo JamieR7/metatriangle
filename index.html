@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -118,7 +119,7 @@
           <circle class="conf-circle" data-key="B" cx="70"  cy="390" r="28"></circle>
           <circle class="conf-circle" data-key="C" cx="430" cy="390" r="28"></circle>
 
-          <!-- AB side circles (25/50/75% down the edge) -->
+          <!-- AB side circles -->
           <circle class="conf-circle" data-key="AB_closeA" cx="205" cy="156" r="22"></circle>
           <circle class="conf-circle" data-key="AB_equal"  cx="160" cy="234" r="22"></circle>
           <circle class="conf-circle" data-key="AB_closeB" cx="115" cy="312" r="22"></circle>
@@ -156,28 +157,28 @@
   <!-- ==================== RESULTS SCREEN ==================== -->
   <section id="results-screen" class="screen">
     <div class="screen-content">
-      <h1>Results</h1>
+      <h1>Quiz Complete!</h1>
 
-      <div class="results-grid">
-        <div class="result-card">
-          <div id="final-score" class="result-value">0</div>
-          <div class="result-label">Final score</div>
+      <!-- Compact summary -->
+      <div class="score-summary">
+        <div class="score-main">
+          <div id="final-score" class="score-value">0</div>
+          <div class="score-label">Final Score</div>
         </div>
-        <div class="result-card">
-          <div id="correct-count" class="result-value">0</div>
-          <div class="result-label">Positive picks</div>
-        </div>
-        <div class="result-card">
-          <div id="wrong-count" class="result-value">0</div>
-          <div class="result-label">Non-positive picks</div>
-        </div>
-        <div class="result-card">
-          <div id="accuracy" class="result-value">0%</div>
-          <div class="result-label">Accuracy</div>
+
+        <div class="score-stats">
+          <div><strong id="correct-count">0</strong> positive</div>
+          <div><strong id="wrong-count">0</strong> non-positive</div>
+          <div><strong id="accuracy">0%</strong> accuracy</div>
         </div>
       </div>
 
       <div id="performance-message" class="performance-message">—</div>
+
+      <div class="topic-breakdown">
+        <h2>Performance by Topic</h2>
+        <div id="topic-list" class="topic-list"></div>
+      </div>
 
       <div class="result-actions">
         <button id="restart-btn" class="primary-btn" type="button">Restart</button>
