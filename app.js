@@ -1,4 +1,4 @@
-/ SEHS Triangle Quiz - Circle-Based Confidence Scoring
+// SEHS Triangle Quiz - Circle-Based Confidence Scoring
 // ALL circles automatically score when clicked
 
 // ==================== GLOBAL STATE ====================
@@ -41,7 +41,7 @@ function getAnswerFromCircle(circleElement) {
 
     // Corner circles - clear choice
     if (position && position !== 'center') {
-        return position; // Returns 'A', 'B', or 'C'
+        return position;
     }
 
     // Center circle - maximum uncertainty, choose randomly
@@ -52,7 +52,6 @@ function getAnswerFromCircle(circleElement) {
 
     // Side circles
     if (side && level) {
-        // AB side (between A and B)
         if (side === 'AB') {
             if (level === 'close-A' || level === 'equal') {
                 return 'A';
@@ -61,7 +60,6 @@ function getAnswerFromCircle(circleElement) {
             }
         }
 
-        // AC side (between A and C)
         if (side === 'AC') {
             if (level === 'close-A' || level === 'equal') {
                 return 'A';
@@ -70,18 +68,12 @@ function getAnswerFromCircle(circleElement) {
             }
         }
 
-        // BC side (base) - determine by position
-        // Left base circles closer to B, right closer to C
         if (side === 'BC' && level === 'base') {
-            // Get circle's X position to determine if closer to B or C
             const cx = parseFloat(circleElement.getAttribute('cx'));
-            // B is at x=120, C is at x=480
-            // If x < 300 (midpoint), choose B; otherwise C
             return cx < 300 ? 'B' : 'C';
         }
     }
 
-    // Fallback to A if somehow we don't match
     return 'A';
 }
 
@@ -91,19 +83,14 @@ function calculatePoints(circleElement, correctAnswer) {
     const side = circleElement.dataset.side;
     const level = circleElement.dataset.level;
 
-    console.log('Calculating points:', { position, side, level, correctAnswer });
-
-    // CENTER - always 0
     if (position === 'center') {
         return 0;
     }
 
-    // CORNERS
     if (position) {
         return position === correctAnswer ? 3 : -2;
     }
 
-    // SIDE CIRCLES
     if (side && level) {
         if (level === 'base') {
             return -2;
@@ -151,14 +138,12 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Questions available:', QUESTIONS_DB.length);
     showScreen('difficulty-screen');
 
-    // Difficulty selection
     document.querySelectorAll('.difficulty-card').forEach(card => {
         card.addEventListener('click', function() {
             startQuiz(this.dataset.difficulty);
         });
     });
 
-    // Confidence circles - ALL AUTO-SCORE NOW
     document.querySelectorAll('.conf-circle').forEach(circle => {
         circle.addEventListener('click', function(e) {
             e.stopPropagation();
@@ -166,13 +151,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Next button
     document.getElementById('next-btn').addEventListener('click', nextQuestion);
-
-    // Alert OK button
     document.getElementById('alert-ok-btn').addEventListener('click', hideCustomAlert);
-
-    // Other buttons
     document.getElementById('quit-btn').addEventListener('click', quitQuiz);
     document.getElementById('restart-btn').addEventListener('click', restartQuiz);
     document.getElementById('change-difficulty-btn').addEventListener('click', changeDifficulty);
@@ -198,8 +178,7 @@ function startQuiz(difficulty) {
     const numQuestions = Math.min(10, QUESTIONS_DB.length);
     gameState.selectedQuestions = shuffleArray([...QUESTIONS_DB]).slice(0, numQuestions);
 
-    document.getElementById('difficulty-display').textContent = 
-        DIFFICULTY_SETTINGS[difficulty].displayName;
+    document.getElementById('difficulty-display').textContent = DIFFICULTY_SETTINGS[difficulty].displayName;
     document.getElementById('total-q').textContent = numQuestions;
 
     showScreen('quiz-screen');
@@ -228,8 +207,6 @@ function loadQuestion() {
 
     displayOptions(assignment);
     resetUI();
-
-    console.log('Question loaded. Correct answer:', gameState.correctPosition);
 }
 
 function prepareOptions(question) {
@@ -266,15 +243,12 @@ function randomlyAssignOptions(options) {
         }
     }
 
-    console.log('Assignment:', assignment);
-    console.log('Correct position:', gameState.correctPosition);
-
     return assignment;
 }
 
 function displayOptions(assignment) {
     ['A', 'B', 'C'].forEach(position => {
-        const btn = document.getElementById(`btn-${position}`);
+        const btn = document.getElementById('btn-' + position);
         const text = btn.querySelector('.answer-text');
         text.textContent = assignment[position].text;
         btn.className = 'answer-btn';
@@ -298,52 +272,35 @@ function resetUI() {
 
 // ==================== CIRCLE CLICK - TRIGGERS SCORING ====================
 function handleCircleClick(circle) {
-    // Check if already answered
     if (circle.classList.contains('disabled')) {
         return;
     }
 
-    console.log('Circle clicked:', circle.dataset);
-
-    // Mark circle as selected
     document.querySelectorAll('.conf-circle').forEach(c => {
         c.classList.remove('selected');
     });
     circle.classList.add('selected');
 
-    // ALL circles now determine an answer automatically
     const chosenAnswer = getAnswerFromCircle(circle);
-
-    console.log('Circle represents answer:', chosenAnswer);
-    console.log('Correct answer:', gameState.correctPosition);
-
-    // Score immediately
     processAnswer(chosenAnswer, circle);
 }
 
 // ==================== PROCESS ANSWER ====================
 function processAnswer(chosenAnswer, circle) {
     if (!gameState.correctPosition) {
-        console.error('ERROR: correctPosition is null/undefined!');
+        console.error('ERROR: correctPosition is null or undefined!');
         return;
     }
 
     const isCorrect = chosenAnswer === gameState.correctPosition;
-
-    console.log('Processing answer:', { chosenAnswer, correct: gameState.correctPosition, isCorrect });
-
-    // Calculate points
     const points = calculatePoints(circle, gameState.correctPosition);
-    console.log('Points earned:', points);
 
-    // Update score
     gameState.score += points;
     document.getElementById('score').textContent = gameState.score;
     gameState.questionsAnswered++;
 
-    // Update answer buttons - highlight correct and chosen
-    const chosenBtn = document.getElementById(`btn-${chosenAnswer}`);
-    const correctBtn = document.getElementById(`btn-${gameState.correctPosition}`);
+    const chosenBtn = document.getElementById('btn-' + chosenAnswer);
+    const correctBtn = document.getElementById('btn-' + gameState.correctPosition);
 
     if (isCorrect) {
         gameState.correctAnswers++;
@@ -356,7 +313,6 @@ function processAnswer(chosenAnswer, circle) {
         correctBtn.classList.add('correct');
     }
 
-    // Disable everything
     document.querySelectorAll('.answer-btn').forEach(btn => {
         btn.disabled = true;
         btn.classList.add('disabled');
@@ -375,7 +331,7 @@ function showPoints(points) {
     const text = document.getElementById('points-text');
 
     const sign = points > 0 ? '+' : '';
-    text.textContent = `${sign}${points} points`;
+    text.textContent = sign + points + ' points';
 
     display.classList.remove('positive', 'negative', 'neutral');
     if (points > 0) {
@@ -397,9 +353,7 @@ function nextQuestion() {
 // ==================== RESULTS ====================
 function showResults() {
     const totalQuestions = gameState.questionsAnswered;
-    const accuracy = totalQuestions > 0
-        ? Math.round((gameState.correctAnswers / totalQuestions) * 100)
-        : 0;
+    const accuracy = totalQuestions > 0 ? Math.round((gameState.correctAnswers / totalQuestions) * 100) : 0;
 
     document.getElementById('final-score').textContent = gameState.score;
     document.getElementById('correct-count').textContent = gameState.correctAnswers;
@@ -445,5 +399,4 @@ function shuffleArray(array) {
     return shuffled;
 }
 
-console.log('ALL Circles Auto-Score initialized!');
-console.log('Click any circle to score immediately!');
+console.log('SEHS Triangle Quiz - All circles auto-score!');
