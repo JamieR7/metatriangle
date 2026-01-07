@@ -22,6 +22,17 @@ const DIFFICULTY_SETTINGS = {
     rookie: { funnyFrequency: 0.5, displayName: 'Rookie' }
 };
 
+// ==================== CUSTOM ALERT ====================
+function showCustomAlert() {
+    const alertOverlay = document.getElementById('custom-alert');
+    alertOverlay.classList.add('show');
+}
+
+function hideCustomAlert() {
+    const alertOverlay = document.getElementById('custom-alert');
+    alertOverlay.classList.remove('show');
+}
+
 // ==================== POSITION-BASED SCORING ====================
 function calculatePoints(circleElement, correctAnswer) {
     const position = circleElement.dataset.position;
@@ -114,6 +125,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Next button
     document.getElementById('next-btn').addEventListener('click', nextQuestion);
 
+    // Alert OK button
+    document.getElementById('alert-ok-btn').addEventListener('click', hideCustomAlert);
+
     // Other buttons
     document.getElementById('quit-btn').addEventListener('click', quitQuiz);
     document.getElementById('restart-btn').addEventListener('click', restartQuiz);
@@ -157,7 +171,9 @@ function loadQuestion() {
 
     const question = gameState.selectedQuestions[gameState.currentQuestionIndex];
     gameState.currentQuestion = question;
-    gameState.selectedCircle = null;
+
+    // DON'T RESET selectedCircle here - keep it from previous selection
+    // gameState.selectedCircle = null;  // REMOVED THIS LINE
 
     document.getElementById('question-topic').textContent = question.topic;
     document.getElementById('question-level').textContent = question.level;
@@ -221,25 +237,31 @@ function displayOptions(assignment) {
 }
 
 function resetUI() {
+    // Reset answer buttons
     document.querySelectorAll('.answer-btn').forEach(btn => {
         btn.classList.remove('correct', 'wrong', 'disabled');
         btn.disabled = false;
     });
 
+    // Reset circles but PRESERVE selected state
     document.querySelectorAll('.conf-circle').forEach(circle => {
-        circle.classList.remove('selected', 'disabled');
+        circle.classList.remove('disabled');
+        // Keep 'selected' class if it exists
     });
 
+    // Hide displays
     document.getElementById('points-display').classList.remove('show', 'positive', 'negative', 'neutral');
     document.getElementById('next-btn').classList.remove('show');
 }
 
 // ==================== CIRCLE SELECTION ====================
 function selectCircle(circle) {
+    // Remove previous selection
     document.querySelectorAll('.conf-circle').forEach(c => {
         c.classList.remove('selected');
     });
 
+    // Mark this circle as selected
     circle.classList.add('selected');
     gameState.selectedCircle = circle;
 
@@ -251,8 +273,9 @@ function handleAnswerClick(button) {
     console.log('handleAnswerClick called');
     console.log('Selected circle:', gameState.selectedCircle);
 
+    // Check if circle was selected
     if (!gameState.selectedCircle) {
-        alert('⚠️ Please select your confidence level on the triangle first!');
+        showCustomAlert();
         return;
     }
 
@@ -287,7 +310,7 @@ function handleAnswerClick(button) {
         correctBtn.classList.add('correct');
     }
 
-    // Disable all
+    // Disable all buttons and circles
     document.querySelectorAll('.answer-btn').forEach(btn => {
         btn.disabled = true;
         btn.classList.add('disabled');
@@ -321,6 +344,8 @@ function showPoints(points) {
 }
 
 function nextQuestion() {
+    // Clear the selected circle for the next question
+    gameState.selectedCircle = null;
     gameState.currentQuestionIndex++;
     loadQuestion();
 }
@@ -376,5 +401,5 @@ function shuffleArray(array) {
     return shuffled;
 }
 
-console.log('Position-Based Scoring initialized!');
+console.log('Position-Based Scoring with Custom Alert initialized!');
 console.log('Starting score: 10 points');
