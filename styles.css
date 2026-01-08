@@ -976,4 +976,9 @@ body{
 #quiz-screen{
   background: #004587;
 }
+/* Center label + text inside answer boxes */
+.answer-btn{
+  justify-content: center;  /* vertical centering */
+  text-align: center;       /* center the text */
+}
 
