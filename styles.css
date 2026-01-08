@@ -941,8 +941,8 @@ body{
   .answer-label{ width: 46px; height: 46px; font-size: 1.4rem; }
 
   .confidence-triangle{
-    max-height: 34vh;
-    max-width: 500px;
+    max-height: 30vh;
+    max-width: 480px;
   }
 
   #next-btn{ margin-top: auto; }
