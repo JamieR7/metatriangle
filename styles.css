@@ -844,3 +844,27 @@ body{
   .question-text{ font-size: 1rem; }
   .answer-text{ font-size: 0.88rem; }
 }
+.how-to-play{
+  margin: 1.25rem auto 0 auto;
+  padding-top: 1.25rem;
+  border-top: 2px solid var(--bg-light);
+}
+
+.how-to-play h2{
+  text-align: center;
+  color: var(--primary-blue);
+  font-weight: 900;
+  font-size: 1.15rem;
+  margin-bottom: 0.9rem;
+}
+
+.how-to-img{
+  display: block;
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+  margin: 0 auto 0.9rem auto;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+}
+
