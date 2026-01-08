@@ -3001,12 +3001,12 @@ const QUESTIONS_DB = [
     "id": "Q215",
     "topic": "Group Dynamics and Leadership (C.1.2)",
     "level": "SL",
-    "question": "What is social cohesion?",
+    "question": "What is social cohesion in a sports team?",
     "options": {
-      "i": "Working together toward goals",
-      "ii": "Following team rules",
-      "iii": "Interpersonal attraction",
-      "iv": "Having group social media"
+      "i": "How clear each player is about their role",
+      "ii": "The coach assigning roles and positions",
+      "iii": "Working together to achieve shared goals",
+      "iv": "Everyone wearing matching socks"
     },
     "correct": "iii",
     "explanation": "Social cohesion involves interpersonal attraction and satisfaction with social interactions."
