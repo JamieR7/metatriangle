@@ -868,8 +868,12 @@ body{
   box-shadow: var(--shadow);
 }
 /* Keep "How to play" images contained inside the welcome box */
+/* Allow scrolling inside the welcome card */
 #difficulty-screen .screen-content{
-  overflow: hidden;            /* prevents bleeding outside rounded corners */
+  max-height: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 .how-to-play{
