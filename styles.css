@@ -867,4 +867,24 @@ body{
   border-radius: 10px;
   box-shadow: var(--shadow);
 }
+/* Keep "How to play" images contained inside the welcome box */
+#difficulty-screen .screen-content{
+  overflow: hidden;            /* prevents bleeding outside rounded corners */
+}
+
+.how-to-play{
+  width: 100%;
+}
+
+.how-to-img{
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+/* cap image height so it doesn't dominate the page */
+.how-to-img{
+  max-height: 60vh;
+}
 
