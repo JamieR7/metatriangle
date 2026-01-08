@@ -981,4 +981,9 @@ body{
   justify-content: center;  /* vertical centering */
   text-align: center;       /* center the text */
 }
+/* Bigger score in the top bar */
+#score{
+  font-size: 1.8rem;
+  font-weight: 800;
+}
 
