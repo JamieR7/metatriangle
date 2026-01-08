@@ -933,8 +933,8 @@ body{
   #btn-A{ max-width: 60%; }
 }
 
-/* MacBook Air / short-height laptops: keep Next visible (no scroll) */
-@media (max-height: 820px){
+/* Laptops: short-ish height and not super wide. Place laptop rule above upscale rule */
+@media (max-height: 820px) and (max-width: 1440px){
   .triangle-layout{ padding: 1.25rem 1rem; gap: 0.9rem; }
   .question-panel{ padding: 1.1rem; margin-bottom: 0.9rem; }
   .answer-btn{ padding: 0.85rem; }
@@ -947,6 +947,11 @@ body{
 
   #next-btn{ margin-top: auto; }
 }
+/* Only upscale on truly large AND tall screens (not MacBook Air) */
+@media (min-width: 1400px) and (min-height: 900px){
+  .confidence-triangle{ max-height: 34vh; max-width: 600px; }
+}
+
 
 /* Keep "How to play" images contained inside the welcome box */
 /* Allow scrolling inside the welcome card */
