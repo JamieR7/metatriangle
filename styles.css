@@ -942,7 +942,7 @@ body{
 
   .confidence-triangle{
     max-height: 32vh;
-    max-width: 490px;
+    max-width: 500px;
   }
 
   #next-btn{ margin-top: auto; }
