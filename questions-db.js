@@ -3843,13 +3843,13 @@ const QUESTIONS_DB = [
     "level": "HL",
     "question": "What is trait anxiety?",
     "options": {
-      "i": "Temporary emotional state",
-      "ii": "Situation-specific response",
-      "iii": "Stable personality disposition",
-      "iv": "Anxious personality traits specifically"
+      "i": "A temporary emotional state",
+      "ii": "A situation-specific response",
+      "iii": "A stable tendency to feel anxious",
+      "iv": "Worrying about somebody's traits"
     },
     "correct": "iii",
-    "explanation": "Trait anxiety is stable personality characteristic reflecting general tendency to perceive situations as threatening."
+    "explanation": "Trait anxiety is a stable personality characteristic reflecting general tendency to perceive situations as threatening."
   },
   {
     "id": "Q276",
