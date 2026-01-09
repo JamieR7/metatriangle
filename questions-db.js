@@ -2091,7 +2091,7 @@ const QUESTIONS_DB = [
     "id": "Q150",
     "topic": "Levers (B.1.4)",
     "level": "SL",
-    "question": "Greatest mechanical advantage?",
+    "question": "Mechanical advantage always >1?",
     "options": {
       "i": "First-class always",
       "ii": "Third-class levers",
