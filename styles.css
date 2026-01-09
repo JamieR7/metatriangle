@@ -595,3 +595,13 @@ body{
 .result-actions{
   margin-top: 1.25rem;
 }
+
+.difficulty-icon{
+  font-size: 4.5rem;   /* make the emojis big */
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px){
+  .difficulty-icon{ font-size: 3.6rem; }
+}
