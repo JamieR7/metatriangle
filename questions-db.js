@@ -3468,7 +3468,7 @@ const QUESTIONS_DB = [
       "i": "Ego orientation primarily",
       "ii": "Neither orientation",
       "iii": "Task orientation",
-      "iv": "Disorientation (kidding)"
+      "iv": "Disorientation"
     },
     "correct": "iii",
     "explanation": "Task orientation promotes intrinsic motivation, persistence, and adaptive responses to challenges."
