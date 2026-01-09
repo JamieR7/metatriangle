@@ -21,7 +21,7 @@
   const DIFFICULTY_DISPLAY = { rookie: "Rookie", varsity: "Varsity", pro: "Pro" };
   const FUNNY_PROB = { pro: 0.0, varsity: 0.2, rookie: 0.5 };
 
-  // Triangle circle scoring matrix: points depend on circleKey + which slot is correct
+  // IMPORTANT: keys must match your SVG data-key values (ABcloseA, etc.)
   const SCORE = {
     A: { A: 3, B: -2, C: -2 },
     B: { A: -2, B: 3, C: -2 },
@@ -91,21 +91,29 @@
       .replaceAll("'", "&#039;");
   }
 
-  // Supports multiple possible globals (and also a plain global const QUESTIONSDB)
+  // Reads from multiple possible globals; also supports a global const QUESTIONSDB. [file:179][file:177]
   function getQuestionsDB() {
-    const maybe =
+    const fromWindow =
       window.questionsDB ||
       window.QUESTIONS_DB ||
       window.QUESTIONSDB ||
       window.questions ||
-      (typeof QUESTIONSDB !== "undefined" ? QUESTIONSDB : []);
+      null;
 
-    return Array.isArray(maybe) ? maybe : [];
+    if (Array.isArray(fromWindow)) return fromWindow;
+
+    // If questions-db.js declares: const QUESTIONSDB = [...]
+    // (global const is still accessible by name across scripts)
+    // eslint-disable-next-line no-undef
+    if (typeof QUESTIONSDB !== "undefined" && Array.isArray(QUESTIONSDB)) return QUESTIONSDB;
+
+    return [];
   }
 
   // -----------------------------
-  // Explain UI state
+  // Explain UI
   // -----------------------------
+  const nextBtn = $("next-btn");
   const explainBtn = $("explain-btn");
   const explanationBox = $("explanation-box");
   let explanationVisible = false;
@@ -118,19 +126,19 @@
       explanationBox.textContent = "";
     }
 
-    if (explainBtn) {
-      explainBtn.textContent = "Explain";
-      explainBtn.classList.remove("show");
-    }
+    // Both buttons hidden until answered (CSS uses .show)
+    nextBtn?.classList.remove("show");
+    explainBtn?.classList.remove("show");
 
-    $("next-btn")?.classList.remove("show");
+    if (explainBtn) explainBtn.textContent = "Explain";
   }
 
-  function showExplainAndNextForAnsweredQuestion(q) {
-    if (explainBtn) explainBtn.classList.add("show");
-    $("next-btn")?.classList.add("show");
+  function showAfterAnswer(q) {
+    // Show BOTH buttons after answering
+    nextBtn?.classList.add("show");
+    explainBtn?.classList.add("show");
 
-    // Load text now; still hidden until user clicks Explain
+    // Load explanation text but keep it hidden until Explain clicked
     if (explanationBox) explanationBox.textContent = safeStr(q?.explanation);
   }
 
@@ -165,7 +173,7 @@
       });
     });
 
-    // SL / SL+HL buttons
+    // SL / SL+HL
     document.querySelectorAll(".count-btn[data-level-select]").forEach(btn => {
       btn.addEventListener("click", () => {
         document.querySelectorAll(".count-btn[data-level-select]").forEach(b => b.classList.remove("active"));
@@ -176,8 +184,7 @@
     });
 
     // Start
-    const startBtn = $("start-quiz-btn");
-    startBtn?.addEventListener("click", () => {
+    $("start-quiz-btn")?.addEventListener("click", () => {
       if (!state.difficulty) {
         alert("Please select a difficulty mode.");
         return;
@@ -229,10 +236,8 @@
     loadQuestion();
   }
 
-  // Pick 3 options: always include correct, include funny (iv) with difficulty probability
   function pickThreeOptions(question) {
     const opts = question && question.options ? question.options : {};
-
     const entries = Object.entries(opts)
       .filter(([, v]) => typeof v === "string" && v.trim().length > 0)
       .map(([k, v]) => ({ key: String(k), text: v.trim() }));
@@ -249,11 +254,8 @@
     const includeFunny = !!funnyEntry && (!correctEntry || funnyEntry.key !== correctEntry.key) && (Math.random() < p);
 
     let distractors = [];
-    if (includeFunny && seriousWrong.length > 0) {
-      distractors = [funnyEntry, shuffle(seriousWrong)[0]];
-    } else {
-      distractors = shuffle(seriousWrong).slice(0, 2);
-    }
+    if (includeFunny && seriousWrong.length > 0) distractors = [funnyEntry, shuffle(seriousWrong)[0]];
+    else distractors = shuffle(seriousWrong).slice(0, 2);
 
     let chosen = [];
     if (correctEntry) chosen.push(correctEntry);
@@ -264,7 +266,7 @@
     chosen.forEach(o => { if (o && o.key) byKey.set(o.key, o); });
     chosen = [...byKey.values()];
 
-    // Ensure 3 options (fallback to any entries)
+    // Ensure 3 options
     const pool = shuffle(entries);
     for (const opt of pool) {
       if (chosen.length >= 3) break;
@@ -272,7 +274,264 @@
       if (chosen.some(x => x.key === opt.key)) continue;
       chosen.push(opt);
     }
-
     while (chosen.length < 3 && pool.length > 0) chosen.push(pool[0]);
 
     return { chosen: chosen.slice(0, 3), correctEntry };
+  }
+
+  function assignToSlots(chosen, correctEntry) {
+    const slots = ["A", "B", "C"];
+    const shuffled = shuffle(chosen);
+    const slotMap = {};
+    let correctSlot = null;
+
+    slots.forEach((slot, idx) => {
+      const opt = shuffled[idx];
+      const isCorrect = !!(correctEntry && opt && opt.key === correctEntry.key);
+      slotMap[slot] = { text: opt ? opt.text : "—", isCorrect };
+      if (isCorrect) correctSlot = slot;
+    });
+
+    return { slotMap, correctSlot };
+  }
+
+  function resetAnswerBoxes() {
+    ["A", "B", "C"].forEach(s => {
+      const btn = $(`btn-${s}`);
+      if (btn) btn.classList.remove("correct");
+    });
+  }
+
+  function resetTriangle() {
+    state.locked = false;
+    document.querySelectorAll(".conf-circle").forEach(c => {
+      c.classList.remove("selected", "disabled");
+      c.style.pointerEvents = "auto";
+    });
+  }
+
+  function revealCorrectAnswer() {
+    resetAnswerBoxes();
+    if (!state.correctSlot) return;
+    $(`btn-${state.correctSlot}`)?.classList.add("correct");
+  }
+
+  function loadQuestion() {
+    const q = state.questions[state.currentQuestionIndex];
+    if (!q) {
+      showResults();
+      return;
+    }
+
+    setText("question-topic", q.topic ?? "—");
+    setText("question-level", q.level ?? "—");
+    setText("question-text", q.question ?? "—");
+    setText("current-q", state.currentQuestionIndex + 1);
+    setText("score", state.score);
+
+    resetAnswerBoxes();
+    resetTriangle();
+    resetExplainUI();
+
+    const { chosen, correctEntry } = pickThreeOptions(q);
+    const { slotMap, correctSlot } = assignToSlots(chosen, correctEntry);
+    state.correctSlot = correctSlot;
+
+    const aText = document.querySelector("#btn-A .answer-text");
+    const bText = document.querySelector("#btn-B .answer-text");
+    const cText = document.querySelector("#btn-C .answer-text");
+
+    if (aText) aText.textContent = slotMap.A.text;
+    if (bText) bText.textContent = slotMap.B.text;
+    if (cText) cText.textContent = slotMap.C.text;
+  }
+
+  function showPoints(points) {
+    const box = $("points-display");
+    const txt = $("points-text");
+    if (!box || !txt) return;
+
+    const label = points > 0 ? `+${points} point${points === 1 ? "" : "s"}` :
+      points < 0 ? `${points} points` : "0 points";
+
+    const cls = points > 0 ? "positive" : points < 0 ? "negative" : "neutral";
+
+    txt.textContent = label;
+    box.className = `points-display show ${cls}`;
+    setTimeout(() => box.classList.remove("show"), 1100);
+  }
+
+  function applyAnswer(circleKey) {
+    if (state.locked) return;
+
+    const q = state.questions[state.currentQuestionIndex];
+    if (!circleKey || !SCORE[circleKey] || !state.correctSlot || !q) return;
+
+    state.locked = true;
+
+    document.querySelectorAll(".conf-circle").forEach(c => {
+      c.classList.add("disabled");
+      c.style.pointerEvents = "none";
+    });
+
+    const points = SCORE[circleKey][state.correctSlot];
+
+    state.history.push({
+      topic: q.topic || "Unknown",
+      points,
+      circleKey,
+      correctSlot: state.correctSlot
+    });
+
+    state.score += points;
+    setText("score", state.score);
+
+    if (points > 0) state.positivePicks++;
+    else state.nonPositivePicks++;
+
+    showPoints(points);
+    revealCorrectAnswer();
+
+    // NEW: show Explain + Next after answering
+    showAfterAnswer(q);
+  }
+
+  // -----------------------------
+  // Results: topic bars
+  // -----------------------------
+  function renderTopicBars() {
+    const host = $("topic-list");
+    if (!host) return;
+
+    const byTopic = new Map();
+    for (const rec of state.history) {
+      const t = rec.topic || "Unknown";
+      if (!byTopic.has(t)) byTopic.set(t, { sum: 0, count: 0 });
+      const obj = byTopic.get(t);
+      obj.sum += rec.points;
+      obj.count += 1;
+    }
+
+    const rows = [...byTopic.entries()].map(([topic, v]) => ({
+      topic,
+      avg: v.count ? (v.sum / v.count) : 0,
+      count: v.count
+    }));
+
+    rows.sort((a, b) => a.avg - b.avg);
+
+    host.innerHTML = "";
+    if (rows.length === 0) {
+      host.innerHTML = `<div style="text-align:center;color:#666;font-weight:700">No topic data</div>`;
+      return;
+    }
+
+    for (const r of rows) {
+      let widthPct = 0;
+      let cls = "positive";
+
+      if (r.avg >= 0) {
+        widthPct = Math.min((r.avg / MAX_POS_POINTS) * 50, 50);
+        cls = "positive";
+      } else {
+        widthPct = Math.min((Math.abs(r.avg) / Math.abs(MAX_NEG_POINTS)) * 50, 50);
+        cls = "negative";
+      }
+
+      const item = document.createElement("div");
+      item.className = "topic-item";
+      item.innerHTML = `
+        <div class="topic-header">
+          <div class="topic-name">${escapeHtml(r.topic)} <span style="color:#666;font-weight:800">(${r.count})</span></div>
+          <div class="topic-avg">${r.avg >= 0 ? "+" : ""}${r.avg.toFixed(1)}</div>
+        </div>
+        <div class="topic-bar">
+          <div class="topic-fill ${cls}" style="width:${widthPct}%"></div>
+        </div>
+      `;
+      host.appendChild(item);
+    }
+  }
+
+  function showResults() {
+    showScreen("results-screen");
+
+    const total = Math.max(state.questions.length, 1);
+    const accuracy = Math.round((state.positivePicks / total) * 100);
+
+    setText("final-score", state.score);
+    setText("correct-count", state.positivePicks);
+    setText("wrong-count", state.nonPositivePicks);
+    setText("accuracy", accuracy);
+
+    let msg = "Keep practicing — you will improve.";
+    if (accuracy >= 90) msg = "Outstanding performance.";
+    else if (accuracy >= 75) msg = "Great job.";
+    else if (accuracy >= 60) msg = "Good effort — keep going.";
+
+    setText("performance-message", msg);
+    renderTopicBars();
+  }
+
+  // -----------------------------
+  // Bind quiz controls
+  // -----------------------------
+  function bindQuizControls() {
+    // triangle circles
+    document.querySelectorAll(".conf-circle").forEach(circle => {
+      circle.addEventListener("click", () => {
+        if (state.locked) return;
+        document.querySelectorAll(".conf-circle").forEach(c => c.classList.remove("selected"));
+        circle.classList.add("selected");
+        applyAnswer(circle.dataset.key);
+      });
+    });
+
+    // Explain toggle
+    explainBtn?.addEventListener("click", () => {
+      if (!state.locked) return; // only after answering
+      explanationVisible = !explanationVisible;
+      if (explanationBox) explanationBox.hidden = !explanationVisible;
+      if (explainBtn) explainBtn.textContent = explanationVisible ? "Hide explanation" : "Explain";
+    });
+
+    // Next
+    nextBtn?.addEventListener("click", () => {
+      resetExplainUI();
+      state.currentQuestionIndex++;
+      if (state.currentQuestionIndex >= state.questions.length) showResults();
+      else loadQuestion();
+    });
+
+    // Quit
+    $("quit-btn")?.addEventListener("click", () => {
+      const ok = confirm("Quit the quiz? Your progress will be lost.");
+      if (!ok) return;
+      showScreen("difficulty-screen");
+    });
+  }
+
+  function bindResultsControls() {
+    $("restart-btn")?.addEventListener("click", () => {
+      if (!state.difficulty) {
+        showScreen("difficulty-screen");
+        return;
+      }
+      startQuiz();
+    });
+
+    $("change-difficulty-btn")?.addEventListener("click", () => {
+      showScreen("difficulty-screen");
+    });
+  }
+
+  // -----------------------------
+  // Init
+  // -----------------------------
+  document.addEventListener("DOMContentLoaded", () => {
+    bindLanding();
+    bindQuizControls();
+    bindResultsControls();
+    showScreen("difficulty-screen");
+  });
+})();
