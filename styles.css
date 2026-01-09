@@ -605,3 +605,12 @@ body{
 @media (max-width: 768px){
   .difficulty-icon{ font-size: 3.6rem; }
 }
+
+#quiz-screen{
+  background: #004587;
+}
+
+#score{
+  font-size: 1.6rem;
+  font-weight: 950;
+}
