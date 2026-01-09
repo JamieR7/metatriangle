@@ -282,6 +282,21 @@ body{
   box-shadow:0 0 0 4px rgba(40,167,69,0.22);
 }
 
+/* Center the question text */
+.question-text{ text-align: center; }
+
+/* Center content inside answer boxes (label + text) */
+.answer-btn{ justify-content: center; text-align: center; }
+.answer-text{ text-align: center; }
+
+/* Make A the same width as B and C (half the grid width) */
+#btn-A{
+  grid-column: 1 / -1;        /* keep it on its own row */
+  justify-self: center;       /* center the button in the grid */
+  width: calc(50% - 0.375rem);/* match B/C column width */
+  max-width: none;            /* override earlier max-width */
+}
+
 /* Triangle */
 .triangle-container{
   background:var(--white);
