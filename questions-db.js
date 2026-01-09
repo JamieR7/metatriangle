@@ -145,7 +145,7 @@ const QUESTIONS_DB = [
     "id": "Q011",
     "topic": "Inter-system Communication (A.1.1)",
     "level": "SL",
-    "question": "What does testosterone increase?",
+    "question": "What is an effect of testosterone?",
     "options": {
       "i": "Decreases protein synthesis",
       "ii": "Reduces red blood cells",
