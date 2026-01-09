@@ -3023,7 +3023,7 @@ const QUESTIONS_DB = [
       "iv": "Lounging on team couch"
     },
     "correct": "iii",
-    "explanation": "Social loafing is decreased individual effort when performing in groups versus alone."
+    "explanation": "Social loafing is when a person puts in less effort on a task when working in a group than when working alone. It often happens because responsibility feels shared, so individual effort seems less noticeable or accountable. It's not specifically mentioned in your textbook but it’s still useful background for understanding motivation in team settings."
   },
   {
     "id": "Q217",
