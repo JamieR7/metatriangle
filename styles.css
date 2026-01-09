@@ -282,8 +282,12 @@ body{
   box-shadow:0 0 0 4px rgba(40,167,69,0.22);
 }
 
-/* Center the question text */
-.question-text{ text-align: center; }
+/* Justify the question text */
+.question-text{
+  text-align: left;
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
 
 /* Center content inside answer boxes (label + text) */
 .answer-btn{ justify-content: center; text-align: center; }
