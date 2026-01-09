@@ -469,3 +469,27 @@ body{
   #btn-A{ max-width:75%; }
   .confidence-triangle{ max-width:420px; }
 }
+
+/* MacBook Air sizing (short-ish height + not huge width) */
+@media (max-height: 820px) and (max-width: 1440px){
+  .quiz-header{ margin-bottom: 0.6rem; padding: 0.55rem 0.8rem; }
+  .question-container{ padding: 0.95rem; margin-bottom: 0.6rem; }
+  .question-text{ font-size: 1.05rem; line-height: 1.35; }
+
+  .answers-grid{ padding: 0.9rem 0.75rem; gap: 0.55rem; margin-bottom: 0.6rem; }
+  #btn-A{ max-width: 75%; }
+
+  .answer-btn{ padding: 0.75rem 0.7rem; border-radius: 10px; }
+  .answer-label{ width: 36px; height: 36px; font-size: 1.1rem; }
+  .answer-text{ font-size: 0.92rem; line-height: 1.25; }
+
+  .triangle-container{ padding: 0.6rem 0.45rem; margin-bottom: 0.6rem; }
+  .triangle-instruction{ font-size: 0.9rem; margin-bottom: 0.35rem; }
+
+  /* Key: limit triangle by viewport height */
+  .confidence-triangle{ max-width: 500px; max-height: 32vh; }
+
+  /* Make both buttons less chunky */
+  .next-btn, .explain-btn{ padding: 0.75rem 1.35rem; font-size: 1rem; max-width: 240px; }
+}
+
