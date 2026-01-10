@@ -4200,7 +4200,21 @@ const QUESTIONS_DB = [
     },
     "correct": "iii",
     "explanation": "Mental practice involves cognitive rehearsal of skills without physical execution, using imagery."
-  }
+  },
+  {
+  "id": "Q301",
+  "topic": "Imagery (C.5.2)",
+  "level": "HL",
+  "question": "Which element of the PETTLEP model emphasizes that imagery should involve using multiple sensory modalities to mimic real performance as closely as possible?",
+  "options": {
+    "i": "Perspective - viewing from internal or external viewpoint",
+    "ii": "Emotion - experiencing the feelings associated with actual performance",
+    "iii": "Physical - imagery should resemble the actual physical performance",
+    "iv": "PETTLEP stands for 'Please Eat Tacos Tuesday, Leave Extra Peppers'"
+  },
+  "correct": "iii",
+  "explanation": "The Physical element of PETTLEP emphasizes that imagery should resemble the actual physical performance as closely as possible, including wearing appropriate kit, adopting the correct body position, and engaging multiple sensory modalities (visual, auditory, kinaesthetic, tactile, olfactory). The model stands for Physical, Environment, Task, Timing, Learning, Emotion, and Perspective, and is used to create the most effective imagery interventions for athletes."
+}
 ];
 
 // All available topics
@@ -4227,6 +4241,7 @@ const ALL_TOPICS = [
   "Muscular Function (B.1.3)",
   "Newton's Laws of Motion (B.2.1)",
   "Psychological Skills Training (C.5.1)",
+  "Imagery (C.5.2)",
   "Qualities of Training (A.3.1)",
   "Skill Acquisition (C.2.1)",
   "Structure and Function of Connective Tissues (B.1.2)",
