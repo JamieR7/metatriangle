@@ -2875,11 +2875,11 @@ const QUESTIONS_DB = [
     "id": "Q206",
     "topic": "Individual Differences in Sport (C.1.1)",
     "level": "SL",
-    "question": "Which is NOT a Big Five personality trait?",
+    "question": "Which is a Big Five personality trait?",
     "options": {
-      "i": "Openness to experience",
-      "ii": "Conscientiousness",
-      "iii": "Mental toughness",
+      "i": "Mental toughness",
+      "ii": "Coordination",
+      "iii": "Openness to experience",
       "iv": "Procrastination (wishful thinking)"
     },
     "correct": "iii",
